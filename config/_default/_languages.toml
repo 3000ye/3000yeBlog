@@ -6,5 +6,6 @@ title = "Example Site"
 weight = 1
 [zh-cn]
 languageName = "中文"
+languagedirection = "ltr"
 title = "3000ye's Blog"
 weight = 1
