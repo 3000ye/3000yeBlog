@@ -4,13 +4,15 @@ description: test page
 date: 2023-10-08T14:30:49Z
 image: nord.jpg
 math: true
+categories:
+    - Example Category
 ---
 
 # Test page
 
 ## picture
 
-![](nord.jpg)
+![nord](nord.jpg)
 
 ## math
 
