@@ -21,3 +21,17 @@ tags:
 $$
     \varphi = 1+\frac{1} {1+\frac{1} {1+\frac{1} {1+\cdots} } }
 $$
+
+## code
+
+```cpp
+#include "bits/stdc++.h"
+
+using namespace std;
+
+int main() {
+    cout << "Hello World!" << endl;
+
+    return 0;
+}
+```
