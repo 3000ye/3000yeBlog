@@ -6,6 +6,8 @@ if [ $# -eq 0 ]; then
   exit 1
 fi
 
+# 生成网页
+hugo
 # 进入仓库目录
 cd public
 # 提取提交备注
