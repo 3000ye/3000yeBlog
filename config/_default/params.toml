@@ -27,6 +27,7 @@ src = "img/CC.jpg"
 [article]
 math = true
 readingTime = true
+toc = true
 
 [article.license]
 enabled = true
