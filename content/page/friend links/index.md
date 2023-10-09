@@ -4,7 +4,7 @@ links:
   - title: fatzard
     description: fat fatzard's blog
     website: http://wjknowledge.top/
-    image: http://wjknowledge.top/medias/logo.png
+    image: logos/fatzard.png
 
 menu:
     main: 
