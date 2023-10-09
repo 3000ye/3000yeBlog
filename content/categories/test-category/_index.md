@@ -1,6 +1,6 @@
 ---
-title: Example Category
-description: A description of this category
+title: Test Category
+description: Test pages in test category.
 image: nord.jpg
 
 # Badge style

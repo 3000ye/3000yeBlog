@@ -5,7 +5,9 @@ date: 2023-10-08T14:30:49Z
 image: nord.jpg
 math: true
 categories:
-    - Example Category
+    - Test Category
+tags:
+    - Test Tag
 ---
 
 # Test page
@@ -17,5 +19,5 @@ categories:
 ## math
 
 $$
-    \varphi = 1+\frac{1} {1+\frac{1} {1+\frac{1} {1+\cdots} } } 
+    \varphi = 1+\frac{1} {1+\frac{1} {1+\frac{1} {1+\cdots} } }
 $$
