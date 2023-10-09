@@ -51,7 +51,9 @@ tags:
 
 正透镜、负透镜、凹面镜和凸面镜的焦点`F`和焦距`f`：
 
+<div style="display: flex; justify-content: center;">
 <img src="assets/1.png" alt="img" style="zoom:50%;" />
+</div>
 
 **镜头（Lenses）**：是将拍摄景物在传感器上成像的器件，它通常由几片透镜、光圈叶片、对焦马达等光学元件组成。
 
@@ -59,7 +61,9 @@ tags:
 
 **光心**：凸透镜近轴光线中，入射线和与其对应且相平行的出射线构成共轭光线，其入射点跟出射点的连线与主光轴的交点，称为凸透镜的焦点，位于透镜中央的点叫光心。
 
+<div style="display: flex; justify-content: center;">
 <img src="assets/3.png" alt="img" style="zoom:50%;" />
+</div>
 
 从图中可知，`O`为光心，`F`为焦点。每个透镜主轴上都有一个特殊点，凡是通过该点的光，其传播方向不变，这个点叫光心。经过光心的光线的传播方向不会发生改变。
 
@@ -71,15 +75,21 @@ tags:
 
 我们通常将相机看成如下所示的透镜模型：
 
+<div style="display: flex; justify-content: center;">
 <img src="assets/2.png" alt="img" style="zoom:50%;" />
+</div>
 
 在实际分析时，通常将其简化为针孔模型（小孔成像）：
 
+<div style="display: flex; justify-content: center;">
 <img src="assets/4.png" alt="img" style="zoom:50%;" />
+</div>
 
 一般为了分析简单，将成像平面画在对称位置，这样图像不再颠倒：
 
+<div style="display: flex; justify-content: center;">
 <img src="assets/5.png" alt="img" style="zoom:50%;" />
+</div>
 
 ### 四个坐标系
 
@@ -101,7 +111,9 @@ tags:
 
 我们先只考虑旋转，假设将坐标系以 $X$ 轴为中心进行旋转，即 $X$ 不变，旋转 $Y - Z$ 平面。
 
+<div style="display: flex; justify-content: center;">
 <img src="assets/7.png" alt="img" style="zoom: 33%;" />
+</div>
 
 假设旋转角度为 $\theta$，即 $\angle Y' O Y = \angle Z' O Z = \theta$。旋转前的坐标系为 $X - Y - Z$，旋转后的坐标系为 $X' - Y' - Z'$。假设点 $P$ 在 $X - Y - Z$ 中的坐标为（$X_w, Y_w, Z_w$），旋转后，其在 $X' - Y' - Z'$ 中的坐标为（$X_c, Y_c, Z_c$）：
 $$
@@ -110,74 +122,78 @@ $$
 
 $$
 \begin{array}{l}
- Y_c & = OC + CD = OA \cdot \sin \theta + BP \\
-  & = Z_w \cdot \sin \theta + AP \cdot \cos \theta \\
+ Y_c & = OC + CD = OA \cdot \sin \theta + BP \\\\
+  & = Z_w \cdot \sin \theta + AP \cdot \cos \theta \\\\
   & = Z_w \sin \theta + Y_w \cos \theta
 \end{array}
 $$
 
 $$
 \begin{array}{l}
- Z_c & = PD = AC - AB \\
-  & = AO \cdot \cos \theta - AP \cdot \cos \theta \\
+ Z_c & = PD = AC - AB \\\\
+  & = AO \cdot \cos \theta - AP \cdot \cos \theta \\\\
   & = Z_w \cos \theta + Y_w \cos \theta
 \end{array}
 $$
 
 写成矩阵形式：
-$$\displaystyle \begin{bmatrix} X_c \\ Y_c \\ Z_c \end{bmatrix} = \mathbf{R_{cw}} \begin{bmatrix} X_w \\ Y_w \\ Z_w \end{bmatrix} or \begin{bmatrix} X_w \\ Y_w \\ Z_w \end{bmatrix} = \mathbf{R_{wc}} \begin{bmatrix} X_c \\ Y_c \\ Z_c \end{bmatrix} $$
+$$\displaystyle \begin{bmatrix} X_c \\\\ Y_c \\\\ Z_c \end{bmatrix} = \mathbf{R_{cw}} \begin{bmatrix} X_w \\\\ Y_w \\\\ Z_w \end{bmatrix} or \begin{bmatrix} X_w \\\\ Y_w \\\\ Z_w \end{bmatrix} = \mathbf{R_{wc}} \begin{bmatrix} X_c \\\\ Y_c \\\\ Z_c \end{bmatrix} $$
 推广到每个方向，可得到 $\mathbf{R_{cw}}, \mathbf{R_{wc}}$ 为：
 $$
 \mathbf{R_{cw}} (X_A, \theta) = 
 \begin{bmatrix}
- 1 & 0 & 0 \\
- 0 & \cos \theta & \sin \theta \\
+ 1 & 0 & 0 \\\\
+ 0 & \cos \theta & \sin \theta \\\\
  0 & - \sin \theta & \cos \theta
 \end{bmatrix}
 ,
 \mathbf{R_{wc}} (X_A, \theta) = 
 \begin{bmatrix}
- 1 & 0 & 0 \\
- 0 & \cos \theta & - \sin \theta \\
+ 1 & 0 & 0 \\\\
+ 0 & \cos \theta & - \sin \theta \\\\
  0 & \sin \theta & \cos \theta
 \end{bmatrix}
 $$
 $$
 \mathbf{R_{cw}} (Y_A, \theta) = 
 \begin{bmatrix}
- \cos \theta & 0 & \sin \theta \\
- 0 & 1 & 0 \\ - \sin \theta & 0 & \cos \theta
+ \cos \theta & 0 & \sin \theta \\\\
+ 0 & 1 & 0 \\\\ - \sin \theta & 0 & \cos \theta
 \end{bmatrix}
 ,
 \mathbf{R_{wc}} (Y_A, \theta) = 
 \begin{bmatrix}
- \cos \theta & 0 & - \sin \theta \\
- 0 & 1 & 0 \\
+ \cos \theta & 0 & - \sin \theta \\\\
+ 0 & 1 & 0 \\\\
  \sin \theta & 0 & \cos \theta
 \end{bmatrix}
 $$
 $$
 \mathbf{R_{cw}} (Z_A, \theta) = 
 \begin{bmatrix}
- \cos \theta & \sin \theta & 0 \\ - \sin \theta & \cos \theta & 0 \\
+ \cos \theta & \sin \theta & 0 \\\\ - \sin \theta & \cos \theta & 0 \\\\
  0 & 0 & 1
 \end{bmatrix}
 ,
 \mathbf{R_{wc}} (Z_A, \theta) = 
 \begin{bmatrix}
- \cos \theta & - \sin \theta & 0 \\
- \sin \theta & \cos \theta & 0 \\
+ \cos \theta & - \sin \theta & 0 \\\\
+ \sin \theta & \cos \theta & 0 \\\\
  0 & 0 & 1
 \end{bmatrix}
 $$
 
 这里我们使用右手笛卡尔三维坐标系：
 
+<div style="display: flex; justify-content: center;">
 <img src="assets/14.png" alt="img" style="zoom: 25%;" />
+</div>
 
 旋转可分为**主动旋转**与**被动旋转**。**主动旋转**是指将向量逆时针围绕旋转轴所做出的旋转。**被动旋转**是对坐标轴本身进行的逆时针旋转，它相当于主动旋转的逆操作。关于右手笛卡尔坐标系的 $X, Y, Z$ 轴的旋转分别叫做`roll`，`pitch`和`yaw`旋转：
 
+<div style="display: flex; justify-content: center;">
 <img src="assets/15.png" alt="img" style="zoom: 20%;" />
+</div>
 
 因为逆时针和顺时针旋转会得到不一样的旋转矩阵，所以我们统一如下：
 
@@ -185,14 +201,14 @@ $$
 $$
 R(X_A, \theta_x) = 
 \begin{bmatrix}
- 1 & 0 & 0 \\
- 0 & \cos \theta_x & - \sin \theta_x \\
+ 1 & 0 & 0 \\\\
+ 0 & \cos \theta_x & - \sin \theta_x \\\\
  0 & \sin \theta_x & \cos \theta_x
 \end{bmatrix} =
 \exp \left ( \theta_x
 \begin{bmatrix}
- 0 & 0 & 0\\
- 0 & 0 & -1\\
+ 0 & 0 & 0\\\\
+ 0 & 0 & -1\\\\
  0 & 1 & 0
 \end{bmatrix}
  \right )
@@ -201,13 +217,13 @@ $$
 $$
 R(Y_A, \theta_y) = 
 \begin{bmatrix}
- \cos \theta_y & 0 & \sin \theta_y \\
- 0 & 1 & 0 \\ - \sin \theta_y & 0 & \cos \theta_y
+ \cos \theta_y & 0 & \sin \theta_y \\\\
+ 0 & 1 & 0 \\\\ - \sin \theta_y & 0 & \cos \theta_y
 \end{bmatrix} =
 \exp \left ( \theta_y
 \begin{bmatrix}
- 0 & 0 & 1\\
- 0 & 0 & 0\\ -1 & 0 & 0
+ 0 & 0 & 1\\\\
+ 0 & 0 & 0\\\\ -1 & 0 & 0
 \end{bmatrix}
  \right )
 $$
@@ -215,40 +231,40 @@ $$
 $$
 R(Z_A, \theta_z) = 
 \begin{bmatrix}
- \cos \theta_z & - \sin \theta_z & 0 \\
- \sin \theta_z & \cos \theta_z & 0 \\
+ \cos \theta_z & - \sin \theta_z & 0 \\\\
+ \sin \theta_z & \cos \theta_z & 0 \\\\
  0 & 0 & 1
 \end{bmatrix} =
 \exp \left ( \theta_y
 \begin{bmatrix}
- 0 & -1 & 0\\
- 1 & 0 & 0\\
+ 0 & -1 & 0\\\\
+ 1 & 0 & 0\\\\
  0 & 0 & 0
 \end{bmatrix}
  \right )
 $$
 将上述三个旋转矩阵结合起来，最终的旋转矩阵（设绕 $X, Y, Z$ 轴旋转的角度分别为 $\alpha, \beta, \gamma$）：
 $$
-\begin{array}{l}
- M(\alpha, \beta, \gamma) & = R_x(\alpha) R_y(\beta) R_z(\gamma) \\
+\begin{array}{ll}
+ M(\alpha, \beta, \gamma) & = R_x(\alpha) R_y(\beta) R_z(\gamma) \\\\
   & = 
 \begin{bmatrix}
- 1 & 0 & 0 \\
- 0 & \cos \alpha & - \sin \alpha \\
+ 1 & 0 & 0 \\\\
+ 0 & \cos \alpha & - \sin \alpha \\\\
  0 & \sin \alpha & \cos \alpha 
 \end{bmatrix}
 \begin{bmatrix}
- \cos \beta  & 0 & \sin \beta  \\
- 0 & 1 & 0 \\ - \sin \beta  & 0 & \cos \beta 
+ \cos \beta  & 0 & \sin \beta  \\\\
+ 0 & 1 & 0 \\\\ - \sin \beta  & 0 & \cos \beta 
 \end{bmatrix}
 \begin{bmatrix}
- \cos \gamma & -\sin \gamma & 0 \\
- \sin \gamma & \cos \gamma & 0 \\
+ \cos \gamma & -\sin \gamma & 0 \\\\
+ \sin \gamma & \cos \gamma & 0 \\\\
  0 & 0 & 1
-\end{bmatrix} \\
+\end{bmatrix} \\\\
  & = \begin{bmatrix}
- \cos \gamma \cos \beta & - \sin \gamma \cos \alpha + \cos \gamma \sin \beta \sin \alpha & \sin \gamma \sin \alpha + \cos \gamma \sin \beta \cos \alpha \\
- \sin \gamma \cos \beta & \cos \gamma \cos \alpha + \sin \gamma \sin \beta \sin \alpha & - \cos \gamma \sin \alpha + \sin \gamma \sin \beta \cos \alpha \\ - \sin \beta & \cos \beta \sin \alpha & \cos \beta \cos \alpha 
+ \cos \gamma \cos \beta & - \sin \gamma \cos \alpha + \cos \gamma \sin \beta \sin \alpha & \sin \gamma \sin \alpha + \cos \gamma \sin \beta \cos \alpha \\\\
+ \sin \gamma \cos \beta & \cos \gamma \cos \alpha + \sin \gamma \sin \beta \sin \alpha & - \cos \gamma \sin \alpha + \sin \gamma \sin \beta \cos \alpha \\\\ - \sin \beta & \cos \beta \sin \alpha & \cos \beta \cos \alpha 
 \end{bmatrix}
 \end{array}
 $$
@@ -257,29 +273,29 @@ $$
 
 $$
 \begin{bmatrix}
-X_c \\
-Y_c \\
+X_c \\\\
+Y_c \\\\
 Z_c
 \end{bmatrix} =
 \begin{bmatrix}
- r_{11} & r_{12} & r_{13} \\
- r_{21} & r_{22} & r_{23} \\
+ r_{11} & r_{12} & r_{13} \\\\
+ r_{21} & r_{22} & r_{23} \\\\
  r_{31} & r_{32} & r_{33}
 \end{bmatrix}
 \begin{bmatrix}
-X_w \\
-Y_w \\
+X_w \\\\
+Y_w \\\\
 Z_w
 \end{bmatrix} +
 \begin{bmatrix}
-t_x \\
-t_y \\
+t_x \\\\
+t_y \\\\
 t_z
 \end{bmatrix} =
 \mathbf{R}
 \begin{bmatrix}
-X_w \\
-Y_w \\
+X_w \\\\
+Y_w \\\\
 Z_w
 \end{bmatrix} + T
 $$
@@ -288,19 +304,19 @@ $$
 
 $$
 \begin{bmatrix}
-X_c \\
-Y_c \\
-Z_c \\
+X_c \\\\
+Y_c \\\\
+Z_c \\\\
 1
 \end{bmatrix} =
 \begin{bmatrix}
-\mathbf{R} & \mathbf{T} \\
+\mathbf{R} & \mathbf{T} \\\\
  0_3^T & 1
 \end{bmatrix}
 \begin{bmatrix}
-X_w \\
-Y_w \\
-Z_w \\
+X_w \\\\
+Y_w \\\\
+Z_w \\\\
 1
 \end{bmatrix}
 $$
@@ -315,18 +331,18 @@ $$
 
 $$
 \begin{bmatrix}
-u \\
-v \\
+u \\\\
+v \\\\
 1
 \end{bmatrix}=
 \begin{bmatrix}
-\displaystyle \frac{1}{dx} & 0 & u_0 \\
-0 & \displaystyle \frac{1}{dy} & v_0 \\
+\displaystyle \frac{1}{dx} & 0 & u_0 \\\\
+0 & \displaystyle \frac{1}{dy} & v_0 \\\\
 0 & 0 & 1
 \end{bmatrix}=
 \begin{bmatrix}
-x \\
-y \\
+x \\\\
+y \\\\
 1
 \end{bmatrix}
 $$
@@ -349,25 +365,25 @@ $$
 
 $$
 Z_c \begin{bmatrix}
-x \\
-y \\
+x \\\\
+y \\\\
 1
 \end{bmatrix}=
 \lambda 
 \begin{bmatrix}
-u \\
-v \\
+u \\\\
+v \\\\
 1
 \end{bmatrix}=
 \begin{bmatrix}
- f & 0 & 0 & 0 \\
- 0 & f & 0 & 0 \\
+ f & 0 & 0 & 0 \\\\
+ 0 & f & 0 & 0 \\\\
  0 & 0 & 1 & 0
 \end{bmatrix}
 \begin{bmatrix}
-X_c \\
-Y_c \\
-Z_c \\
+X_c \\\\
+Y_c \\\\
+Z_c \\\\
 1
 \end{bmatrix}
 $$
@@ -377,44 +393,44 @@ $$
 $$
 \begin{array}{l}
 \lambda \begin{bmatrix}
-u \\
-v \\
+u \\\\
+v \\\\
 1
 \end{bmatrix} & =
 \begin{bmatrix}
-\displaystyle \frac{1}{dx} & 0 & u_0 \\
-0 & \displaystyle \frac{1}{dy} & v_0 \\
+\displaystyle \frac{1}{dx} & 0 & u_0 \\\\
+0 & \displaystyle \frac{1}{dy} & v_0 \\\\
 0 & 0 & 1
 \end{bmatrix}
 \begin{bmatrix}
- f & 0 & 0 & 0 \\
- 0 & f & 0 & 0 \\
+ f & 0 & 0 & 0 \\\\
+ 0 & f & 0 & 0 \\\\
  0 & 0 & 1 & 0
 \end{bmatrix}
 \begin{bmatrix}
-\mathbf{R} & \mathbf{T} \\
+\mathbf{R} & \mathbf{T} \\\\
  0 & 1
 \end{bmatrix}
 \begin{bmatrix}
-X_w \\
-Y_w \\
-Z_w \\
+X_w \\\\
+Y_w \\\\
+Z_w \\\\
 1
-\end{bmatrix}\\
+\end{bmatrix}\\\\
   & =
 \begin{bmatrix}
- fx & 0 & u_0 & 0 \\
- 0 & fy & v_0 & 0 \\
+ fx & 0 & u_0 & 0 \\\\
+ 0 & fy & v_0 & 0 \\\\
  0 & 0 & 1 & 0
 \end{bmatrix}
 \begin{bmatrix}
-\mathbf{R} & \mathbf{T} \\
+\mathbf{R} & \mathbf{T} \\\\
  0 & 1
 \end{bmatrix}
 \begin{bmatrix}
-X_w \\
-Y_w \\
-Z_w \\
+X_w \\\\
+Y_w \\\\
+Z_w \\\\
 1
 \end{bmatrix}
 \end{array}
@@ -422,8 +438,8 @@ $$
 其中，相机内参为（不考虑图像传感器的特性）：
 $$
 \begin{bmatrix}
- fx & 0 & u_0 & 0 \\
- 0 & fy & v_0 & 0 \\
+ fx & 0 & u_0 & 0 \\\\
+ 0 & fy & v_0 & 0 \\\\
  0 & 0 & 1 & 0
 \end{bmatrix}
 $$
@@ -445,7 +461,7 @@ $$
 
 $$
 \begin{matrix}
-u = f \frac{X}{Z} + O_x \\
+u = f \frac{X}{Z} + O_x \\\\
 v = f \frac{X}{Z} + O_y
 \end{matrix}
 $$
@@ -453,19 +469,19 @@ $$
 $$
 \lambda 
 \begin{bmatrix}
-u \\
-v \\
+u \\\\
+v \\\\
 1
 \end{bmatrix} =
 \begin{bmatrix}
- f & 0 & O_x & 0 \\
- 0 & f & O_x & 0 \\
+ f & 0 & O_x & 0 \\\\
+ 0 & f & O_x & 0 \\\\
  0 & 0 & 1 & 0
 \end{bmatrix}
 \begin{bmatrix}
-X_c \\
-Y_c \\
-Z_c \\
+X_c \\\\
+Y_c \\\\
+Z_c \\\\
 1
 \end{bmatrix}
 $$
@@ -476,25 +492,27 @@ $$
 
 图像传感器像原尺寸在制造过程可能不是正方形，同时可能存在歪斜（skewed），因此需要考虑这些影响因素，传感器歪斜和不是正方形主要对相机 $x$ 和 $y$ 方向的焦距产生影响。
 
+<div style="display: flex; justify-content: center;">
 <img src="assets/v2-a812da34b739588fa9142c46839ad281_1440w.png" alt="img" style="zoom: 50%;" />
+</div>
 
 此时，透视投影模型（像素坐标系和相机坐标系）的关系为：
 $$
 \lambda 
 \begin{bmatrix}
-u \\
-v \\
+u \\\\
+v \\\\
 1
 \end{bmatrix} =
 \begin{bmatrix}
- f & s & O_x & 0 \\
- 0 & \eta f & O_x & 0 \\
+ f & s & O_x & 0 \\\\
+ 0 & \eta f & O_x & 0 \\\\
  0 & 0 & 1 & 0
 \end{bmatrix}
 \begin{bmatrix}
-X_c \\
-Y_c \\
-Z_c \\
+X_c \\\\
+Y_c \\\\
+Z_c \\\\
 1
 \end{bmatrix} = [K, 0_3] P
 $$
@@ -519,7 +537,7 @@ $$
 从图像可以看出，径向畸变以某一个中心往外延伸，且越往外，畸变越大；显然畸变与距离成一种非线性的变换关系，参考众多文献，可以用多项式来近似：
 $$
 \begin{matrix}
-x_{rcrt} = x(1 + k_1 r^2 + k_2 r^4 + k_3 r^6) \\\\
+x_{rcrt} = x(1 + k_1 r^2 + k_2 r^4 + k_3 r^6) \\\\\\\\
 y_{rcrt} = y(1 + k_1 r^2 + k_2 r^4 + k_3 r^6) 
 \end{matrix}
 $$
@@ -532,7 +550,7 @@ $$
 ![img](assets/11.png)
 $$
 \begin{matrix}
-x_{tcrt} = x + [2p_1 xy + p_2 (r^2 + 2 x^2)] \\\\
+x_{tcrt} = x + [2p_1 xy + p_2 (r^2 + 2 x^2)] \\\\\\\\
 y_{tcrt} = y + [2p_2 xy + p_1 (r^2 + 2 y^2)]
 \end{matrix}
 $$
@@ -545,7 +563,7 @@ $$
 此时我们考虑加入镜头畸变：
 $$
 \begin{matrix}
-x_{crt} = x_{rcrt} + x_{tcrt} \\\\
+x_{crt} = x_{rcrt} + x_{tcrt} \\\\\\\\
 y_{crt} = y_{rcrt} + y_{tcrt}
 \end{matrix}
 $$
@@ -569,19 +587,19 @@ $$
 
 $$
 \begin{bmatrix}
-u_{ccd - crt} * Z\\
-v_{ccd - crt} * Z\\
+u_{ccd - crt} * Z\\\\
+v_{ccd - crt} * Z\\\\
 Z
 \end{bmatrix} =
 J(k_1, k_2, k_3, p_1, p_2)
 \begin{bmatrix}
- f_x & 0 & O_x \\
- 0 & f_y & O_y \\
+ f_x & 0 & O_x \\\\
+ 0 & f_y & O_y \\\\
  0 & 0 & 1
 \end{bmatrix}
 \begin{bmatrix}
-X \\
-Y \\
+X \\\\
+Y \\\\
 X
 \end{bmatrix}
 $$
