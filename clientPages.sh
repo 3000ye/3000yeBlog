@@ -6,6 +6,8 @@ if [ $# -eq 0 ]; then
   exit 1
 fi
 
+# 进入仓库目录
+cd public
 # 提取提交备注
 commit_message="$1"
 # 添加所有更改
