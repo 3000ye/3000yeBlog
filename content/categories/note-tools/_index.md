@@ -1,7 +1,7 @@
 ---
 title: Note tools
 description: Some useful tools for notes.
-image: 
+image: note-tools.jpg
 
 # Badge style
 style:
