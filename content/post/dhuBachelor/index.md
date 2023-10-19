@@ -32,9 +32,13 @@ git clone https://github.com/3000ye/dhuBachelor.git
 <img src="assets/zip.png" alt="img" style="zoom:100%"/>
 </div>
 
-### 百度网盘分享链接
+### 微信公众号获取
 
-如果你没有科学代理，无法进入`Github`，可以使用百度网盘下载：
+如果你没有科学代理，无法进入`Github`，请扫码关注公众号：`3000ye Blog`然后回复`latex模板`获取百度网盘分享链接。
+
+<div style="display: flex; justify-content: center;">
+<img src="assets/weixin.jpg" alt="img" style="zoom:100%"/>
+</div>
 
 ## 开始使用
 ### 安装字体
@@ -256,6 +260,24 @@ int main() {
 
 ```tex
 \lstinputlisting[language=c++, title=code.cpp]{code/code.cpp}
+```
+
+### 插入伪代码
+
+使用宏包`algorithm, algorithmic`来实现伪代码的添加，具体实现可以查看文档，下面是一个简单示例：
+
+```tex
+\begin{algorithm}
+    \caption{Example Pseudocode}
+    \begin{algorithmic}
+        \STATE $x\gets0$
+        \IF {$x\leq 0$}
+        \STATE $x\gets x+1$
+        \ELSE
+        \STATE $x\gets x-1$
+        \ENDIF
+    \end{algorithmic}
+\end{algorithm}
 ```
 
 ### 参考文献
