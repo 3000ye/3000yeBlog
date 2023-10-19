@@ -35,3 +35,7 @@ int main() {
     return 0;
 }
 ```
+
+## Test $\LaTeX$
+
+## $\frac{2}{3}$
