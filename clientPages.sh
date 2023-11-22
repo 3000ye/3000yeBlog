@@ -21,3 +21,8 @@ git commit -m "$commit_message"
 git push origin main
 
 echo "Pages clinet completed!"
+
+
+###### 仓库 pull 和 push 冲突解决
+# git pull --rebase prigin main
+# git push origin main
