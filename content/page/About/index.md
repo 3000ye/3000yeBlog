@@ -1,5 +1,5 @@
 ---
-title: Links
+title: About
 links:
   - title: GitHub
     description: 3000ye's github profile page.
