@@ -113,7 +113,7 @@ WantedBy=timers.target
 
 ### 创建定时器服务
 
-创建一个 `task.service` 文件：
+创建一个 `task.service` 文件（默认使用 root 用户，建议指定 `User` 用户）：
 
 ```ini
 [Unit]
@@ -121,10 +121,11 @@ Description=Your Service Description
 
 [Service]
 Type=simple
+User=user
 ExecStart=/usr/bin/python3 /path/to/your/script.py
 ```
 
-### 启动定时任务
+### 添加定时任务
 
 ```shell
 sudo cp your_timer_name.timer /etc/systemd/system/
@@ -132,12 +133,15 @@ sudo cp your_service_name.service /etc/systemd/system/
 
 sudo systemctl daemon-reload
 
-sudo systemctl enable your_timer_name.timer
-sudo systemctl start your_timer_name.timer
+# 手动启用任务，测试任务是否正常运行
+sudo systemctl start your_timer_name.service
+# 输出任务运行日志
+sudo journalctl -u your_timer_name.service
 ```
 
-启动成功后，可以使用以下命令检查定时任务：
+任务运行成功后，使用以下命令启用定时任务：
 
 ```shell
+sudo systemctl enable your_timer_name.timer
 sudo systemctl list-timers
 ```
