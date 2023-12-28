@@ -65,7 +65,7 @@ cat ~/.ssh/id_rsa.pub
 git clone git@gitlab.com:xxxxxxxxxxxxxxxxxx.git
 ```
 
-编写你的任务脚本（`Python`），然后确保其能正常运行。
+编写你的任务脚本（`shell` 或 `Python` 等），然后确保其能正常运行。
 
 ## 新建飞书指令
 
@@ -104,8 +104,6 @@ Description=Your Timer Description
 [Timer]
 # OnCalendar设置定时规则，这里是每天10点
 OnCalendar=*-*-* 10:00:00
-# 如果需要设置执行任务前的延迟，可以使用以下行：
-# OnActiveSec=5min
 
 [Install]
 WantedBy=timers.target
@@ -122,7 +120,8 @@ Description=Your Service Description
 [Service]
 Type=simple
 User=user
-ExecStart=/usr/bin/python3 /path/to/your/script.py
+# 建议使用 shell 脚本
+ExecStart=/path/to/your/script.sh
 ```
 
 ### 添加定时任务
