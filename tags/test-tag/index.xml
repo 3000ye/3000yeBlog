@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Test Tag on 3000ye's Blog</title><link>https://3000ye.com/tags/test-tag/</link><description>Recent content in Test Tag on 3000ye's Blog</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><lastBuildDate>Sun, 08 Oct 2023 14:30:49 +0000</lastBuildDate><atom:link href="https://3000ye.com/tags/test-tag/index.xml" rel="self" type="application/rss+xml"/><item><title>Test</title><link>https://3000ye.com/p/test/</link><pubDate>Sun, 08 Oct 2023 14:30:49 +0000</pubDate><guid>https://3000ye.com/p/test/</guid><description>&lt;img src="https://3000ye.com/p/test/nord.jpg" alt="Featured image of post Test" />&lt;h1 id="test-page">Test page&lt;/h1>
+&lt;h2 id="picture">picture&lt;/h2>
+&lt;p>&lt;img src="https://3000ye.com/p/test/nord.jpg"
+width="5472"
+height="2976"
+srcset="https://3000ye.com/p/test/nord_hu694f0055e3faf079179eb7eb8ca96cd4_877866_480x0_resize_q75_box.jpg 480w, https://3000ye.com/p/test/nord_hu694f0055e3faf079179eb7eb8ca96cd4_877866_1024x0_resize_q75_box.jpg 1024w"
+loading="lazy"
+alt="nord"
+class="gallery-image"
+data-flex-grow="183"
+data-flex-basis="441px"
+>&lt;/p>
+&lt;h2 id="math">math&lt;/h2>
+&lt;p>$$
+\varphi = 1+\frac{1} {1+\frac{1} {1+\frac{1} {1+\cdots} } }
+$$&lt;/p>
+&lt;h2 id="code">code&lt;/h2>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
+&lt;/span>&lt;span class="lnt">2
+&lt;/span>&lt;span class="lnt">3
+&lt;/span>&lt;span class="lnt">4
+&lt;/span>&lt;span class="lnt">5
+&lt;/span>&lt;span class="lnt">6
+&lt;/span>&lt;span class="lnt">7
+&lt;/span>&lt;span class="lnt">8
+&lt;/span>&lt;span class="lnt">9
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-cpp" data-lang="cpp">&lt;span class="line">&lt;span class="cl">&lt;span class="cp">#include&lt;/span> &lt;span class="cpf">&amp;#34;bits/stdc++.h&amp;#34;&lt;/span>&lt;span class="cp">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="cp">&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="k">using&lt;/span> &lt;span class="k">namespace&lt;/span> &lt;span class="n">std&lt;/span>&lt;span class="p">;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="kt">int&lt;/span> &lt;span class="nf">main&lt;/span>&lt;span class="p">()&lt;/span> &lt;span class="p">{&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">cout&lt;/span> &lt;span class="o">&amp;lt;&amp;lt;&lt;/span> &lt;span class="s">&amp;#34;Hello World!&amp;#34;&lt;/span> &lt;span class="o">&amp;lt;&amp;lt;&lt;/span> &lt;span class="n">endl&lt;/span>&lt;span class="p">;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">return&lt;/span> &lt;span class="mi">0&lt;/span>&lt;span class="p">;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="p">}&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;h2 id="test-latex">Test $\LaTeX$&lt;/h2>
+&lt;h2 id="frac23">$\frac{2}{3}$&lt;/h2></description></item></channel></rss>

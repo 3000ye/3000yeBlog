@@ -1,0 +1,221 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Git on 3000ye's Blog</title><link>https://3000ye.com/tags/git/</link><description>Recent content in Git on 3000ye's Blog</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><lastBuildDate>Tue, 26 Dec 2023 16:23:26 +0800</lastBuildDate><atom:link href="https://3000ye.com/tags/git/index.xml" rel="self" type="application/rss+xml"/><item><title>SSH Key Agent</title><link>https://3000ye.com/p/ssh-key-agent/</link><pubDate>Tue, 26 Dec 2023 16:23:26 +0800</pubDate><guid>https://3000ye.com/p/ssh-key-agent/</guid><description>&lt;img src="https://3000ye.com/p/ssh-key-agent/assets/gitssh.png" alt="Featured image of post SSH Key Agent" />&lt;h1 id="为不同的-git-服务生成不同的-ssh-key">为不同的 Git 服务生成不同的 SSH Key&lt;/h1>
+&lt;p>在一台设备上使用 Git 托管代码时，我们可能会遇到以下需求：&lt;/p>
+&lt;ul>
+&lt;li>我有多个 Git 平台（Github, Gitlab, &amp;hellip;）的账号，每个平台的账号都需要一个 SSH Key。&lt;/li>
+&lt;li>在同一个 Git 平台，我有多个账号，每个账号都需要一个 SSH Key。&lt;/li>
+&lt;li>不同平台的账号，可能使用相同邮箱进行注册。&lt;/li>
+&lt;/ul>
+&lt;p>这时，如何生成和管理 SSH Key 成为一个问题。&lt;/p>
+&lt;h2 id="设置局部-git-信息">设置局部 Git 信息&lt;/h2>
+&lt;p>在不同文件夹下，都可以设置不同的局部 Git 信息：&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
+&lt;/span>&lt;span class="lnt">2
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">git config user.name &lt;span class="s2">&amp;#34;name&amp;#34;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">git config user.email &lt;span class="s2">&amp;#34;email&amp;#34;&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;h2 id="开启-ssh-agent">开启 SSH Agent&lt;/h2>
+&lt;p>开启 SSH Agent 对 SSH 执行代理，用于缓存私钥：&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">&lt;span class="nb">eval&lt;/span> &lt;span class="s2">&amp;#34;&lt;/span>&lt;span class="k">$(&lt;/span>ssh-agent -s&lt;span class="k">)&lt;/span>&lt;span class="s2">&amp;#34;&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;h2 id="生成不同的-ssh-key">生成不同的 SSH Key&lt;/h2>
+&lt;p>指定文件名，生成不同的 SSH Key，即使相同邮箱也可以进行区分：&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">ssh-keygen -t rsa -b &lt;span class="m">4096&lt;/span> -f ~/.ssh/id_rsa_name -C &lt;span class="s2">&amp;#34;your_email@example.com&amp;#34;&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;p>将生成的私钥添加进代理：&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
+&lt;/span>&lt;span class="lnt">2
+&lt;/span>&lt;span class="lnt">3
+&lt;/span>&lt;span class="lnt">4
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">ssh-add ~/.ssh/id_rsa_name
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1"># MacOS&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">ssh-add --apple-use-keychain ~/.ssh/id_rsa_name
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;h2 id="将公钥添加到-git-平台">将公钥添加到 Git 平台&lt;/h2>
+&lt;p>首先复制 SSH 公钥：&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">cat ~/.ssh/id_rsa_name.pub
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;p>然后到 Git 平台中，添加该公钥。&lt;/p></description></item><item><title>Feishu Robot</title><link>https://3000ye.com/p/feishu-robot/</link><pubDate>Fri, 22 Dec 2023 13:47:39 +0800</pubDate><guid>https://3000ye.com/p/feishu-robot/</guid><description>&lt;img src="https://3000ye.com/p/feishu-robot/assets/feishuGitlab.png" alt="Featured image of post Feishu Robot" />&lt;h1 id="飞书机器人监听-gitlab-项目">飞书机器人监听 Gitlab 项目&lt;/h1>
+&lt;p>在服务器部署定时任务（爬虫、拉取数据库、模型训练等），任务完成后自动填写 commit 信息，并 &lt;code>push&lt;/code> 到 Gitlab。&lt;/p>
+&lt;p>使用飞书机器人自动监听 Gitlab 项目，并获取 commit 信息，最终发送到飞书指定用户或群聊。&lt;/p>
+&lt;div style='display: flex; justify-content: center;'>
+&lt;img src='assets/feishu.png' alt='img' style='zoom:50%;' />
+&lt;/div>
+&lt;h2 id="准备工作">准备工作&lt;/h2>
+&lt;p>实现这个功能，你需要准备：&lt;/p>
+&lt;ul>
+&lt;li>电子邮箱：用于创建 Gitlab 账号和绑定 SSH 秘钥。&lt;/li>
+&lt;li>飞书账号：用于创建机器人监听 Gitlab 项目。&lt;/li>
+&lt;li>服务器（Linux）：用于部署任务，并自动 &lt;code>push&lt;/code> 到 Gitlab。&lt;/li>
+&lt;/ul>
+&lt;h2 id="创建-gitlab-账号并新建项目">创建 Gitlab 账号并新建项目&lt;/h2>
+&lt;p>使用准备好的邮箱，注册 Gitlab 账号：https://gitlab.com/&lt;/p>
+&lt;p>注册完成后新建一个新项目，并添加一个 &lt;code>README.md&lt;/code> 文件。&lt;/p>
+&lt;h2 id="配置-ssh-秘钥">配置 SSH 秘钥&lt;/h2>
+&lt;p>使用 Terminal 连接你的服务器，使用以下命令（Ubuntu 22.04）：&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
+&lt;/span>&lt;span class="lnt">2
+&lt;/span>&lt;span class="lnt">3
+&lt;/span>&lt;span class="lnt">4
+&lt;/span>&lt;span class="lnt">5
+&lt;/span>&lt;span class="lnt">6
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">sudo apt update &lt;span class="o">&amp;amp;&amp;amp;&lt;/span> sudo apt upgrade
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">sudo apt install git
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">git config --global user.name &lt;span class="s2">&amp;#34;name&amp;#34;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">git config --global user.email &lt;span class="s2">&amp;#34;email&amp;#34;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">ssh-keygen -C &lt;span class="s2">&amp;#34;email&amp;#34;&lt;/span> -t rsa
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">cat ~/.ssh/id_rsa.pub
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;p>其中 &lt;code>name&lt;/code> 为 Gitlab 账号的名称，&lt;code>email&lt;/code> 为 Gitlab 账号的邮箱，将输出的内容复制到剪切板。&lt;/p>
+&lt;p>然后在 Gitlab 中，进入用户设置，找到 SSH 秘钥然后选择添加新秘钥，粘贴剪切板的内容保存即可。&lt;/p>
+&lt;h2 id="clone-项目并配置任务">Clone 项目并配置任务&lt;/h2>
+&lt;p>在 Gitlab 中打开项目，点击右上角的代码，复制使用 SSH 克隆的链接：&lt;/p>
+&lt;div style='display: flex; justify-content: center;'>
+&lt;img src='assets/img3.png' alt='img' style='zoom:50%;' />
+&lt;/div>
+&lt;p>然后在 Terminal 中找到合适的位置，Clone 项目：&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">git clone git@gitlab.com:xxxxxxxxxxxxxxxxxx.git
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;p>编写你的任务脚本（&lt;code>shell&lt;/code> 或 &lt;code>Python&lt;/code> 等），然后确保其能正常运行。&lt;/p>
+&lt;h2 id="新建飞书指令">新建飞书指令&lt;/h2>
+&lt;p>使用飞书机器人助手，新建机器人指令，触发器选择 [新的 commit 创建]，按照教程绑定 Gitlab 账号和项目：&lt;/p>
+&lt;div style='display: flex; justify-content: center;'>
+&lt;img src='assets/img4.png' alt='img' style='zoom:50%;' />
+&lt;/div>
+&lt;p>然后选择操作 [通过官方机器人发消息]，设置消息内容为 commit 说明，并选择发送目标：&lt;/p>
+&lt;div style='display: flex; justify-content: center;'>
+&lt;img src='assets/img5.png' alt='img' style='zoom:50%;' />
+&lt;/div>
+&lt;div style='display: flex; justify-content: center;'>
+&lt;img src='assets/img6.png' alt='img' style='zoom:50%;' />
+&lt;/div>
+&lt;p>点击完成后，启用机器人即可。&lt;/p>
+&lt;h2 id="创建定时任务">创建定时任务&lt;/h2>
+&lt;p>首先测试飞书机器人是否能够正常抓取 Gitlab 项目的 commit，测试成功后，在服务器上为任务创建定时任务。&lt;/p>
+&lt;p>本文推荐使用 &lt;code>systemctl&lt;/code> 和 &lt;code>systemd&lt;/code> 的 &lt;code>timer&lt;/code> 来创建定时任务。&lt;/p>
+&lt;h3 id="创建定时器配置">创建定时器配置&lt;/h3>
+&lt;p>创建一个 &lt;code>task.timer&lt;/code> 文件：&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
+&lt;/span>&lt;span class="lnt">2
+&lt;/span>&lt;span class="lnt">3
+&lt;/span>&lt;span class="lnt">4
+&lt;/span>&lt;span class="lnt">5
+&lt;/span>&lt;span class="lnt">6
+&lt;/span>&lt;span class="lnt">7
+&lt;/span>&lt;span class="lnt">8
+&lt;/span>&lt;span class="lnt">9
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-ini" data-lang="ini">&lt;span class="line">&lt;span class="cl">&lt;span class="k">[Unit]&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="na">Description&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="s">Your Timer Description&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="k">[Timer]&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1"># OnCalendar设置定时规则，这里是每天10点&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="na">OnCalendar&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="s">*-*-* 10:00:00&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="k">[Install]&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="na">WantedBy&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="s">timers.target&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;h3 id="创建定时器服务">创建定时器服务&lt;/h3>
+&lt;p>创建一个 &lt;code>task.service&lt;/code> 文件（默认使用 root 用户，建议指定 &lt;code>User&lt;/code> 用户）：&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
+&lt;/span>&lt;span class="lnt">2
+&lt;/span>&lt;span class="lnt">3
+&lt;/span>&lt;span class="lnt">4
+&lt;/span>&lt;span class="lnt">5
+&lt;/span>&lt;span class="lnt">6
+&lt;/span>&lt;span class="lnt">7
+&lt;/span>&lt;span class="lnt">8
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-ini" data-lang="ini">&lt;span class="line">&lt;span class="cl">&lt;span class="k">[Unit]&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="na">Description&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="s">Your Service Description&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="k">[Service]&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="na">Type&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="s">simple&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="na">User&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="s">user&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1"># 建议使用 shell 脚本&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="na">ExecStart&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="s">/path/to/your/script.sh&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;h3 id="添加定时任务">添加定时任务&lt;/h3>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
+&lt;/span>&lt;span class="lnt">2
+&lt;/span>&lt;span class="lnt">3
+&lt;/span>&lt;span class="lnt">4
+&lt;/span>&lt;span class="lnt">5
+&lt;/span>&lt;span class="lnt">6
+&lt;/span>&lt;span class="lnt">7
+&lt;/span>&lt;span class="lnt">8
+&lt;/span>&lt;span class="lnt">9
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">sudo cp your_timer_name.timer /etc/systemd/system/
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">sudo cp your_service_name.service /etc/systemd/system/
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">sudo systemctl daemon-reload
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1"># 手动启用任务，测试任务是否正常运行&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">sudo systemctl start your_timer_name.service
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1"># 输出任务运行日志&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">sudo journalctl -u your_timer_name.service
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;p>任务运行成功后，使用以下命令启用定时任务：&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
+&lt;/span>&lt;span class="lnt">2
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">sudo systemctl &lt;span class="nb">enable&lt;/span> your_timer_name.timer
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">sudo systemctl list-timers
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div></description></item></channel></rss>
