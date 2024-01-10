@@ -4,8 +4,6 @@ description: The principle and specific implementation of camera calibration
 date: 2023-10-08T14:30:49Z
 image: board.jpg
 math: true
-categories:
-    - Machine Vision
 tags:
     - Camera
 ---

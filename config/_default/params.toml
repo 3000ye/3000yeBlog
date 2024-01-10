@@ -5,7 +5,7 @@ rssFullContent = true
 favicon = "/CC.ico"
 
 [footer]
-since = 2021
+since = 2023
 customText = ""
 
 [dateFormat]
