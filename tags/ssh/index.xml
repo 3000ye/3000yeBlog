@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>SSH on 3000ye's Blog</title><link>https://3000ye.com/tags/ssh/</link><description>Recent content in SSH on 3000ye's Blog</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><lastBuildDate>Tue, 26 Dec 2023 16:23:26 +0800</lastBuildDate><atom:link href="https://3000ye.com/tags/ssh/index.xml" rel="self" type="application/rss+xml"/><item><title>SSH Key Agent</title><link>https://3000ye.com/p/ssh-key-agent/</link><pubDate>Tue, 26 Dec 2023 16:23:26 +0800</pubDate><guid>https://3000ye.com/p/ssh-key-agent/</guid><description>&lt;img src="https://3000ye.com/p/ssh-key-agent/assets/gitssh.png" alt="Featured image of post SSH Key Agent" />&lt;h1 id="为不同的-git-服务生成不同的-ssh-key">为不同的 Git 服务生成不同的 SSH Key&lt;/h1>
+&lt;p>在一台设备上使用 Git 托管代码时，我们可能会遇到以下需求：&lt;/p>
+&lt;ul>
+&lt;li>我有多个 Git 平台（Github, Gitlab, &amp;hellip;）的账号，每个平台的账号都需要一个 SSH Key。&lt;/li>
+&lt;li>在同一个 Git 平台，我有多个账号，每个账号都需要一个 SSH Key。&lt;/li>
+&lt;li>不同平台的账号，可能使用相同邮箱进行注册。&lt;/li>
+&lt;/ul>
+&lt;p>这时，如何生成和管理 SSH Key 成为一个问题。&lt;/p>
+&lt;h2 id="设置局部-git-信息">设置局部 Git 信息&lt;/h2>
+&lt;p>在不同文件夹下，都可以设置不同的局部 Git 信息：&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
+&lt;/span>&lt;span class="lnt">2
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">git config user.name &lt;span class="s2">&amp;#34;name&amp;#34;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">git config user.email &lt;span class="s2">&amp;#34;email&amp;#34;&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;h2 id="开启-ssh-agent">开启 SSH Agent&lt;/h2>
+&lt;p>开启 SSH Agent 对 SSH 执行代理，用于缓存私钥：&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">&lt;span class="nb">eval&lt;/span> &lt;span class="s2">&amp;#34;&lt;/span>&lt;span class="k">$(&lt;/span>ssh-agent -s&lt;span class="k">)&lt;/span>&lt;span class="s2">&amp;#34;&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;h2 id="生成不同的-ssh-key">生成不同的 SSH Key&lt;/h2>
+&lt;p>指定文件名，生成不同的 SSH Key，即使相同邮箱也可以进行区分：&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">ssh-keygen -t rsa -b &lt;span class="m">4096&lt;/span> -f ~/.ssh/id_rsa_name -C &lt;span class="s2">&amp;#34;your_email@example.com&amp;#34;&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;p>将生成的私钥添加进代理：&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
+&lt;/span>&lt;span class="lnt">2
+&lt;/span>&lt;span class="lnt">3
+&lt;/span>&lt;span class="lnt">4
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">ssh-add ~/.ssh/id_rsa_name
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1"># MacOS&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">ssh-add --apple-use-keychain ~/.ssh/id_rsa_name
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;h2 id="将公钥添加到-git-平台">将公钥添加到 Git 平台&lt;/h2>
+&lt;p>首先复制 SSH 公钥：&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">cat ~/.ssh/id_rsa_name.pub
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;p>然后到 Git 平台中，添加该公钥。&lt;/p></description></item></channel></rss>

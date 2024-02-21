@@ -1,0 +1,2177 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>CPP on 3000ye's Blog</title><link>https://3000ye.com/tags/cpp/</link><description>Recent content in CPP on 3000ye's Blog</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><lastBuildDate>Wed, 21 Feb 2024 19:14:32 +0800</lastBuildDate><atom:link href="https://3000ye.com/tags/cpp/index.xml" rel="self" type="application/rss+xml"/><item><title>Linked List</title><link>https://3000ye.com/p/linked-list/</link><pubDate>Wed, 21 Feb 2024 19:14:32 +0800</pubDate><guid>https://3000ye.com/p/linked-list/</guid><description>&lt;img src="https://3000ye.com/p/linked-list/assets/dataStructures.jpg" alt="Featured image of post Linked List" />&lt;h1 id="数据结构链表">数据结构：链表&lt;/h1>
+&lt;h2 id="线性表">线性表&lt;/h2>
+&lt;p>线性表是具有&lt;strong>相同&lt;/strong>数据类型的 $n(n \ge 0)$ 个&lt;strong>数据元素&lt;/strong>的&lt;strong>有限序列&lt;/strong>，其中 $n$ 为&lt;strong>表长&lt;/strong>，当 $n = 0$ 时线性表是一个&lt;strong>空表&lt;/strong>。若用 $L$ 命名线性表，则其一般表示为：&lt;/p>
+&lt;p>$$
+L = (a_1, a_2, \cdots, a_i, a_{i + 1}, \cdots, a_n)
+$$&lt;/p>
+&lt;p>几个概念：&lt;/p>
+&lt;ul>
+&lt;li>$a_i$ 是线性表中的“第 $i$ 个”元素线性表中的&lt;strong>位序&lt;/strong>，位序从 $1$ 开始，数组下标从 $0$ 开始。&lt;/li>
+&lt;li>$a_1$ 是&lt;strong>表头元素&lt;/strong>，$a_n$ 是&lt;strong>表尾元素&lt;/strong>。&lt;/li>
+&lt;/ul>
+&lt;p>除第一个元素外，每个元素有且仅有一个&lt;strong>直接前驱&lt;/strong>；除最后一个元素外，每个元素有且仅有一个&lt;strong>直接后继&lt;/strong>。&lt;/p>
+&lt;p>线性表有两种存储方式，一种是顺序存储结构，另一种是链式存储结构。我们常用的数组就是一种典型的顺序存储结构。&lt;/p>
+&lt;h2 id="链表">链表&lt;/h2>
+&lt;p>链式存储结构就是两个相邻的元素在内存中可能不是相邻的，每一个元素都有一个指针域，指针域一般是存储着到下一个元素的指针。&lt;/p>
+&lt;p>这种存储方式的优点是定点插入和定点删除的时间复杂度为 $O(1)$，缺点是访问的时间复杂度最坏为 $O(n)$。&lt;/p>
+&lt;p>链表就是链式存储的线性表。根据指针域的不同，链表分为单向链表、双向链表、循环链表等等。&lt;/p>
+&lt;h3 id="单向链表">单向链表&lt;/h3>
+&lt;p>单向链表中包含数据域和指针域，其中数据域用于存放数据，指针域用来连接当前结点和下一节点。&lt;/p>
+&lt;div style='display: flex; justify-content: center;'>
+&lt;img src='https://oi-wiki.org/ds/images/list.svg' alt='img' style='zoom:100%;' />
+&lt;/div></description></item><item><title>CppJson Ch02</title><link>https://3000ye.com/p/cppjson-ch02/</link><pubDate>Mon, 01 Jan 2024 23:18:32 +0800</pubDate><guid>https://3000ye.com/p/cppjson-ch02/</guid><description>&lt;img src="https://3000ye.com/p/cppjson-ch02/assets/JSON-Tutorial.jpg" alt="Featured image of post CppJson Ch02" />&lt;h1 id="cppjson-第二章节number-值解析">&lt;code>CppJson&lt;/code> 第二章节：&lt;code>number&lt;/code> 值解析&lt;/h1></description></item><item><title>CppJson Ch01</title><link>https://3000ye.com/p/cppjson-ch01/</link><pubDate>Sat, 16 Dec 2023 23:33:44 +0800</pubDate><guid>https://3000ye.com/p/cppjson-ch01/</guid><description>&lt;img src="https://3000ye.com/p/cppjson-ch01/assets/JSON-Tutorial.jpg" alt="Featured image of post CppJson Ch01" />&lt;h1 id="cppjson-第一章节自动测试null-和-bool-值解析">&lt;code>CppJson&lt;/code> 第一章节：自动测试，&lt;code>NULL&lt;/code> 和 &lt;code>bool&lt;/code> 值解析&lt;/h1>
+&lt;h2 id="json-是什么">JSON 是什么&lt;/h2>
+&lt;p>JSON（JavaScript Object Notation）是一个用于数据交换的文本格式，现时的标准为&lt;a class="link" href="https://www.ecma-international.org/publications/files/ECMA-ST/ECMA-404.pdf" target="_blank" rel="noopener"
+>ECMA-404&lt;/a>。&lt;/p>
+&lt;p>虽然 JSON 源至于 JavaScript 语言，但它只是一种数据格式，可用于任何编程语言。现时具类似功能的格式有 XML、YAML，当中以 JSON 的语法最为简单。&lt;/p>
+&lt;p>例如，一个动态网页想从服务器获得数据时，服务器从数据库查找数据，然后把数据转换成 JSON 文本格式：&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt"> 1
+&lt;/span>&lt;span class="lnt"> 2
+&lt;/span>&lt;span class="lnt"> 3
+&lt;/span>&lt;span class="lnt"> 4
+&lt;/span>&lt;span class="lnt"> 5
+&lt;/span>&lt;span class="lnt"> 6
+&lt;/span>&lt;span class="lnt"> 7
+&lt;/span>&lt;span class="lnt"> 8
+&lt;/span>&lt;span class="lnt"> 9
+&lt;/span>&lt;span class="lnt">10
+&lt;/span>&lt;span class="lnt">11
+&lt;/span>&lt;span class="lnt">12
+&lt;/span>&lt;span class="lnt">13
+&lt;/span>&lt;span class="lnt">14
+&lt;/span>&lt;span class="lnt">15
+&lt;/span>&lt;span class="lnt">16
+&lt;/span>&lt;span class="lnt">17
+&lt;/span>&lt;span class="lnt">18
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-js" data-lang="js">&lt;span class="line">&lt;span class="cl">&lt;span class="p">{&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="s2">&amp;#34;title&amp;#34;&lt;/span>&lt;span class="o">:&lt;/span> &lt;span class="s2">&amp;#34;Design Patterns&amp;#34;&lt;/span>&lt;span class="p">,&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="s2">&amp;#34;subtitle&amp;#34;&lt;/span>&lt;span class="o">:&lt;/span> &lt;span class="s2">&amp;#34;Elements of Reusable Object-Oriented Software&amp;#34;&lt;/span>&lt;span class="p">,&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="s2">&amp;#34;author&amp;#34;&lt;/span>&lt;span class="o">:&lt;/span> &lt;span class="p">[&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="s2">&amp;#34;Erich Gamma&amp;#34;&lt;/span>&lt;span class="p">,&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="s2">&amp;#34;Richard Helm&amp;#34;&lt;/span>&lt;span class="p">,&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="s2">&amp;#34;Ralph Johnson&amp;#34;&lt;/span>&lt;span class="p">,&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="s2">&amp;#34;John Vlissides&amp;#34;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">],&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="s2">&amp;#34;year&amp;#34;&lt;/span>&lt;span class="o">:&lt;/span> &lt;span class="mi">2009&lt;/span>&lt;span class="p">,&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="s2">&amp;#34;weight&amp;#34;&lt;/span>&lt;span class="o">:&lt;/span> &lt;span class="mf">1.8&lt;/span>&lt;span class="p">,&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="s2">&amp;#34;hardcover&amp;#34;&lt;/span>&lt;span class="o">:&lt;/span> &lt;span class="kc">true&lt;/span>&lt;span class="p">,&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="s2">&amp;#34;publisher&amp;#34;&lt;/span>&lt;span class="o">:&lt;/span> &lt;span class="p">{&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="s2">&amp;#34;Company&amp;#34;&lt;/span>&lt;span class="o">:&lt;/span> &lt;span class="s2">&amp;#34;Pearson Education&amp;#34;&lt;/span>&lt;span class="p">,&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="s2">&amp;#34;Country&amp;#34;&lt;/span>&lt;span class="o">:&lt;/span> &lt;span class="s2">&amp;#34;India&amp;#34;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">},&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="s2">&amp;#34;website&amp;#34;&lt;/span>&lt;span class="o">:&lt;/span> &lt;span class="kc">null&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="p">}&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;p>网页的脚本代码就可以把此 JSON 文本解析为内部的数据结构去使用。&lt;/p>
+&lt;p>从此例子可看出，JSON 是树状结构，而 JSON 只包含 6 种数据类型：&lt;/p>
+&lt;ul>
+&lt;li>null: 表示为 null&lt;/li>
+&lt;li>boolean: 表示为 true 或 false&lt;/li>
+&lt;li>number: 一般的浮点数表示方式，在下一单元详细说明&lt;/li>
+&lt;li>string: 表示为 &amp;ldquo;&amp;hellip;&amp;rdquo;&lt;/li>
+&lt;li>array: 表示为 [ &amp;hellip; ]&lt;/li>
+&lt;li>object: 表示为 { &amp;hellip; }&lt;/li>
+&lt;/ul>
+&lt;p>我们要实现的 JSON 库，主要是完成 3 个需求：&lt;/p>
+&lt;ol>
+&lt;li>把 JSON 文本解析为一个树状数据结构（parse）。&lt;/li>
+&lt;li>提供接口访问该数据结构（access）。&lt;/li>
+&lt;li>把数据结构转换成 JSON 文本（stringify）。&lt;/li>
+&lt;/ol>
+&lt;p>&lt;img src="https://3000ye.com/p/cppjson-ch01/assets/requirement.png"
+width="440"
+height="78"
+srcset="https://3000ye.com/p/cppjson-ch01/assets/requirement_hu7ab85b9bc4611a543cc4532090c89f34_7375_480x0_resize_box_3.png 480w, https://3000ye.com/p/cppjson-ch01/assets/requirement_hu7ab85b9bc4611a543cc4532090c89f34_7375_1024x0_resize_box_3.png 1024w"
+loading="lazy"
+class="gallery-image"
+data-flex-grow="564"
+data-flex-basis="1353px"
+>&lt;/p>
+&lt;p>我们会逐步实现这些需求。在本章节中，我们只实现最简单的 null 和 boolean 解析。&lt;/p>
+&lt;h2 id="搭建编译环境">搭建编译环境&lt;/h2>
+&lt;p>我们要做的库是跨平台、跨编译器的，同学可使用任意平台进行练习。&lt;/p>
+&lt;p>我们的 JSON 库名为 CppJson，代码文件只有 3 个：&lt;/p>
+&lt;ol>
+&lt;li>&lt;code>include/cppjson.hpp&lt;/code>：CppJson 的头文件（header file），含有对外的类型和 API 函数声明。&lt;/li>
+&lt;li>&lt;code>cppjson.cpp&lt;/code>：CppJson 的实现文件（implementation file），含有内部的类型声明和函数实现。此文件会编译成库。&lt;/li>
+&lt;li>&lt;code>cppjsonTest.cpp&lt;/code>：我们使用测试驱动开发（test driven development, TDD）。此文件包含测试程序，需要链接 CppJson 库。&lt;/li>
+&lt;/ol>
+&lt;p>为了方便跨平台开发，我们会使用一个现时最流行的软件配置工具 &lt;a class="link" href="https://cmake.org/" target="_blank" rel="noopener"
+>CMake&lt;/a>。&lt;/p>
+&lt;p>在 OS X 平台中，在命令行通过命令：&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
+&lt;/span>&lt;span class="lnt">2
+&lt;/span>&lt;span class="lnt">3
+&lt;/span>&lt;span class="lnt">4
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">mkdir build
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="nb">cd&lt;/span> build
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">cmake -DCMAKE_BUILD_TYPE&lt;span class="o">=&lt;/span>Debug ..
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">make
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;p>将 Debug 改成 Release 就会生成 Release 配置的 makefile。&lt;/p>
+&lt;p>在 Vscode 中，可以通过配置 &lt;code>tasks.json&lt;/code> 文件来进行自动 build：&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt"> 1
+&lt;/span>&lt;span class="lnt"> 2
+&lt;/span>&lt;span class="lnt"> 3
+&lt;/span>&lt;span class="lnt"> 4
+&lt;/span>&lt;span class="lnt"> 5
+&lt;/span>&lt;span class="lnt"> 6
+&lt;/span>&lt;span class="lnt"> 7
+&lt;/span>&lt;span class="lnt"> 8
+&lt;/span>&lt;span class="lnt"> 9
+&lt;/span>&lt;span class="lnt">10
+&lt;/span>&lt;span class="lnt">11
+&lt;/span>&lt;span class="lnt">12
+&lt;/span>&lt;span class="lnt">13
+&lt;/span>&lt;span class="lnt">14
+&lt;/span>&lt;span class="lnt">15
+&lt;/span>&lt;span class="lnt">16
+&lt;/span>&lt;span class="lnt">17
+&lt;/span>&lt;span class="lnt">18
+&lt;/span>&lt;span class="lnt">19
+&lt;/span>&lt;span class="lnt">20
+&lt;/span>&lt;span class="lnt">21
+&lt;/span>&lt;span class="lnt">22
+&lt;/span>&lt;span class="lnt">23
+&lt;/span>&lt;span class="lnt">24
+&lt;/span>&lt;span class="lnt">25
+&lt;/span>&lt;span class="lnt">26
+&lt;/span>&lt;span class="lnt">27
+&lt;/span>&lt;span class="lnt">28
+&lt;/span>&lt;span class="lnt">29
+&lt;/span>&lt;span class="lnt">30
+&lt;/span>&lt;span class="lnt">31
+&lt;/span>&lt;span class="lnt">32
+&lt;/span>&lt;span class="lnt">33
+&lt;/span>&lt;span class="lnt">34
+&lt;/span>&lt;span class="lnt">35
+&lt;/span>&lt;span class="lnt">36
+&lt;/span>&lt;span class="lnt">37
+&lt;/span>&lt;span class="lnt">38
+&lt;/span>&lt;span class="lnt">39
+&lt;/span>&lt;span class="lnt">40
+&lt;/span>&lt;span class="lnt">41
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-json" data-lang="json">&lt;span class="line">&lt;span class="cl">&lt;span class="c1">//.vscode/tasks.json
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">&lt;/span>&lt;span class="p">{&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nt">&amp;#34;version&amp;#34;&lt;/span>&lt;span class="p">:&lt;/span> &lt;span class="s2">&amp;#34;2.0.0&amp;#34;&lt;/span>&lt;span class="p">,&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nt">&amp;#34;tasks&amp;#34;&lt;/span>&lt;span class="p">:&lt;/span> &lt;span class="p">[&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">{&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nt">&amp;#34;type&amp;#34;&lt;/span>&lt;span class="p">:&lt;/span> &lt;span class="s2">&amp;#34;shell&amp;#34;&lt;/span>&lt;span class="p">,&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nt">&amp;#34;label&amp;#34;&lt;/span>&lt;span class="p">:&lt;/span> &lt;span class="s2">&amp;#34;mkdirbuild&amp;#34;&lt;/span>&lt;span class="p">,&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nt">&amp;#34;command&amp;#34;&lt;/span>&lt;span class="p">:&lt;/span> &lt;span class="s2">&amp;#34;mkdir&amp;#34;&lt;/span>&lt;span class="p">,&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nt">&amp;#34;options&amp;#34;&lt;/span>&lt;span class="p">:&lt;/span> &lt;span class="p">{&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nt">&amp;#34;cwd&amp;#34;&lt;/span>&lt;span class="p">:&lt;/span> &lt;span class="s2">&amp;#34;${fileDirname}&amp;#34;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">},&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nt">&amp;#34;args&amp;#34;&lt;/span>&lt;span class="p">:&lt;/span> &lt;span class="p">[&lt;/span>&lt;span class="s2">&amp;#34;-p&amp;#34;&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="s2">&amp;#34;build&amp;#34;&lt;/span>&lt;span class="p">]&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">},&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">{&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nt">&amp;#34;type&amp;#34;&lt;/span>&lt;span class="p">:&lt;/span> &lt;span class="s2">&amp;#34;shell&amp;#34;&lt;/span>&lt;span class="p">,&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nt">&amp;#34;label&amp;#34;&lt;/span>&lt;span class="p">:&lt;/span> &lt;span class="s2">&amp;#34;cmake&amp;#34;&lt;/span>&lt;span class="p">,&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nt">&amp;#34;command&amp;#34;&lt;/span>&lt;span class="p">:&lt;/span> &lt;span class="s2">&amp;#34;cmake&amp;#34;&lt;/span>&lt;span class="p">,&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nt">&amp;#34;args&amp;#34;&lt;/span>&lt;span class="p">:&lt;/span> &lt;span class="p">[&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="s2">&amp;#34;-DCMAKE_BUILD_TYPE=Debug&amp;#34;&lt;/span>&lt;span class="p">,&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="c1">//在此处添加其它CMAKE选项
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">&lt;/span> &lt;span class="s2">&amp;#34;..&amp;#34;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">],&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nt">&amp;#34;options&amp;#34;&lt;/span>&lt;span class="p">:&lt;/span> &lt;span class="p">{&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nt">&amp;#34;cwd&amp;#34;&lt;/span>&lt;span class="p">:&lt;/span> &lt;span class="s2">&amp;#34;${fileDirname}/build&amp;#34;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">},&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">},&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">{&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nt">&amp;#34;label&amp;#34;&lt;/span>&lt;span class="p">:&lt;/span> &lt;span class="s2">&amp;#34;make&amp;#34;&lt;/span>&lt;span class="p">,&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nt">&amp;#34;command&amp;#34;&lt;/span>&lt;span class="p">:&lt;/span> &lt;span class="s2">&amp;#34;make&amp;#34;&lt;/span>&lt;span class="p">,&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nt">&amp;#34;args&amp;#34;&lt;/span>&lt;span class="p">:&lt;/span> &lt;span class="p">[&lt;/span>&lt;span class="s2">&amp;#34;-j16&amp;#34;&lt;/span>&lt;span class="p">,],&lt;/span> &lt;span class="c1">//根据机器cpu核心数量自行调整
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">&lt;/span> &lt;span class="nt">&amp;#34;options&amp;#34;&lt;/span>&lt;span class="p">:&lt;/span> &lt;span class="p">{&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nt">&amp;#34;cwd&amp;#34;&lt;/span>&lt;span class="p">:&lt;/span> &lt;span class="s2">&amp;#34;${fileDirname}/build&amp;#34;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">},&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">},&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">{&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nt">&amp;#34;label&amp;#34;&lt;/span>&lt;span class="p">:&lt;/span> &lt;span class="s2">&amp;#34;build&amp;#34;&lt;/span>&lt;span class="p">,&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nt">&amp;#34;dependsOrder&amp;#34;&lt;/span>&lt;span class="p">:&lt;/span> &lt;span class="s2">&amp;#34;sequence&amp;#34;&lt;/span>&lt;span class="p">,&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nt">&amp;#34;dependsOn&amp;#34;&lt;/span>&lt;span class="p">:&lt;/span> &lt;span class="p">[&lt;/span>&lt;span class="s2">&amp;#34;mkdirbuild&amp;#34;&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="s2">&amp;#34;cmake&amp;#34;&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="s2">&amp;#34;make&amp;#34;&lt;/span>&lt;span class="p">],&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">},&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">],&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="p">}&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;p>然后执行 build 生成的文件：&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
+&lt;/span>&lt;span class="lnt">2
+&lt;/span>&lt;span class="lnt">3
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">$ ./build/cppjson_test_ch01
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">16/16 &lt;span class="o">(&lt;/span>100.00%&lt;span class="o">)&lt;/span> passed
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;p>若看到类似以上的结果，说明已成功搭建编译环境，我们可以去看看那几个代码文件的内容了。&lt;/p>
+&lt;h2 id="头文件与-api-设计">头文件与 API 设计&lt;/h2>
+&lt;p>&lt;code>Cpp&lt;/code> 语言有头文件的概念，需要使用 &lt;code>#include&lt;/code>去引入头文件中的类型声明和函数声明。但由于头文件也可以 &lt;code>#include&lt;/code> 其他头文件，为避免重复声明，通常会利用宏加入 include 防范（include guard）：&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-cpp" data-lang="cpp">&lt;span class="line">&lt;span class="cl">&lt;span class="cp">#pragma once
+&lt;/span>&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;p>如前所述，JSON 中有 6 种数据类型，如果把 true 和 false 当作两个类型就是 7 种，我们为此声明一个枚举类（enumeration calss）：&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
+&lt;/span>&lt;span class="lnt">2
+&lt;/span>&lt;span class="lnt">3
+&lt;/span>&lt;span class="lnt">4
+&lt;/span>&lt;span class="lnt">5
+&lt;/span>&lt;span class="lnt">6
+&lt;/span>&lt;span class="lnt">7
+&lt;/span>&lt;span class="lnt">8
+&lt;/span>&lt;span class="lnt">9
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-cpp" data-lang="cpp">&lt;span class="line">&lt;span class="cl">&lt;span class="k">enum&lt;/span> &lt;span class="k">class&lt;/span> &lt;span class="nc">cppjsonType&lt;/span> &lt;span class="p">{&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">CPPJSON_NULL&lt;/span>&lt;span class="p">,&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">CPPJSON_TRUE&lt;/span>&lt;span class="p">,&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">CPPJSON_FALSE&lt;/span>&lt;span class="p">,&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">CPPJSON_NUMBER&lt;/span>&lt;span class="p">,&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">CPPJSON_STRING&lt;/span>&lt;span class="p">,&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">CPPJSON_ARRAY&lt;/span>&lt;span class="p">,&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">CPPJSON_OBJECT&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="p">};&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;p>接下来，我们声明 JSON 的数据结构。JSON 是一个树形结构，我们最终需要实现一个树的数据结构，每个节点使用 &lt;code>cppjson_value&lt;/code> 结构体表示，我们会称它为一个 JSON 值（JSON value）。&lt;/p>
+&lt;p>在此单元中，我们只需要实现 &lt;code>null&lt;/code>, &lt;code>true&lt;/code> 和 &lt;code>false&lt;/code> 的解析，因此该结构体只需要存储一个 &lt;code>cppjsonType&lt;/code>，之后的单元会逐步加入其他数据。&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
+&lt;/span>&lt;span class="lnt">2
+&lt;/span>&lt;span class="lnt">3
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-cpp" data-lang="cpp">&lt;span class="line">&lt;span class="cl">&lt;span class="k">typedef&lt;/span> &lt;span class="k">struct&lt;/span> &lt;span class="p">{&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">cppjsonType&lt;/span> &lt;span class="n">type&lt;/span>&lt;span class="p">;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="p">}&lt;/span> &lt;span class="n">cppjson_value&lt;/span>&lt;span class="p">;&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;p>然后，我们现在只需要两个 API 函数，一个是解析 JSON：&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-cpp" data-lang="cpp">&lt;span class="line">&lt;span class="cl">&lt;span class="n">cppjsonParseCode&lt;/span> &lt;span class="nf">cppjson_parse&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">cppjson_value&lt;/span>&lt;span class="o">*&lt;/span> &lt;span class="n">v&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="k">const&lt;/span> &lt;span class="n">std&lt;/span>&lt;span class="o">::&lt;/span>&lt;span class="n">string&lt;/span> &lt;span class="n">json&lt;/span>&lt;span class="p">);&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;p>传入的 JSON 文本是一个 &lt;code>string&lt;/code> 字符串，由于我们不应该改动这个输入字符串，所以使用 &lt;code>const std::string&lt;/code> 类型。&lt;/p>
+&lt;p>返回值是以下这些枚举类中的值，无错误会返回 &lt;code>cppjsonParseCode::OK&lt;/code>，其他值在下节解释。&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
+&lt;/span>&lt;span class="lnt">2
+&lt;/span>&lt;span class="lnt">3
+&lt;/span>&lt;span class="lnt">4
+&lt;/span>&lt;span class="lnt">5
+&lt;/span>&lt;span class="lnt">6
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-cpp" data-lang="cpp">&lt;span class="line">&lt;span class="cl">&lt;span class="k">enum&lt;/span> &lt;span class="k">class&lt;/span> &lt;span class="nc">cppjsonParseCode&lt;/span> &lt;span class="p">{&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">OK&lt;/span>&lt;span class="p">,&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">EXPECT_VALUE&lt;/span>&lt;span class="p">,&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">INVALID_VALUE&lt;/span>&lt;span class="p">,&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">ROOT_NOT_SINGULAR&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="p">};&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;p>现时我们只需要一个访问结果的函数，就是获取其类型：&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-cpp" data-lang="cpp">&lt;span class="line">&lt;span class="cl">&lt;span class="n">cppjsonType&lt;/span> &lt;span class="nf">cppjson_get_type&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="k">const&lt;/span> &lt;span class="n">cppjson_value&lt;/span>&lt;span class="o">*&lt;/span> &lt;span class="n">v&lt;/span>&lt;span class="p">);&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;h2 id="json-语法子集">JSON 语法子集&lt;/h2>
+&lt;p>下面是此单元的 JSON 语法子集，使用 &lt;a class="link" href="https://tools.ietf.org/html/rfc7159" target="_blank" rel="noopener"
+>RFC7159&lt;/a> 中的 &lt;a class="link" href="https://tools.ietf.org/html/rfc5234" target="_blank" rel="noopener"
+>ABNF&lt;/a> 表示：&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
+&lt;/span>&lt;span class="lnt">2
+&lt;/span>&lt;span class="lnt">3
+&lt;/span>&lt;span class="lnt">4
+&lt;/span>&lt;span class="lnt">5
+&lt;/span>&lt;span class="lnt">6
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-json" data-lang="json">&lt;span class="line">&lt;span class="cl">&lt;span class="err">JSON-text&lt;/span> &lt;span class="err">=&lt;/span> &lt;span class="err">ws&lt;/span> &lt;span class="err">value&lt;/span> &lt;span class="err">ws&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="err">ws&lt;/span> &lt;span class="err">=&lt;/span> &lt;span class="err">*(%x&lt;/span>&lt;span class="mi">20&lt;/span> &lt;span class="err">/&lt;/span> &lt;span class="err">%x&lt;/span>&lt;span class="mi">09&lt;/span> &lt;span class="err">/&lt;/span> &lt;span class="err">%x&lt;/span>&lt;span class="mi">0&lt;/span>&lt;span class="err">A&lt;/span> &lt;span class="err">/&lt;/span> &lt;span class="err">%x&lt;/span>&lt;span class="mi">0&lt;/span>&lt;span class="err">D)&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="err">value&lt;/span> &lt;span class="err">=&lt;/span> &lt;span class="kc">null&lt;/span> &lt;span class="err">/&lt;/span> &lt;span class="kc">false&lt;/span> &lt;span class="err">/&lt;/span> &lt;span class="kc">true&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="kc">null&lt;/span> &lt;span class="err">=&lt;/span> &lt;span class="s2">&amp;#34;null&amp;#34;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="kc">false&lt;/span> &lt;span class="err">=&lt;/span> &lt;span class="s2">&amp;#34;false&amp;#34;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="kc">true&lt;/span> &lt;span class="err">=&lt;/span> &lt;span class="s2">&amp;#34;true&amp;#34;&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;p>当中 &lt;code>%xhh&lt;/code> 表示以 16 进制表示的字符，&lt;code>/&lt;/code> 是多选一，&lt;code>*&lt;/code> 是零或多个，&lt;code>()&lt;/code> 用于分组。&lt;/p>
+&lt;p>那么第一行的意思是，JSON 文本由 3 部分组成，首先是空白（whitespace），接着是一个值，最后是空白。&lt;/p>
+&lt;p>第二行告诉我们，所谓空白，是由零或多个空格符（space U+0020）、制表符（tab U+0009）、换行符（LF U+000A）、回车符（CR U+000D）所组成。&lt;/p>
+&lt;p>第三行是说，我们现时的值只可以是 &lt;code>null&lt;/code>、&lt;code>false&lt;/code> 或 &lt;code>true&lt;/code>，它们分别有对应的字面值（literal）。&lt;/p>
+&lt;p>我们的解析器应能判断输入是否一个合法的 JSON。如果输入的 JSON 不合符这个语法，我们要产生对应的错误码，方便使用者追查问题。&lt;/p>
+&lt;p>在这个 JSON 语法子集下，我们定义 3 种错误码：&lt;/p>
+&lt;ul>
+&lt;li>若一个 JSON 只含有空白，传回 &lt;code>LEPT_PARSE_EXPECT_VALUE&lt;/code>。&lt;/li>
+&lt;li>若一个值之后，在空白之后还有其他字符，传回 &lt;code>LEPT_PARSE_ROOT_NOT_SINGULAR&lt;/code>。&lt;/li>
+&lt;li>若值不是那三种字面值，传回 &lt;code>LEPT_PARSE_INVALID_VALUE&lt;/code>。&lt;/li>
+&lt;/ul>
+&lt;h2 id="单元测试">单元测试&lt;/h2>
+&lt;p>许多同学在做练习题时，都是以 &lt;code>printf&lt;/code>／&lt;code>cout&lt;/code> 打印结果，再用肉眼对比结果是否乎合预期。但当软件项目越来越复杂，这个做法会越来越低效。一般我们会采用自动的测试方式，例如单元测试（unit testing）。单元测试也能确保其他人修改代码后，原来的功能维持正确（这称为回归测试／regression testing）。&lt;/p>
+&lt;p>常用的单元测试框架有 xUnit 系列，如 C++ 的 &lt;a class="link" href="https://github.com/google/googletest" target="_blank" rel="noopener"
+>Google Test&lt;/a>、C# 的 &lt;a class="link" href="https://www.nunit.org/" target="_blank" rel="noopener"
+>NUnit&lt;/a>。我们为了简单起见，会编写一个极简单的单元测试方式。&lt;/p>
+&lt;p>一般来说，软件开发是以周期进行的。例如，加入一个功能，再写关于该功能的单元测试。但也有另一种软件开发方法论，称为测试驱动开发（test-driven development, TDD），它的主要循环步骤是：&lt;/p>
+&lt;ol>
+&lt;li>加入一个测试。&lt;/li>
+&lt;li>运行所有测试，新的测试应该会失败。&lt;/li>
+&lt;li>编写实现代码。&lt;/li>
+&lt;li>运行所有测试，若有测试失败回到3。&lt;/li>
+&lt;li>重构代码。&lt;/li>
+&lt;li>回到 1。&lt;/li>
+&lt;/ol>
+&lt;p>TDD 是先写测试，再实现功能。好处是实现只会刚好满足测试，而不会写了一些不需要的代码，或是没有被测试的代码。&lt;/p>
+&lt;p>但无论我们是采用 TDD，或是先实现后测试，都应尽量加入足够覆盖率的单元测试。&lt;/p>
+&lt;p>回到 CppJson 项目，&lt;code>cppjsonTest.cpp&lt;/code> 包含了一个极简的单元测试框架：&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt"> 1
+&lt;/span>&lt;span class="lnt"> 2
+&lt;/span>&lt;span class="lnt"> 3
+&lt;/span>&lt;span class="lnt"> 4
+&lt;/span>&lt;span class="lnt"> 5
+&lt;/span>&lt;span class="lnt"> 6
+&lt;/span>&lt;span class="lnt"> 7
+&lt;/span>&lt;span class="lnt"> 8
+&lt;/span>&lt;span class="lnt"> 9
+&lt;/span>&lt;span class="lnt">10
+&lt;/span>&lt;span class="lnt">11
+&lt;/span>&lt;span class="lnt">12
+&lt;/span>&lt;span class="lnt">13
+&lt;/span>&lt;span class="lnt">14
+&lt;/span>&lt;span class="lnt">15
+&lt;/span>&lt;span class="lnt">16
+&lt;/span>&lt;span class="lnt">17
+&lt;/span>&lt;span class="lnt">18
+&lt;/span>&lt;span class="lnt">19
+&lt;/span>&lt;span class="lnt">20
+&lt;/span>&lt;span class="lnt">21
+&lt;/span>&lt;span class="lnt">22
+&lt;/span>&lt;span class="lnt">23
+&lt;/span>&lt;span class="lnt">24
+&lt;/span>&lt;span class="lnt">25
+&lt;/span>&lt;span class="lnt">26
+&lt;/span>&lt;span class="lnt">27
+&lt;/span>&lt;span class="lnt">28
+&lt;/span>&lt;span class="lnt">29
+&lt;/span>&lt;span class="lnt">30
+&lt;/span>&lt;span class="lnt">31
+&lt;/span>&lt;span class="lnt">32
+&lt;/span>&lt;span class="lnt">33
+&lt;/span>&lt;span class="lnt">34
+&lt;/span>&lt;span class="lnt">35
+&lt;/span>&lt;span class="lnt">36
+&lt;/span>&lt;span class="lnt">37
+&lt;/span>&lt;span class="lnt">38
+&lt;/span>&lt;span class="lnt">39
+&lt;/span>&lt;span class="lnt">40
+&lt;/span>&lt;span class="lnt">41
+&lt;/span>&lt;span class="lnt">42
+&lt;/span>&lt;span class="lnt">43
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-cpp" data-lang="cpp">&lt;span class="line">&lt;span class="cl">&lt;span class="cp">#include&lt;/span> &lt;span class="cpf">&amp;#34;include/cppjson.hpp&amp;#34;&lt;/span>&lt;span class="cp">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="cp">#include&lt;/span> &lt;span class="cpf">&amp;lt;cstdio&amp;gt;&lt;/span>&lt;span class="cp">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="cp">#include&lt;/span> &lt;span class="cpf">&amp;lt;stdio.h&amp;gt;&lt;/span>&lt;span class="cp">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="cp">#include&lt;/span> &lt;span class="cpf">&amp;lt;typeinfo&amp;gt;&lt;/span>&lt;span class="cp">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="cp">&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="k">static&lt;/span> &lt;span class="kt">int&lt;/span> &lt;span class="n">main_ret&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="mi">0&lt;/span>&lt;span class="p">;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="k">static&lt;/span> &lt;span class="kt">int&lt;/span> &lt;span class="n">test_count&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="mi">0&lt;/span>&lt;span class="p">;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="k">static&lt;/span> &lt;span class="kt">int&lt;/span> &lt;span class="n">test_pass&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="mi">0&lt;/span>&lt;span class="p">;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">// 测试宏接口
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">// flag 表示测试点是否通过，如果未通过则打印异常信息
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">&lt;/span>&lt;span class="cp">#define EXPECT_BASE(flag, expect, actual) \
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="cp"> do {\
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="cp"> test_count ++;\
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="cp"> if (flag) test_pass ++;\
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="cp"> else {\
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="cp"> fprintf(stderr, &amp;#34;%s:%d, expect = %s(%d), actual = %s(%d)\n&amp;#34;, __FILE__, __LINE__, typeid(expect).name(), static_cast&amp;lt;int&amp;gt;(expect), typeid(actual).name(), static_cast&amp;lt;int&amp;gt;(actual));\
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="cp"> main_ret = 1;\
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="cp"> }\
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="cp"> } while(0)
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="cp">&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="cp">#define EXPECT_TYPE(expect, actual) EXPECT_BASE((expect) == (actual), expect, actual)
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="cp">&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">//
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">&lt;/span>&lt;span class="k">static&lt;/span> &lt;span class="kt">void&lt;/span> &lt;span class="nf">test_parse_null&lt;/span>&lt;span class="p">()&lt;/span> &lt;span class="p">{&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">cppjson_value&lt;/span> &lt;span class="n">v&lt;/span>&lt;span class="p">;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">v&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="n">type&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="n">cppjsonType&lt;/span>&lt;span class="o">::&lt;/span>&lt;span class="n">CPPJSON_FALSE&lt;/span>&lt;span class="p">;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">EXPECT_TYPE&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">cppjsonParseCode&lt;/span>&lt;span class="o">::&lt;/span>&lt;span class="n">OK&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="n">cppjson_parse&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="o">&amp;amp;&lt;/span>&lt;span class="n">v&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="s">&amp;#34;null&amp;#34;&lt;/span>&lt;span class="p">));&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">EXPECT_TYPE&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">cppjsonType&lt;/span>&lt;span class="o">::&lt;/span>&lt;span class="n">CPPJSON_NULL&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="n">cppjson_get_type&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="o">&amp;amp;&lt;/span>&lt;span class="n">v&lt;/span>&lt;span class="p">));&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="p">}&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="k">static&lt;/span> &lt;span class="kt">void&lt;/span> &lt;span class="nf">test_parse&lt;/span>&lt;span class="p">()&lt;/span> &lt;span class="p">{&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">test_parse_null&lt;/span>&lt;span class="p">();&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="c1">// ...
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">&lt;/span>&lt;span class="p">}&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="kt">int&lt;/span> &lt;span class="nf">main&lt;/span>&lt;span class="p">()&lt;/span> &lt;span class="p">{&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">test_parse&lt;/span>&lt;span class="p">();&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">printf&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="s">&amp;#34;%d/%d (%3.2f%%) passed&lt;/span>&lt;span class="se">\n&lt;/span>&lt;span class="s">&amp;#34;&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="n">test_pass&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="n">test_count&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="n">test_pass&lt;/span> &lt;span class="o">*&lt;/span> &lt;span class="mf">100.0&lt;/span> &lt;span class="o">/&lt;/span> &lt;span class="n">test_count&lt;/span>&lt;span class="p">);&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">return&lt;/span> &lt;span class="n">main_ret&lt;/span>&lt;span class="p">;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="p">}&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;p>现时只提供了一个 &lt;code>EXPECT_TYPE(expect, actual)&lt;/code> 的宏，每次使用这个宏时，如果 expect != actual（预期值不等于实际值），便会输出错误信息。&lt;/p>
+&lt;p>若按照 TDD 的步骤，我们先写一个测试，如上面的 &lt;code>test_parse_null()&lt;/code>，而 &lt;code>cppjson_parse()&lt;/code> 只返回 &lt;code>cppjsonParseCode::OK&lt;/code>：&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
+&lt;/span>&lt;span class="lnt">2
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">/CppJson/ch01/cppjsonTest.cpp:30, &lt;span class="nv">expect&lt;/span> &lt;span class="o">=&lt;/span> 16cppjsonParseCode&lt;span class="o">(&lt;/span>0&lt;span class="o">)&lt;/span>, &lt;span class="nv">actual&lt;/span> &lt;span class="o">=&lt;/span> 16cppjsonParseCode&lt;span class="o">(&lt;/span>2&lt;span class="o">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">15/16 &lt;span class="o">(&lt;/span>93.75%&lt;span class="o">)&lt;/span> passed
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;p>为通过的测试是因为 &lt;code>cppjson_parse()&lt;/code> 没有把 &lt;code>v.type&lt;/code> 改成 &lt;code>cppjsonType::CPPJSON_NULL&lt;/code>，造成失败。我们再实现 &lt;code>lept_parse()&lt;/code> 令到它能通过测试。&lt;/p>
+&lt;p>然而，完全按照 TDD 的步骤来开发，是会减慢开发进程。所以我个人会在这两种极端的工作方式取平衡。通常会在设计 API 后，先写部分测试代码，再写满足那些测试的实现。&lt;/p>
+&lt;h2 id="实现解析器">实现解析器&lt;/h2>
+&lt;p>有了 API 的设计、单元测试，终于要实现解析器了。&lt;/p>
+&lt;p>首先为了减少解析函数之间传递多个参数，我们把这些数据都放进一个 &lt;code>cppjson_context&lt;/code> 结构体：&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt"> 1
+&lt;/span>&lt;span class="lnt"> 2
+&lt;/span>&lt;span class="lnt"> 3
+&lt;/span>&lt;span class="lnt"> 4
+&lt;/span>&lt;span class="lnt"> 5
+&lt;/span>&lt;span class="lnt"> 6
+&lt;/span>&lt;span class="lnt"> 7
+&lt;/span>&lt;span class="lnt"> 8
+&lt;/span>&lt;span class="lnt"> 9
+&lt;/span>&lt;span class="lnt">10
+&lt;/span>&lt;span class="lnt">11
+&lt;/span>&lt;span class="lnt">12
+&lt;/span>&lt;span class="lnt">13
+&lt;/span>&lt;span class="lnt">14
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-cpp" data-lang="cpp">&lt;span class="line">&lt;span class="cl">&lt;span class="k">typedef&lt;/span> &lt;span class="k">struct&lt;/span> &lt;span class="p">{&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">std&lt;/span>&lt;span class="o">::&lt;/span>&lt;span class="n">string&lt;/span> &lt;span class="n">json&lt;/span>&lt;span class="p">;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="p">}&lt;/span> &lt;span class="n">cppjson_context&lt;/span>&lt;span class="p">;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">// json 解析函数：ws1 value ws2
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">&lt;/span>&lt;span class="n">cppjsonParseCode&lt;/span> &lt;span class="nf">cppjson_parse&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">cppjson_value&lt;/span> &lt;span class="o">*&lt;/span>&lt;span class="n">v&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="k">const&lt;/span> &lt;span class="n">std&lt;/span>&lt;span class="o">::&lt;/span>&lt;span class="n">string&lt;/span> &lt;span class="n">json&lt;/span>&lt;span class="p">)&lt;/span> &lt;span class="p">{&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">cppjson_context&lt;/span> &lt;span class="n">s&lt;/span>&lt;span class="p">;&lt;/span> &lt;span class="n">s&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="n">json&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="n">json&lt;/span>&lt;span class="p">;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">assert&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">v&lt;/span> &lt;span class="o">!=&lt;/span> &lt;span class="nb">NULL&lt;/span>&lt;span class="p">);&lt;/span> &lt;span class="n">v&lt;/span>&lt;span class="o">-&amp;gt;&lt;/span>&lt;span class="n">type&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="n">cppjsonType&lt;/span>&lt;span class="o">::&lt;/span>&lt;span class="n">CPPJSON_NULL&lt;/span>&lt;span class="p">;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="c1">// 分别解析 ws1 value ws2
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">&lt;/span> &lt;span class="n">cppjson_parse_whitespace&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="o">&amp;amp;&lt;/span>&lt;span class="n">s&lt;/span>&lt;span class="p">);&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">auto&lt;/span> &lt;span class="n">ret&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="n">cppjson_parse_value&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="o">&amp;amp;&lt;/span>&lt;span class="n">s&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="n">v&lt;/span>&lt;span class="p">);&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">return&lt;/span> &lt;span class="n">ret&lt;/span> &lt;span class="o">==&lt;/span> &lt;span class="n">cppjsonParseCode&lt;/span>&lt;span class="o">::&lt;/span>&lt;span class="n">OK&lt;/span> &lt;span class="o">?&lt;/span> &lt;span class="n">cppjson_parse_root_not_singular&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="o">&amp;amp;&lt;/span>&lt;span class="n">s&lt;/span>&lt;span class="p">)&lt;/span> &lt;span class="o">:&lt;/span> &lt;span class="n">ret&lt;/span>&lt;span class="p">;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="p">}&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;p>CppJson 是一个手写的递归下降解析器（recursive descent parser）。由于 JSON 语法特别简单，我们不需要写分词器（tokenizer），只需检测下一个字符，便可以知道它是哪种类型的值，然后调用相关的分析函数。对于完整的 JSON 语法，跳过空白后，只需检测当前字符：&lt;/p>
+&lt;ul>
+&lt;li>n ➔ null&lt;/li>
+&lt;li>t ➔ true&lt;/li>
+&lt;li>f ➔ false&lt;/li>
+&lt;li>&amp;quot; ➔ string&lt;/li>
+&lt;li>0-9/- ➔ number&lt;/li>
+&lt;li>[ ➔ array&lt;/li>
+&lt;li>{ ➔ object&lt;/li>
+&lt;/ul>
+&lt;p>所以，我们可以按照 JSON 语法一节的 EBNF 简单翻译成解析函数：&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt"> 1
+&lt;/span>&lt;span class="lnt"> 2
+&lt;/span>&lt;span class="lnt"> 3
+&lt;/span>&lt;span class="lnt"> 4
+&lt;/span>&lt;span class="lnt"> 5
+&lt;/span>&lt;span class="lnt"> 6
+&lt;/span>&lt;span class="lnt"> 7
+&lt;/span>&lt;span class="lnt"> 8
+&lt;/span>&lt;span class="lnt"> 9
+&lt;/span>&lt;span class="lnt">10
+&lt;/span>&lt;span class="lnt">11
+&lt;/span>&lt;span class="lnt">12
+&lt;/span>&lt;span class="lnt">13
+&lt;/span>&lt;span class="lnt">14
+&lt;/span>&lt;span class="lnt">15
+&lt;/span>&lt;span class="lnt">16
+&lt;/span>&lt;span class="lnt">17
+&lt;/span>&lt;span class="lnt">18
+&lt;/span>&lt;span class="lnt">19
+&lt;/span>&lt;span class="lnt">20
+&lt;/span>&lt;span class="lnt">21
+&lt;/span>&lt;span class="lnt">22
+&lt;/span>&lt;span class="lnt">23
+&lt;/span>&lt;span class="lnt">24
+&lt;/span>&lt;span class="lnt">25
+&lt;/span>&lt;span class="lnt">26
+&lt;/span>&lt;span class="lnt">27
+&lt;/span>&lt;span class="lnt">28
+&lt;/span>&lt;span class="lnt">29
+&lt;/span>&lt;span class="lnt">30
+&lt;/span>&lt;span class="lnt">31
+&lt;/span>&lt;span class="lnt">32
+&lt;/span>&lt;span class="lnt">33
+&lt;/span>&lt;span class="lnt">34
+&lt;/span>&lt;span class="lnt">35
+&lt;/span>&lt;span class="lnt">36
+&lt;/span>&lt;span class="lnt">37
+&lt;/span>&lt;span class="lnt">38
+&lt;/span>&lt;span class="lnt">39
+&lt;/span>&lt;span class="lnt">40
+&lt;/span>&lt;span class="lnt">41
+&lt;/span>&lt;span class="lnt">42
+&lt;/span>&lt;span class="lnt">43
+&lt;/span>&lt;span class="lnt">44
+&lt;/span>&lt;span class="lnt">45
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-cpp" data-lang="cpp">&lt;span class="line">&lt;span class="cl">&lt;span class="c1">// 删除空白符
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">&lt;/span>&lt;span class="k">static&lt;/span> &lt;span class="kt">void&lt;/span> &lt;span class="nf">cppjson_parse_whitespace&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">cppjson_context&lt;/span>&lt;span class="o">*&lt;/span> &lt;span class="n">s&lt;/span>&lt;span class="p">)&lt;/span> &lt;span class="p">{&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">const&lt;/span> &lt;span class="n">std&lt;/span>&lt;span class="o">::&lt;/span>&lt;span class="n">string&lt;/span> &lt;span class="n">str&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="n">s&lt;/span>&lt;span class="o">-&amp;gt;&lt;/span>&lt;span class="n">json&lt;/span>&lt;span class="p">;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="kt">int&lt;/span> &lt;span class="n">i&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="mi">0&lt;/span>&lt;span class="p">;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">while&lt;/span> &lt;span class="p">(&lt;/span>&lt;span class="n">str&lt;/span>&lt;span class="p">[&lt;/span>&lt;span class="n">i&lt;/span>&lt;span class="p">]&lt;/span> &lt;span class="o">==&lt;/span> &lt;span class="sc">&amp;#39; &amp;#39;&lt;/span> &lt;span class="n">or&lt;/span> &lt;span class="n">str&lt;/span>&lt;span class="p">[&lt;/span>&lt;span class="n">i&lt;/span>&lt;span class="p">]&lt;/span> &lt;span class="o">==&lt;/span> &lt;span class="sc">&amp;#39;\t&amp;#39;&lt;/span> &lt;span class="n">or&lt;/span> &lt;span class="n">str&lt;/span>&lt;span class="p">[&lt;/span>&lt;span class="n">i&lt;/span>&lt;span class="p">]&lt;/span> &lt;span class="o">==&lt;/span> &lt;span class="sc">&amp;#39;\n&amp;#39;&lt;/span> &lt;span class="n">or&lt;/span> &lt;span class="n">str&lt;/span>&lt;span class="p">[&lt;/span>&lt;span class="n">i&lt;/span>&lt;span class="p">]&lt;/span> &lt;span class="o">==&lt;/span> &lt;span class="sc">&amp;#39;\r&amp;#39;&lt;/span>&lt;span class="p">)&lt;/span> &lt;span class="p">{&lt;/span> &lt;span class="n">i&lt;/span> &lt;span class="o">++&lt;/span>&lt;span class="p">;&lt;/span> &lt;span class="p">}&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">s&lt;/span>&lt;span class="o">-&amp;gt;&lt;/span>&lt;span class="n">json&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="n">str&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="n">substr&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">i&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="n">str&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="n">size&lt;/span>&lt;span class="p">());&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="p">}&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">// 解析 ws2 之后是否还有非空值
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">&lt;/span>&lt;span class="k">static&lt;/span> &lt;span class="n">cppjsonParseCode&lt;/span> &lt;span class="nf">cppjson_parse_root_not_singular&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">cppjson_context&lt;/span>&lt;span class="o">*&lt;/span> &lt;span class="n">s&lt;/span>&lt;span class="p">)&lt;/span> &lt;span class="p">{&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="c1">// 删除空白符
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">&lt;/span> &lt;span class="n">cppjson_parse_whitespace&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">s&lt;/span>&lt;span class="p">);&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="c1">// 判断是否还有非空值
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">&lt;/span> &lt;span class="k">if&lt;/span> &lt;span class="p">(&lt;/span>&lt;span class="n">s&lt;/span>&lt;span class="o">-&amp;gt;&lt;/span>&lt;span class="n">json&lt;/span>&lt;span class="p">[&lt;/span>&lt;span class="mi">0&lt;/span>&lt;span class="p">]&lt;/span> &lt;span class="o">!=&lt;/span> &lt;span class="sc">&amp;#39;\0&amp;#39;&lt;/span>&lt;span class="p">)&lt;/span> &lt;span class="k">return&lt;/span> &lt;span class="n">cppjsonParseCode&lt;/span>&lt;span class="o">::&lt;/span>&lt;span class="n">ROOT_NOT_SINGULAR&lt;/span>&lt;span class="p">;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">else&lt;/span> &lt;span class="k">return&lt;/span> &lt;span class="n">cppjsonParseCode&lt;/span>&lt;span class="o">::&lt;/span>&lt;span class="n">OK&lt;/span>&lt;span class="p">;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="p">}&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">// 检测 null 值
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">&lt;/span>&lt;span class="k">static&lt;/span> &lt;span class="n">cppjsonParseCode&lt;/span> &lt;span class="nf">cppjson_parse_null&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">cppjson_context&lt;/span>&lt;span class="o">*&lt;/span> &lt;span class="n">s&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="n">cppjson_value&lt;/span>&lt;span class="o">*&lt;/span> &lt;span class="n">v&lt;/span>&lt;span class="p">)&lt;/span> &lt;span class="p">{&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">const&lt;/span> &lt;span class="n">std&lt;/span>&lt;span class="o">::&lt;/span>&lt;span class="n">string&lt;/span> &lt;span class="n">str&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="n">s&lt;/span>&lt;span class="o">-&amp;gt;&lt;/span>&lt;span class="n">json&lt;/span>&lt;span class="p">;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">auto&lt;/span> &lt;span class="n">head&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="n">str&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="n">substr&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="mi">0&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="mi">4&lt;/span>&lt;span class="p">);&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">if&lt;/span> &lt;span class="p">(&lt;/span>&lt;span class="n">head&lt;/span> &lt;span class="o">!=&lt;/span> &lt;span class="s">&amp;#34;null&amp;#34;&lt;/span>&lt;span class="p">)&lt;/span> &lt;span class="k">return&lt;/span> &lt;span class="n">cppjsonParseCode&lt;/span>&lt;span class="o">::&lt;/span>&lt;span class="n">INVALID_VALUE&lt;/span>&lt;span class="p">;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">else&lt;/span> &lt;span class="p">{&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">s&lt;/span>&lt;span class="o">-&amp;gt;&lt;/span>&lt;span class="n">json&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="n">str&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="n">substr&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="mi">4&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="n">str&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="n">size&lt;/span>&lt;span class="p">());&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">v&lt;/span>&lt;span class="o">-&amp;gt;&lt;/span>&lt;span class="n">type&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="n">cppjsonType&lt;/span>&lt;span class="o">::&lt;/span>&lt;span class="n">CPPJSON_NULL&lt;/span>&lt;span class="p">;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">return&lt;/span> &lt;span class="n">cppjsonParseCode&lt;/span>&lt;span class="o">::&lt;/span>&lt;span class="n">OK&lt;/span>&lt;span class="p">;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">}&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="p">}&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">// 解析 value
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">&lt;/span>&lt;span class="k">static&lt;/span> &lt;span class="n">cppjsonParseCode&lt;/span> &lt;span class="nf">cppjson_parse_value&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">cppjson_context&lt;/span>&lt;span class="o">*&lt;/span> &lt;span class="n">s&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="n">cppjson_value&lt;/span>&lt;span class="o">*&lt;/span> &lt;span class="n">v&lt;/span>&lt;span class="p">)&lt;/span> &lt;span class="p">{&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">const&lt;/span> &lt;span class="n">std&lt;/span>&lt;span class="o">::&lt;/span>&lt;span class="n">string&lt;/span> &lt;span class="n">str&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="n">s&lt;/span>&lt;span class="o">-&amp;gt;&lt;/span>&lt;span class="n">json&lt;/span>&lt;span class="p">;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">switch&lt;/span> &lt;span class="p">(&lt;/span>&lt;span class="n">str&lt;/span>&lt;span class="p">[&lt;/span>&lt;span class="mi">0&lt;/span>&lt;span class="p">])&lt;/span> &lt;span class="p">{&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">case&lt;/span> &lt;span class="sc">&amp;#39;n&amp;#39;&lt;/span>&lt;span class="o">:&lt;/span> &lt;span class="k">return&lt;/span> &lt;span class="n">cppjson_parse_null&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">s&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="n">v&lt;/span>&lt;span class="p">);&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">case&lt;/span> &lt;span class="sc">&amp;#39;t&amp;#39;&lt;/span>&lt;span class="o">:&lt;/span> &lt;span class="k">return&lt;/span> &lt;span class="n">cppjson_parse_true&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">s&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="n">v&lt;/span>&lt;span class="p">);&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">case&lt;/span> &lt;span class="sc">&amp;#39;f&amp;#39;&lt;/span>&lt;span class="o">:&lt;/span> &lt;span class="k">return&lt;/span> &lt;span class="n">cppjson_parse_false&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">s&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="n">v&lt;/span>&lt;span class="p">);&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">case&lt;/span> &lt;span class="sc">&amp;#39;\0&amp;#39;&lt;/span>&lt;span class="o">:&lt;/span> &lt;span class="k">return&lt;/span> &lt;span class="n">cppjsonParseCode&lt;/span>&lt;span class="o">::&lt;/span>&lt;span class="n">EXPECT_VALUE&lt;/span>&lt;span class="p">;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">default&lt;/span>&lt;span class="o">:&lt;/span> &lt;span class="k">return&lt;/span> &lt;span class="n">cppjsonParseCode&lt;/span>&lt;span class="o">::&lt;/span>&lt;span class="n">INVALID_VALUE&lt;/span>&lt;span class="p">;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">}&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="p">}&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div></description></item><item><title>C++ Primer Ch09</title><link>https://3000ye.com/p/c-primer-ch09/</link><pubDate>Sun, 10 Dec 2023 15:58:28 +0800</pubDate><guid>https://3000ye.com/p/c-primer-ch09/</guid><description>&lt;img src="https://3000ye.com/p/c-primer-ch09/assets/c++primer.jpg" alt="Featured image of post C++ Primer Ch09" />&lt;h1 id="顺序容器">顺序容器&lt;/h1>
+&lt;p>一个容器就是一些特定类型对象的集合，&lt;strong>顺序容器（sequence container）&lt;/strong> 为程序员提供了控制元素存储和访问顺序的能力。&lt;/p>
+&lt;h2 id="顺序容器概述">顺序容器概述&lt;/h2>
+&lt;p>下面列出了标准库中的顺序容器，不同容器有不同的性能折中：&lt;/p>
+&lt;ul>
+&lt;li>想容器添加或从容器删除元素的代价。&lt;/li>
+&lt;li>非顺序访问容器中元素的代价。&lt;/li>
+&lt;/ul>
+&lt;table>
+&lt;thead>
+&lt;tr>
+&lt;th>容器类型&lt;/th>
+&lt;th>介绍&lt;/th>
+&lt;/tr>
+&lt;/thead>
+&lt;tbody>
+&lt;tr>
+&lt;td>&lt;code>vector&lt;/code>&lt;/td>
+&lt;td>可变大小数组。支持快速随机访问。在尾部之外的位置插入或删除元素可能很慢。&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>&lt;code>deque&lt;/code>&lt;/td>
+&lt;td>双端队列。支持快速随机访问。在头尾位置插入/删除速度很快。&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>&lt;code>list&lt;/code>&lt;/td>
+&lt;td>双向链表。只支持双向顺序访问。在&lt;code>list&lt;/code>中任何位置进行插入/删除操作速度都很快。&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>&lt;code>forward_list&lt;/code>&lt;/td>
+&lt;td>单向链表。只支持单向顺序访问。在链表任何位置进行插入/删除操作速度都很快。&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>&lt;code>array&lt;/code>&lt;/td>
+&lt;td>固定大小数组。支持快速随机访问。不能添加或者删除元素。&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>&lt;code>string&lt;/code>&lt;/td>
+&lt;td>与&lt;code>vector&lt;/code>相似的容器，但专门用于保存字符。随机访问块。在尾部插入/删除速度快。&lt;/td>
+&lt;/tr>
+&lt;/tbody>
+&lt;/table>
+&lt;ul>
+&lt;li>除了固定大小的 &lt;code>array&lt;/code> 外，其他容器都提供高效、灵活的内存管理。&lt;/li>
+&lt;li>通常使用 &lt;code>vector&lt;/code> 是最好的选择，除非你有很好的理由选择其他容器。&lt;/li>
+&lt;li>如果程序中有很多小的元素，且空间的额外开销很重要，则不要使用 &lt;code>list&lt;/code> 或 &lt;code>forward_list&lt;/code>。&lt;/li>
+&lt;li>如果程序要求随记访问元素，应使用 &lt;code>vector&lt;/code> 或 &lt;code>deque&lt;/code>。&lt;/li>
+&lt;li>如果程序要求在容器的中间插入或删除元素，应使用 &lt;code>list&lt;/code> 或 &lt;code>forward_list&lt;/code>。&lt;/li>
+&lt;li>如果程序需要再头尾位置插入或删除元素，但不会再中间位置进行操作，应使用 &lt;code>deque&lt;/code>。&lt;/li>
+&lt;/ul>
+&lt;h2 id="容器库概念">容器库概念&lt;/h2>
+&lt;p>容器类型操作上形成了一种层次：&lt;/p>
+&lt;ul>
+&lt;li>某些操作是所有容器类型都提供的。&lt;/li>
+&lt;li>另一些操作仅针对顺序容器、关联容器或无序容器。&lt;/li>
+&lt;/ul>
+&lt;h3 id="类型">类型&lt;/h3>
+&lt;table>
+&lt;thead>
+&lt;tr>
+&lt;th>操作&lt;/th>
+&lt;th>解释&lt;/th>
+&lt;/tr>
+&lt;/thead>
+&lt;tbody>
+&lt;tr>
+&lt;td>&lt;code>iterator&lt;/code>&lt;/td>
+&lt;td>此容器类型的迭代器类型&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>&lt;code>const_iterator&lt;/code>&lt;/td>
+&lt;td>可以读取元素但不能修改元素的迭代器类型&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>&lt;code>size_type&lt;/code>&lt;/td>
+&lt;td>无符号整数类型，足够保存此种容器类型最大可能的大小&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>&lt;code>difference_type&lt;/code>&lt;/td>
+&lt;td>带符号整数类型，足够保存两个迭代器之间的距离&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>&lt;code>value_type&lt;/code>&lt;/td>
+&lt;td>元素类型&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>&lt;code>reference&lt;/code>&lt;/td>
+&lt;td>元素的左值类型；和&lt;code>value_type &amp;amp;&lt;/code>含义相同&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>&lt;code>const_reference&lt;/code>&lt;/td>
+&lt;td>元素的&lt;code>const&lt;/code>左值类型，即&lt;code>const value_type &amp;amp;&lt;/code>&lt;/td>
+&lt;/tr>
+&lt;/tbody>
+&lt;/table>
+&lt;h3 id="构造函数">构造函数&lt;/h3>
+&lt;table>
+&lt;thead>
+&lt;tr>
+&lt;th>操作&lt;/th>
+&lt;th>解释&lt;/th>
+&lt;/tr>
+&lt;/thead>
+&lt;tbody>
+&lt;tr>
+&lt;td>&lt;code>C c;&lt;/code>&lt;/td>
+&lt;td>默认构造函数，构造空容器&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>&lt;code>C c1(c2);&lt;/code>或&lt;code>C c1 = c2;&lt;/code>&lt;/td>
+&lt;td>构造&lt;code>c2&lt;/code>的拷贝&lt;code>c1&lt;/code>&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>&lt;code>C c(b, e)&lt;/code>&lt;/td>
+&lt;td>构造&lt;code>c&lt;/code>，将迭代器&lt;code>b&lt;/code>和&lt;code>e&lt;/code>指定范围内的所有元素拷贝到&lt;code>c&lt;/code>&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>&lt;code>C c(a, b, c...)&lt;/code>&lt;/td>
+&lt;td>列表初始化&lt;code>c&lt;/code>&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>&lt;code>C c(n)&lt;/code>&lt;/td>
+&lt;td>只支持顺序容器，且不包括&lt;code>array&lt;/code>，包含&lt;code>n&lt;/code>个元素，这些元素进行了值初始化&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>&lt;code>C c(n, t)&lt;/code>&lt;/td>
+&lt;td>包含&lt;code>n&lt;/code>个初始值为&lt;code>t&lt;/code>的元素&lt;/td>
+&lt;/tr>
+&lt;/tbody>
+&lt;/table>
+&lt;ul>
+&lt;li>只有顺序容器的构造函数才接受大小参数，关联容器并不支持。&lt;/li>
+&lt;li>&lt;code>array&lt;/code>具有固定大小。&lt;/li>
+&lt;li>和其他容器不同，默认构造的&lt;code>array&lt;/code>是非空的。&lt;/li>
+&lt;li>直接复制：将一个容器复制给另一个容器时，类型必须匹配：容器类型和元素类型都必须相同。&lt;/li>
+&lt;li>使用迭代器复制：不要求容器类型相同，容器内的元素类型也可以不同。&lt;/li>
+&lt;/ul>
+&lt;h3 id="赋值和swap">赋值和&lt;code>swap&lt;/code>&lt;/h3>
+&lt;table>
+&lt;thead>
+&lt;tr>
+&lt;th>操作&lt;/th>
+&lt;th>解释&lt;/th>
+&lt;/tr>
+&lt;/thead>
+&lt;tbody>
+&lt;tr>
+&lt;td>&lt;code>c1 = c2;&lt;/code>&lt;/td>
+&lt;td>将&lt;code>c1&lt;/code>中的元素替换成&lt;code>c2&lt;/code>中的元素&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>&lt;code>c1 = {a, b, c...}&lt;/code>&lt;/td>
+&lt;td>将&lt;code>c1&lt;/code>中的元素替换成列表中的元素（不适用于&lt;code>array&lt;/code>）&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>&lt;code>c1.swap(c2)&lt;/code>&lt;/td>
+&lt;td>交换&lt;code>c1&lt;/code>和&lt;code>c2&lt;/code>的元素&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>&lt;code>swap(c1, c2)&lt;/code>&lt;/td>
+&lt;td>等价于&lt;code>c1.swap(c2)&lt;/code>&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>&lt;code>c.assign(b, e)&lt;/code>&lt;/td>
+&lt;td>将&lt;code>c&lt;/code>中的元素替换成迭代器&lt;code>b&lt;/code>和&lt;code>e&lt;/code>表示范围中的元素，&lt;code>b&lt;/code>和&lt;code>e&lt;/code>不能指向&lt;code>c&lt;/code>中的元素&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>&lt;code>c.assign(il)&lt;/code>&lt;/td>
+&lt;td>将&lt;code>c&lt;/code>中的元素替换成初始化列表&lt;code>il&lt;/code>中的元素&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>&lt;code>c.assign(n, r)&lt;/code>&lt;/td>
+&lt;td>将&lt;code>c&lt;/code>中的元素替换为&lt;code>n&lt;/code>个值是&lt;code>t&lt;/code>的元素&lt;/td>
+&lt;/tr>
+&lt;/tbody>
+&lt;/table>
+&lt;ul>
+&lt;li>使用非成员版本的&lt;code>swap&lt;/code>是一个好习惯。&lt;/li>
+&lt;li>&lt;code>assign&lt;/code>操作不适用于关联容器和&lt;code>array&lt;/code>&lt;/li>
+&lt;/ul>
+&lt;h3 id="大小">大小&lt;/h3>
+&lt;table>
+&lt;thead>
+&lt;tr>
+&lt;th>操作&lt;/th>
+&lt;th>解释&lt;/th>
+&lt;/tr>
+&lt;/thead>
+&lt;tbody>
+&lt;tr>
+&lt;td>&lt;code>c.size()&lt;/code>&lt;/td>
+&lt;td>&lt;code>c&lt;/code>中元素的数目（不支持&lt;code>forward_list&lt;/code>）&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>&lt;code>c.max_size()&lt;/code>&lt;/td>
+&lt;td>&lt;code>c&lt;/code>中可保存的最大元素数目&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>&lt;code>c.empty()&lt;/code>&lt;/td>
+&lt;td>若&lt;code>c&lt;/code>中存储了元素，返回&lt;code>false&lt;/code>，否则返回&lt;code>true&lt;/code>&lt;/td>
+&lt;/tr>
+&lt;/tbody>
+&lt;/table>
+&lt;h3 id="添加元素">添加元素&lt;/h3>
+&lt;table>
+&lt;thead>
+&lt;tr>
+&lt;th>操作&lt;/th>
+&lt;th>解释&lt;/th>
+&lt;/tr>
+&lt;/thead>
+&lt;tbody>
+&lt;tr>
+&lt;td>&lt;code>c.push_back(t)&lt;/code>&lt;/td>
+&lt;td>在&lt;code>c&lt;/code>尾部创建一个值为&lt;code>t&lt;/code>的元素，返回&lt;code>void&lt;/code>&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>&lt;code>c.emplace_back(args)&lt;/code>&lt;/td>
+&lt;td>同上&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>&lt;code>c.push_front(t)&lt;/code>&lt;/td>
+&lt;td>在&lt;code>c&lt;/code>头部创建一个值为&lt;code>t&lt;/code>的元素，返回&lt;code>void&lt;/code>&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>&lt;code>c.emplace_front(args)&lt;/code>&lt;/td>
+&lt;td>同上&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>&lt;code>c.insert(p, t)&lt;/code>&lt;/td>
+&lt;td>在迭代器&lt;code>p&lt;/code>指向的元素之前创建一个值是&lt;code>t&lt;/code>的元素，返回指向新元素的迭代器&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>&lt;code>c.emplace(p, args)&lt;/code>&lt;/td>
+&lt;td>同上&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>&lt;code>c.insert(p, n, t)&lt;/code>&lt;/td>
+&lt;td>在迭代器&lt;code>p&lt;/code>指向的元素之前插入&lt;code>n&lt;/code>个值为&lt;code>t&lt;/code>的元素，返回指向第一个新元素的迭代器；如果&lt;code>n&lt;/code>是0，则返回&lt;code>p&lt;/code>&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>&lt;code>c.insert(p, b, e)&lt;/code>&lt;/td>
+&lt;td>将迭代器&lt;code>b&lt;/code>和&lt;code>e&lt;/code>范围内的元素，插入到&lt;code>p&lt;/code>指向的元素之前；如果范围为空，则返回&lt;code>p&lt;/code>&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>&lt;code>c.insert(p, il)&lt;/code>&lt;/td>
+&lt;td>&lt;code>il&lt;/code>是一个花括号包围中的元素值列表，将其插入到&lt;code>p&lt;/code>指向的元素之前；如果&lt;code>il&lt;/code>是空，则返回&lt;code>p&lt;/code>&lt;/td>
+&lt;/tr>
+&lt;/tbody>
+&lt;/table>
+&lt;ul>
+&lt;li>因为这些操作会改变大小，因此不适用于&lt;code>array&lt;/code>。&lt;/li>
+&lt;li>&lt;code>forward_list&lt;/code>有自己专有版本的&lt;code>insert&lt;/code>和&lt;code>emplace&lt;/code>。&lt;/li>
+&lt;li>&lt;code>forward_list&lt;/code>不支持&lt;code>push_back&lt;/code>和&lt;code>emplace_back&lt;/code>。&lt;/li>
+&lt;li>当我们用一个对象去初始化容器或者将对象插入到容器时，实际上放入的是对象的拷贝。&lt;/li>
+&lt;li>&lt;code>emplace&lt;/code>开头的函数是新标准引入的，这些操作是构造而不是拷贝元素。&lt;/li>
+&lt;li>传递给&lt;code>emplace&lt;/code>的参数必须和元素类型的构造函数相匹配。&lt;/li>
+&lt;/ul>
+&lt;h3 id="访问元素">访问元素&lt;/h3>
+&lt;table>
+&lt;thead>
+&lt;tr>
+&lt;th>操作&lt;/th>
+&lt;th>解释&lt;/th>
+&lt;/tr>
+&lt;/thead>
+&lt;tbody>
+&lt;tr>
+&lt;td>&lt;code>c.back()&lt;/code>&lt;/td>
+&lt;td>返回&lt;code>c&lt;/code>中尾元素的引用。若&lt;code>c&lt;/code>为空，函数行为未定义&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>&lt;code>c.front()&lt;/code>&lt;/td>
+&lt;td>返回&lt;code>c&lt;/code>中头元素的引用。若&lt;code>c&lt;/code>为空，函数行为未定义&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>&lt;code>c[n]&lt;/code>&lt;/td>
+&lt;td>返回&lt;code>c&lt;/code>中下标是&lt;code>n&lt;/code>的元素的引用，&lt;code>n&lt;/code>时候一个无符号证书。若&lt;code>n&amp;gt;=c.size()&lt;/code>，则函数行为未定义&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>&lt;code>c.at(n)&lt;/code>&lt;/td>
+&lt;td>返回下标为&lt;code>n&lt;/code>的元素引用。如果下标越界，则抛出&lt;code>out_of_range&lt;/code>异常&lt;/td>
+&lt;/tr>
+&lt;/tbody>
+&lt;/table>
+&lt;ul>
+&lt;li>访问成员函数返回的是引用。&lt;/li>
+&lt;li>&lt;code>at&lt;/code>和下标操作只适用于&lt;code>string&lt;/code>、&lt;code>vector&lt;/code>、&lt;code>deque&lt;/code>、&lt;code>array&lt;/code>。&lt;/li>
+&lt;li>&lt;code>back&lt;/code>不适用于&lt;code>forward_list&lt;/code>。&lt;/li>
+&lt;li>如果希望下标是合法的，可以使用&lt;code>at&lt;/code>函数。&lt;/li>
+&lt;/ul>
+&lt;h3 id="删除元素">删除元素&lt;/h3>
+&lt;table>
+&lt;thead>
+&lt;tr>
+&lt;th>操作&lt;/th>
+&lt;th>解释&lt;/th>
+&lt;/tr>
+&lt;/thead>
+&lt;tbody>
+&lt;tr>
+&lt;td>&lt;code>c.pop_back()&lt;/code>&lt;/td>
+&lt;td>删除&lt;code>c&lt;/code>中尾元素，若&lt;code>c&lt;/code>为空，则函数行为未定义。函数返回&lt;code>void&lt;/code>&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>&lt;code>c.pop_front()&lt;/code>&lt;/td>
+&lt;td>删除&lt;code>c&lt;/code>中首元素，若&lt;code>c&lt;/code>为空，则函数行为未定义。函数返回&lt;code>void&lt;/code>&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>&lt;code>c.erase(p)&lt;/code>&lt;/td>
+&lt;td>删除迭代器&lt;code>p&lt;/code>指向的元素，返回一个指向被删除元素之后的元素的迭代器，若&lt;code>p&lt;/code>本身是尾后迭代器，则函数行为未定义&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>&lt;code>c.erase(b, e)&lt;/code>&lt;/td>
+&lt;td>删除迭代器&lt;code>b&lt;/code>和&lt;code>e&lt;/code>范围内的元素，返回指向最后一个被删元素之后元素的迭代器，若&lt;code>e&lt;/code>本身就是尾后迭代器，则返回尾后迭代器&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>&lt;code>c.clear()&lt;/code>&lt;/td>
+&lt;td>删除&lt;code>c&lt;/code>中所有元素，返回&lt;code>void&lt;/code>&lt;/td>
+&lt;/tr>
+&lt;/tbody>
+&lt;/table>
+&lt;ul>
+&lt;li>会改变容器大小，不适用于&lt;code>array&lt;/code>。&lt;/li>
+&lt;li>&lt;code>forward_list&lt;/code>有特殊版本的&lt;code>erase&lt;/code>&lt;/li>
+&lt;li>&lt;code>forward_list&lt;/code>不支持&lt;code>pop_back&lt;/code>&lt;/li>
+&lt;li>&lt;code>vector&lt;/code>和&lt;code>string&lt;/code>不支持&lt;code>pop_front&lt;/code>&lt;/li>
+&lt;/ul>
+&lt;h3 id="特殊的-forwad_list操作">特殊的 &lt;code>forwad_list&lt;/code>操作&lt;/h3>
+&lt;ul>
+&lt;li>链表在删除元素时需要修改前置节点的内容，双向链表会前驱的指针，但是单向链表没有保存，因此需要增加获取前置节点的方法。&lt;/li>
+&lt;li>&lt;code>forward_list&lt;/code>定义了&lt;code>before_begin&lt;/code>，即首前（off-the-begining）迭代器，允许我们再在首元素之前添加或删除元素。&lt;/li>
+&lt;/ul>
+&lt;table>
+&lt;thead>
+&lt;tr>
+&lt;th>操作&lt;/th>
+&lt;th>解释&lt;/th>
+&lt;/tr>
+&lt;/thead>
+&lt;tbody>
+&lt;tr>
+&lt;td>&lt;code>lst.before_begin()&lt;/code>&lt;/td>
+&lt;td>返回指向链表首元素之前不存在的元素的迭代器，此迭代器不能解引用。&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>&lt;code>lst.cbefore_begin()&lt;/code>&lt;/td>
+&lt;td>同上，但是返回的是常量迭代器。&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>&lt;code>lst.insert_after(p, t)&lt;/code>&lt;/td>
+&lt;td>在迭代器&lt;code>p&lt;/code>之后插入元素。&lt;code>t&lt;/code>是一个对象&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>&lt;code>lst.insert_after(p, n, t)&lt;/code>&lt;/td>
+&lt;td>在迭代器&lt;code>p&lt;/code>之后插入元素。&lt;code>t&lt;/code>是一个对象，&lt;code>n&lt;/code>是数量。若&lt;code>n&lt;/code>是0则函数行为未定义&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>&lt;code>lst.insert_after(p, b, e)&lt;/code>&lt;/td>
+&lt;td>在迭代器&lt;code>p&lt;/code>之后插入元素。由迭代器&lt;code>b&lt;/code>和&lt;code>e&lt;/code>指定范围。&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>&lt;code>lst.insert_after(p, il)&lt;/code>&lt;/td>
+&lt;td>在迭代器&lt;code>p&lt;/code>之后插入元素。由&lt;code>il&lt;/code>指定初始化列表。&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>&lt;code>emplace_after(p, args)&lt;/code>&lt;/td>
+&lt;td>使用&lt;code>args&lt;/code>在&lt;code>p&lt;/code>之后的位置，创建一个元素，返回一个指向这个新元素的迭代器。若&lt;code>p&lt;/code>为尾后迭代器，则函数行为未定义。&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>&lt;code>lst.erase_after(p)&lt;/code>&lt;/td>
+&lt;td>删除&lt;code>p&lt;/code>指向位置之后的元素，返回一个指向被删元素之后的元素的迭代器，若&lt;code>p&lt;/code>指向&lt;code>lst&lt;/code>的尾元素或者是一个尾后迭代器，则函数行为未定义。&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>&lt;code>lst.erase_after(b, e)&lt;/code>&lt;/td>
+&lt;td>类似上面，删除对象换成从&lt;code>b&lt;/code>到&lt;code>e&lt;/code>指定的范围。&lt;/td>
+&lt;/tr>
+&lt;/tbody>
+&lt;/table>
+&lt;h3 id="改变容器大小">改变容器大小&lt;/h3>
+&lt;table>
+&lt;thead>
+&lt;tr>
+&lt;th>操作&lt;/th>
+&lt;th>解释&lt;/th>
+&lt;/tr>
+&lt;/thead>
+&lt;tbody>
+&lt;tr>
+&lt;td>&lt;code>c.resize(n)&lt;/code>&lt;/td>
+&lt;td>调整&lt;code>c&lt;/code>的大小为&lt;code>n&lt;/code>个元素，若&lt;code>n&amp;lt;c.size()&lt;/code>，则多出的元素被丢弃。若必须添加新元素，对新元素进行值初始化&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>&lt;code>c.resize(n, t)&lt;/code>&lt;/td>
+&lt;td>调整&lt;code>c&lt;/code>的大小为&lt;code>n&lt;/code>个元素，任何新添加的元素都初始化为值&lt;code>t&lt;/code>&lt;/td>
+&lt;/tr>
+&lt;/tbody>
+&lt;/table>
+&lt;h3 id="获取迭代器">获取迭代器&lt;/h3>
+&lt;table>
+&lt;thead>
+&lt;tr>
+&lt;th>操作&lt;/th>
+&lt;th>解释&lt;/th>
+&lt;/tr>
+&lt;/thead>
+&lt;tbody>
+&lt;tr>
+&lt;td>&lt;code>c.begin()&lt;/code>, &lt;code>c.end()&lt;/code>&lt;/td>
+&lt;td>返回指向&lt;code>c&lt;/code>的首元素和尾元素之后位置的迭代器&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>&lt;code>c.cbegin()&lt;/code>, &lt;code>c.cend()&lt;/code>&lt;/td>
+&lt;td>返回&lt;code>const_iterator&lt;/code>&lt;/td>
+&lt;/tr>
+&lt;/tbody>
+&lt;/table>
+&lt;ul>
+&lt;li>以&lt;code>c&lt;/code>开头的版本是C++11新标准引入的&lt;/li>
+&lt;li>当不需要写访问时，应该使用&lt;code>cbegin&lt;/code>和&lt;code>cend&lt;/code>。&lt;/li>
+&lt;/ul>
+&lt;h3 id="反向容器的额外成员">反向容器的额外成员&lt;/h3>
+&lt;table>
+&lt;thead>
+&lt;tr>
+&lt;th>操作&lt;/th>
+&lt;th>解释&lt;/th>
+&lt;/tr>
+&lt;/thead>
+&lt;tbody>
+&lt;tr>
+&lt;td>&lt;code>reverse_iterator&lt;/code>&lt;/td>
+&lt;td>按逆序寻址元素的迭代器&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>&lt;code>const_reverse_iterator&lt;/code>&lt;/td>
+&lt;td>不能修改元素的逆序迭代器&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>&lt;code>c.rbegin()&lt;/code>, &lt;code>c.rend()&lt;/code>&lt;/td>
+&lt;td>返回指向&lt;code>c&lt;/code>的尾元素和首元素之前位置的迭代器&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>&lt;code>c.crbegin()&lt;/code>, &lt;code>c.crend()&lt;/code>&lt;/td>
+&lt;td>返回&lt;code>const_reverse_iterator&lt;/code>&lt;/td>
+&lt;/tr>
+&lt;/tbody>
+&lt;/table>
+&lt;ul>
+&lt;li>不支持&lt;code>forward_list&lt;/code>&lt;/li>
+&lt;/ul></description></item><item><title>C++ Primer Ch08</title><link>https://3000ye.com/p/c-primer-ch08/</link><pubDate>Sun, 10 Dec 2023 15:24:27 +0800</pubDate><guid>https://3000ye.com/p/c-primer-ch08/</guid><description>&lt;img src="https://3000ye.com/p/c-primer-ch08/assets/c++primer.jpg" alt="Featured image of post C++ Primer Ch08" />&lt;h1 id="io-库">IO 库&lt;/h1>
+&lt;p>我们的程序已经使用了很多 IO 库设施：&lt;/p>
+&lt;ul>
+&lt;li>&lt;code>istream&lt;/code> （输入流）类型，提供输入操作。&lt;/li>
+&lt;li>&lt;code>ostream&lt;/code> （输出流）类型，提供输出操作。&lt;/li>
+&lt;li>&lt;code>cin&lt;/code>，一个 &lt;code>istream&lt;/code> 对象，从标准输入读取数据。&lt;/li>
+&lt;li>&lt;code>cout&lt;/code>，一个 &lt;code>ostream&lt;/code> 对象，想标准输出写入数据。&lt;/li>
+&lt;li>&lt;code>cerr&lt;/code>，一个 &lt;code>ostream&lt;/code> 对象，通常用于输出程序错误信息，写入到标准错误。&lt;/li>
+&lt;li>&lt;code>&amp;gt;&amp;gt;&lt;/code> 运算符，用来从一个 &lt;code>istream&lt;/code> 对象中读取输入数据。&lt;/li>
+&lt;li>&lt;code>&amp;lt;&amp;lt;&lt;/code> 运算符，用来向一个 &lt;code>ostream&lt;/code> 对象中写入输出数据。&lt;/li>
+&lt;li>&lt;code>getline&lt;/code> 函数，从一个给定的 &lt;code>istream&lt;/code> 对象中读取一行数据，存入到一个给定的 &lt;code>string&lt;/code> 对象中。&lt;/li>
+&lt;/ul>
+&lt;h2 id="io-库-1">IO 库&lt;/h2>
+&lt;p>IO 类型和对象一般都是操纵 &lt;code>char&lt;/code> 数据的，但有些使用需要对文件、&lt;code>string&lt;/code> 进行操作，因此分别定义了三个头文件：&lt;/p>
+&lt;ul>
+&lt;li>&lt;code>iostream&lt;/code> 头文件：从标准流中读写数据，&lt;code>istream&lt;/code>、&lt;code>ostream&lt;/code> 等。&lt;/li>
+&lt;li>&lt;code>fstream&lt;/code> 头文件：从文件中读写数据，&lt;code>ifstream&lt;/code>、&lt;code>ofstream&lt;/code> 等。&lt;/li>
+&lt;li>&lt;code>sstream&lt;/code> 头文件：从字符串中读写数据，&lt;code>istringstream&lt;/code>、&lt;code>ostringstream&lt;/code> 等。&lt;/li>
+&lt;/ul></description></item><item><title>C++ Primer Ch07</title><link>https://3000ye.com/p/c-primer-ch07/</link><pubDate>Sun, 10 Dec 2023 14:35:42 +0800</pubDate><guid>https://3000ye.com/p/c-primer-ch07/</guid><description>&lt;img src="https://3000ye.com/p/c-primer-ch07/assets/c++primer.jpg" alt="Featured image of post C++ Primer Ch07" />&lt;h1 id="类">类&lt;/h1>
+&lt;p>类的基本思想是 &lt;strong>数据抽象（data abstraction）&lt;/strong> 和 &lt;strong>封装（encapsulation）&lt;/strong>。数据抽象是一种依赖于 &lt;strong>接口（interface）&lt;/strong> 和 &lt;strong>实现（implementation）&lt;/strong> 分离的编程（及设计）技术。类的接口包括用户所能执行的操作，类的实现则包括类的数据成员、负责接口实现的函数体以及定义类所需的各种私有函数。&lt;/p>
+&lt;p>封装实现了类的接口和实现的分离，封装后的类隐藏了它的实现细节，即类的用户只能使用接口而无法访问实现部分。&lt;/p>
+&lt;p>类要想实现数据抽象和封装，首先需要定义一个 &lt;strong>抽象数据类型（abstract data type）&lt;/strong>。&lt;/p>
+&lt;h2 id="定义抽象数据类型">定义抽象数据类型&lt;/h2>
+&lt;h2 id="访问控制与封装">访问控制与封装&lt;/h2>
+&lt;p>我们为类定义了接口之后，没有任何机制强制用户使用这些接口，我们的类还没有进行封装。在 &lt;code>C++&lt;/code> 中使用 &lt;strong>访问说明符（access specifiers）&lt;/strong> 加强类的封装：&lt;/p>
+&lt;ul>
+&lt;li>定义在 &lt;code>public&lt;/code> 说明符之后的成员，在整个程序内都可被访问。&lt;/li>
+&lt;li>定义在 &lt;code>private&lt;/code> 说明符之后的成员，只能被类的成员访问，即隐藏了这些成员的实现。&lt;/li>
+&lt;/ul>
+&lt;p>定义新的 &lt;code>Sales_data&lt;/code> 类：&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt"> 1
+&lt;/span>&lt;span class="lnt"> 2
+&lt;/span>&lt;span class="lnt"> 3
+&lt;/span>&lt;span class="lnt"> 4
+&lt;/span>&lt;span class="lnt"> 5
+&lt;/span>&lt;span class="lnt"> 6
+&lt;/span>&lt;span class="lnt"> 7
+&lt;/span>&lt;span class="lnt"> 8
+&lt;/span>&lt;span class="lnt"> 9
+&lt;/span>&lt;span class="lnt">10
+&lt;/span>&lt;span class="lnt">11
+&lt;/span>&lt;span class="lnt">12
+&lt;/span>&lt;span class="lnt">13
+&lt;/span>&lt;span class="lnt">14
+&lt;/span>&lt;span class="lnt">15
+&lt;/span>&lt;span class="lnt">16
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-cpp" data-lang="cpp">&lt;span class="line">&lt;span class="cl">&lt;span class="k">class&lt;/span> &lt;span class="nc">Sales_data&lt;/span> &lt;span class="p">{&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">private&lt;/span>&lt;span class="o">:&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">std&lt;/span>&lt;span class="o">::&lt;/span>&lt;span class="n">string&lt;/span> &lt;span class="n">bookNo&lt;/span>&lt;span class="p">;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="kt">unsigned&lt;/span> &lt;span class="n">units_sold&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="mi">0&lt;/span>&lt;span class="p">;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="kt">double&lt;/span> &lt;span class="n">revenue&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="mf">0.0&lt;/span>&lt;span class="p">;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="kt">double&lt;/span> &lt;span class="nf">avg_price&lt;/span>&lt;span class="p">()&lt;/span> &lt;span class="k">const&lt;/span> &lt;span class="p">{&lt;/span> &lt;span class="k">return&lt;/span> &lt;span class="n">units_sold&lt;/span> &lt;span class="o">?&lt;/span> &lt;span class="n">revenue&lt;/span> &lt;span class="o">/&lt;/span> &lt;span class="nl">units_sold&lt;/span> &lt;span class="p">:&lt;/span> &lt;span class="mi">0&lt;/span>&lt;span class="p">;&lt;/span> &lt;span class="p">}&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">public&lt;/span>&lt;span class="o">:&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">Sales_data&lt;/span>&lt;span class="p">()&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="k">default&lt;/span>&lt;span class="p">;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">Sales_data&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="k">const&lt;/span> &lt;span class="n">std&lt;/span>&lt;span class="o">::&lt;/span>&lt;span class="n">string&lt;/span> &lt;span class="o">&amp;amp;&lt;/span>&lt;span class="n">s&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="kt">unsigned&lt;/span> &lt;span class="n">n&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="kt">double&lt;/span> &lt;span class="n">p&lt;/span>&lt;span class="p">)&lt;/span>&lt;span class="o">:&lt;/span> &lt;span class="n">bookNo&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">s&lt;/span>&lt;span class="p">),&lt;/span> &lt;span class="n">units_sold&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">n&lt;/span>&lt;span class="p">),&lt;/span> &lt;span class="n">revenue&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">p&lt;/span> &lt;span class="o">*&lt;/span> &lt;span class="n">n&lt;/span>&lt;span class="p">)&lt;/span> &lt;span class="p">{}&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">Sales_data&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="k">const&lt;/span> &lt;span class="n">std&lt;/span>&lt;span class="o">::&lt;/span>&lt;span class="n">string&lt;/span> &lt;span class="o">&amp;amp;&lt;/span>&lt;span class="n">s&lt;/span>&lt;span class="p">)&lt;/span>&lt;span class="o">:&lt;/span> &lt;span class="n">bookNo&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">s&lt;/span>&lt;span class="p">)&lt;/span> &lt;span class="p">{}&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">Sales_data&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">std&lt;/span>&lt;span class="o">::&lt;/span>&lt;span class="n">istream&lt;/span>&lt;span class="o">&amp;amp;&lt;/span>&lt;span class="p">);&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">std&lt;/span>&lt;span class="o">::&lt;/span>&lt;span class="n">string&lt;/span> &lt;span class="n">isbn&lt;/span>&lt;span class="p">()&lt;/span> &lt;span class="k">const&lt;/span> &lt;span class="p">{&lt;/span> &lt;span class="k">return&lt;/span> &lt;span class="n">bookNo&lt;/span>&lt;span class="p">;&lt;/span> &lt;span class="p">};&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">Sales_data&lt;/span> &lt;span class="o">&amp;amp;&lt;/span>&lt;span class="n">combine&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="k">const&lt;/span> &lt;span class="n">Sales_data&lt;/span>&lt;span class="o">&amp;amp;&lt;/span>&lt;span class="p">);&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="p">};&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div></description></item><item><title>C++ Primer Ch06</title><link>https://3000ye.com/p/c-primer-ch06/</link><pubDate>Fri, 08 Dec 2023 21:13:28 +0800</pubDate><guid>https://3000ye.com/p/c-primer-ch06/</guid><description>&lt;img src="https://3000ye.com/p/c-primer-ch06/assets/c++primer.jpg" alt="Featured image of post C++ Primer Ch06" />&lt;h1 id="函数">函数&lt;/h1>
+&lt;p>函数是一个命名了的代码块，我们通过调用函数执行响应的代码。函数可以有 0 个或多个参数，而且（通常）会返回一个结果。可以重载函数，即同一个名字可以对应几个不同的函数。&lt;/p>
+&lt;h2 id="函数基础">函数基础&lt;/h2>
+&lt;p>一个典型的 &lt;strong>函数（function）&lt;/strong> 定义包括以下部分：返回类型（return type）、函数名字、由 0 个或多个 &lt;strong>形参（parameter）&lt;/strong> 组成的列表以及函数体。&lt;/p>
+&lt;p>我们通过 &lt;strong>调用运算符（call operator）&lt;/strong> 来执行函数：调用运算符的形式是一对圆括号，它作用于一个表达式，该表达式是函数或者指向函数的指针；圆括号之内是一个用逗号隔开的 &lt;strong>实参（argument）&lt;/strong> 列表，我们用实参初始化函数的形参，调用表达式的类型就是函数返回的类型。&lt;/p>
+&lt;p>&lt;strong>编写函数&lt;/strong>：例如编写一个求 &lt;code>n&lt;/code> 的阶乘的函数：&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
+&lt;/span>&lt;span class="lnt">2
+&lt;/span>&lt;span class="lnt">3
+&lt;/span>&lt;span class="lnt">4
+&lt;/span>&lt;span class="lnt">5
+&lt;/span>&lt;span class="lnt">6
+&lt;/span>&lt;span class="lnt">7
+&lt;/span>&lt;span class="lnt">8
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-cpp" data-lang="cpp">&lt;span class="line">&lt;span class="cl">&lt;span class="kt">int&lt;/span> &lt;span class="nf">fact&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="kt">int&lt;/span> &lt;span class="n">n&lt;/span>&lt;span class="p">)&lt;/span> &lt;span class="p">{&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="kt">int&lt;/span> &lt;span class="n">res&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="mi">1&lt;/span>&lt;span class="p">;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">while&lt;/span> &lt;span class="p">(&lt;/span>&lt;span class="n">n&lt;/span> &lt;span class="o">&amp;gt;&lt;/span> &lt;span class="mi">1&lt;/span>&lt;span class="p">)&lt;/span> &lt;span class="p">{&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">res&lt;/span> &lt;span class="o">*=&lt;/span> &lt;span class="n">n&lt;/span> &lt;span class="o">--&lt;/span>&lt;span class="p">;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">}&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">return&lt;/span> &lt;span class="n">res&lt;/span>&lt;span class="p">;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="p">}&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;p>&lt;strong>调用函数&lt;/strong>：要调用 &lt;code>fact&lt;/code> 函数，首先需要提供一个整数，得到的返回结果也是一个整数值：&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
+&lt;/span>&lt;span class="lnt">2
+&lt;/span>&lt;span class="lnt">3
+&lt;/span>&lt;span class="lnt">4
+&lt;/span>&lt;span class="lnt">5
+&lt;/span>&lt;span class="lnt">6
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-cpp" data-lang="cpp">&lt;span class="line">&lt;span class="cl">&lt;span class="kt">int&lt;/span> &lt;span class="nf">main&lt;/span>&lt;span class="p">()&lt;/span> &lt;span class="p">{&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="kt">int&lt;/span> &lt;span class="n">x&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="n">fact&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="mi">5&lt;/span>&lt;span class="p">);&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">cout&lt;/span> &lt;span class="o">&amp;lt;&amp;lt;&lt;/span> &lt;span class="s">&amp;#34;5! = &amp;#34;&lt;/span> &lt;span class="o">&amp;lt;&amp;lt;&lt;/span> &lt;span class="n">x&lt;/span> &lt;span class="o">&amp;lt;&amp;lt;&lt;/span> &lt;span class="n">endl&lt;/span>&lt;span class="p">;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">return&lt;/span> &lt;span class="mi">0&lt;/span>&lt;span class="p">;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="p">}&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;p>函数的调用完成两项工作：实参初始化函数对应的形参，将控制权转移给被调函数。此时，&lt;strong>主调函数（calling funciton）&lt;/strong> 的执行暂停，&lt;strong>被调函数（called funciton）&lt;/strong> 开始执行。&lt;/p>
+&lt;h3 id="局部对象">局部对象&lt;/h3>
+&lt;p>在 &lt;code>C++&lt;/code> 语言中，名字有作用域，对象有 &lt;strong>生命周期（lifetime）&lt;/strong>：&lt;/p>
+&lt;ul>
+&lt;li>名字的作用域是程序文本的一部分，名字在其中可见。&lt;/li>
+&lt;li>对象的生命周期是程序执行过程中该对象存在的一段时间。&lt;/li>
+&lt;/ul>
+&lt;p>在函数体内，形参和内部定义的变量统称为 &lt;strong>局部变量（local variable）&lt;/strong>，它们对函数而言是“局部”饿，仅在函数的作用域内可见，同时局部变量还会 **隐藏（hide）**在外层作用域中同名的其他声明中。&lt;/p>
+&lt;p>&lt;strong>局部静态对象&lt;/strong>：某些时候，有必要令局部变量的生命周期贯穿函数调用及之后的时间。可以将局部变量定义成 &lt;code>static&lt;/code> 类型从而获得这样的对象，&lt;strong>局部静态对象（local static object）&lt;/strong> 在程序的执行路径第一次经过对象定义语句时初始化，并且直到程序终止才被销毁，在此期间即使对象所在的函数结束执行也不会对它有影响。&lt;/p>
+&lt;h2 id="参数传递">参数传递&lt;/h2></description></item><item><title>C++ Primer Ch04</title><link>https://3000ye.com/p/c-primer-ch04/</link><pubDate>Tue, 28 Nov 2023 08:49:13 +0800</pubDate><guid>https://3000ye.com/p/c-primer-ch04/</guid><description>&lt;img src="https://3000ye.com/p/c-primer-ch04/assets/c++primer.jpg" alt="Featured image of post C++ Primer Ch04" />&lt;h1 id="表达式">表达式&lt;/h1>
+&lt;p>表达式由一个或多个 &lt;strong>运算对象（operand）&lt;/strong> 组成对表达式求值将得到一个 &lt;strong>结果（result）&lt;/strong>。&lt;/p>
+&lt;h2 id="基础">基础&lt;/h2>
+&lt;h3 id="基本概念">基本概念&lt;/h3>
+&lt;p>&lt;code>C++&lt;/code> 定义了一元运算符（unary operator）和二元运算符（binary operator），分别作用于一个运算对象和两个运算对象。此外，还有三元运算符，有些运算符既是一元也是二元运算符。&lt;/p>
+&lt;p>对于含有多个运算符的复杂表达式，首先需要理解运算符的：优先级（precedence）、结合律（associativity）以及运算对象的求值顺序（order of evaluation）。&lt;/p>
+&lt;p>在表达式求值过程中，小整数类型（&lt;code>bool&lt;/code>、&lt;code>char&lt;/code>、&lt;code>short&lt;/code>）等通常会被 &lt;strong>提升（promoted）&lt;/strong> 成较大的整数类型（&lt;code>int&lt;/code>）。&lt;/p>
+&lt;p>当运算符作用在类类型的运算对象时，用户可以自定定义其含义，称为 &lt;strong>重载运算符（overloaded operator）&lt;/strong>。&lt;/p>
+&lt;p>&lt;code>C++&lt;/code> 的表达式要不然是 &lt;strong>右值（rvalue）&lt;/strong>，要不然就是 &lt;strong>左值（lvalue）&lt;/strong>，这两个名词是从 &lt;code>C&lt;/code> 继承过来的。当一个对象被用作右值的时候，用的是对象的值（内容）；当对象被用作左值的时候，用的是对象的身份（在内存中的位置）。&lt;/p>
+&lt;h3 id="求值顺序">求值顺序&lt;/h3>
+&lt;p>在大多数情况下，表达式求值的顺序是没有明确指定的：&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-cpp" data-lang="cpp">&lt;span class="line">&lt;span class="cl">&lt;span class="kt">int&lt;/span> &lt;span class="n">i&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="n">f1&lt;/span>&lt;span class="p">()&lt;/span> &lt;span class="o">*&lt;/span> &lt;span class="n">f2&lt;/span>&lt;span class="p">()&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;p>我们知道 &lt;code>f1&lt;/code> 和 &lt;code>f2&lt;/code> 一定会在执行乘法之前被调用，但是无法知道是 &lt;code>f1&lt;/code> 先被调用还是 &lt;code>f2&lt;/code> 先被调用。对于没有指定调用顺序的程序来说，如果 &lt;code>f1&lt;/code> 和 &lt;code>f2&lt;/code> 同时修改了同一个对象，将会引发错误并产生未定义的行为。&lt;/p>
+&lt;h2 id="算术运算符">算术运算符&lt;/h2>
+&lt;p>&lt;strong>溢出&lt;/strong>：当计算的结果超出该类型所能表示的范围时就会产生溢出。&lt;/p>
+&lt;p>&lt;strong>&lt;code>bool&lt;/code> 类型不应该参与计算&lt;/strong>。&lt;/p>
+&lt;p>&lt;strong>取余运算&lt;/strong>：&lt;code>m % n&lt;/code> 的结果的符号与 &lt;code>m&lt;/code> 相同。&lt;/p>
+&lt;h2 id="逻辑运算符">逻辑运算符&lt;/h2>
+&lt;p>&lt;strong>短路求值&lt;/strong>：逻辑与运算符和逻辑或运算符都是先求左侧运算对象的值，再求右侧运算对象的值，当且仅当左侧运算对象无法确定表达式的结果时才会计算右侧运算对象的值。&lt;/p>
+&lt;h2 id="赋值运算符">赋值运算符&lt;/h2></description></item><item><title>C++ Primer Ch03</title><link>https://3000ye.com/p/c-primer-ch03/</link><pubDate>Tue, 14 Nov 2023 22:14:23 +0800</pubDate><guid>https://3000ye.com/p/c-primer-ch03/</guid><description>&lt;img src="https://3000ye.com/p/c-primer-ch03/assets/c++primer.jpg" alt="Featured image of post C++ Primer Ch03" />&lt;h1 id="字符串向量和数组">字符串、向量和数组&lt;/h1>
+&lt;h2 id="命名空间的-using-声明">命名空间的 &lt;code>using&lt;/code> 声明&lt;/h2>
+&lt;p>我们使用的库函数都有一个对应的命名空间，通常需要在声明或初始化变量时指定命名空间。为了简化这个操作，我们可以使用&lt;code>using&lt;/code>进行声明：&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
+&lt;/span>&lt;span class="lnt">2
+&lt;/span>&lt;span class="lnt">3
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-cpp" data-lang="cpp">&lt;span class="line">&lt;span class="cl">&lt;span class="k">using&lt;/span> &lt;span class="n">std&lt;/span>&lt;span class="o">::&lt;/span>&lt;span class="n">cout&lt;/span>&lt;span class="p">;&lt;/span> &lt;span class="c1">// 单独使用某个函数
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="k">using&lt;/span> &lt;span class="k">namespace&lt;/span> &lt;span class="n">std&lt;/span>&lt;span class="p">;&lt;/span> &lt;span class="c1">// 批量声明 std 中所有函数
+&lt;/span>&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;blockquote>
+&lt;p>头文件中不应该包含 &lt;code>using&lt;/code> 声明，这样使用了该头文件的源文件也会使用这个声明，会带来风险。&lt;/p>
+&lt;/blockquote>
+&lt;h2 id="标准库类型-string">标准库类型 &lt;code>string&lt;/code>&lt;/h2>
+&lt;p>标准库类型 &lt;code>string&lt;/code> 表示可变长的字符序列，使用 &lt;code>string&lt;/code> 类型必须首先包含 &lt;code>string&lt;/code> 头文件：&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
+&lt;/span>&lt;span class="lnt">2
+&lt;/span>&lt;span class="lnt">3
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-cpp" data-lang="cpp">&lt;span class="line">&lt;span class="cl">&lt;span class="cp">#include&lt;/span> &lt;span class="cpf">&amp;lt;string&amp;gt;&lt;/span>&lt;span class="cp">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="cp">&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="k">using&lt;/span> &lt;span class="n">std&lt;/span>&lt;span class="o">::&lt;/span>&lt;span class="n">string&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;h3 id="定义和初始化-string-对象">定义和初始化 &lt;code>string&lt;/code> 对象&lt;/h3>
+&lt;p>初始化 &lt;code>string&lt;/code> 对象的方式：&lt;/p>
+&lt;table>
+&lt;thead>
+&lt;tr>
+&lt;th>方式&lt;/th>
+&lt;th>解释&lt;/th>
+&lt;/tr>
+&lt;/thead>
+&lt;tbody>
+&lt;tr>
+&lt;td>&lt;code>string s1&lt;/code>&lt;/td>
+&lt;td>默认初始化，&lt;code>s1&lt;/code>是个空字符串&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>&lt;code>string s2(s1)&lt;/code>&lt;/td>
+&lt;td>&lt;code>s2&lt;/code>是&lt;code>s1&lt;/code>的副本&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>&lt;code>string s2 = s1&lt;/code>&lt;/td>
+&lt;td>等价于&lt;code>s2(s1)&lt;/code>，&lt;code>s2&lt;/code>是&lt;code>s1&lt;/code>的副本&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>&lt;code>string s3(&amp;quot;value&amp;quot;)&lt;/code>&lt;/td>
+&lt;td>&lt;code>s3&lt;/code>是字面值“value”的副本，除了字面值最后的那个空字符外&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>&lt;code>string s3 = &amp;quot;value&amp;quot;&lt;/code>&lt;/td>
+&lt;td>等价于&lt;code>s3(&amp;quot;value&amp;quot;)&lt;/code>，&lt;code>s3&lt;/code>是字面值&amp;quot;value&amp;quot;的副本&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>&lt;code>string s4(n, 'c')&lt;/code>&lt;/td>
+&lt;td>把&lt;code>s4&lt;/code>初始化为由连续&lt;code>n&lt;/code>个字符&lt;code>c&lt;/code>组成的串&lt;/td>
+&lt;/tr>
+&lt;/tbody>
+&lt;/table>
+&lt;p>拷贝初始化（copy initialization）：使用 &lt;code>=&lt;/code> 将一个已有的对象拷贝到正在创建的对象。&lt;/p>
+&lt;p>直接初始化（direct initialization）：通过括号给对象赋值。&lt;/p>
+&lt;h3 id="string-对象的操作">&lt;code>string&lt;/code> 对象的操作&lt;/h3>
+&lt;p>&lt;code>string&lt;/code>的操作：&lt;/p>
+&lt;table>
+&lt;thead>
+&lt;tr>
+&lt;th>操作&lt;/th>
+&lt;th>解释&lt;/th>
+&lt;/tr>
+&lt;/thead>
+&lt;tbody>
+&lt;tr>
+&lt;td>&lt;code>os &amp;lt;&amp;lt; s&lt;/code>&lt;/td>
+&lt;td>将&lt;code>s&lt;/code>写到输出流&lt;code>os&lt;/code>当中，返回&lt;code>os&lt;/code>&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>&lt;code>is &amp;gt;&amp;gt; s&lt;/code>&lt;/td>
+&lt;td>从&lt;code>is&lt;/code>中读取字符串赋给&lt;code>s&lt;/code>，字符串以空白分割，返回&lt;code>is&lt;/code>&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>&lt;code>getline(is, s)&lt;/code>&lt;/td>
+&lt;td>从&lt;code>is&lt;/code>中读取一行赋给&lt;code>s&lt;/code>，返回&lt;code>is&lt;/code>&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>&lt;code>s.empty()&lt;/code>&lt;/td>
+&lt;td>&lt;code>s&lt;/code>为空返回&lt;code>true&lt;/code>，否则返回&lt;code>false&lt;/code>&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>&lt;code>s.size()&lt;/code>&lt;/td>
+&lt;td>返回&lt;code>s&lt;/code>中字符的个数&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>&lt;code>s[n]&lt;/code>&lt;/td>
+&lt;td>返回&lt;code>s&lt;/code>中第&lt;code>n&lt;/code>个字符的引用，位置&lt;code>n&lt;/code>从0计起&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>&lt;code>s1+s2&lt;/code>&lt;/td>
+&lt;td>返回&lt;code>s1&lt;/code>和&lt;code>s2&lt;/code>连接后的结果&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>&lt;code>s1=s2&lt;/code>&lt;/td>
+&lt;td>用&lt;code>s2&lt;/code>的副本代替&lt;code>s1&lt;/code>中原来的字符&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>&lt;code>s1==s2&lt;/code>&lt;/td>
+&lt;td>如果&lt;code>s1&lt;/code>和&lt;code>s2&lt;/code>中所含的字符完全一样，则它们相等；&lt;code>string&lt;/code>对象的相等性判断对字母的大小写敏感&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>&lt;code>s1!=s2&lt;/code>&lt;/td>
+&lt;td>同上&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>&lt;code>&amp;lt;&lt;/code>, &lt;code>&amp;lt;=&lt;/code>, &lt;code>&amp;gt;&lt;/code>, &lt;code>&amp;gt;=&lt;/code>&lt;/td>
+&lt;td>利用字符在字典中的顺序进行比较，且对字母的大小写敏感（对第一个不相同的位置进行比较）&lt;/td>
+&lt;/tr>
+&lt;/tbody>
+&lt;/table>
+&lt;p>读取 &lt;code>string&lt;/code> 对象：&lt;/p>
+&lt;ul>
+&lt;li>使用 &lt;code>IO&lt;/code> 操作符 &lt;code>&amp;gt;&amp;gt;&lt;/code> 读取：忽略开头的空白（空格符、换行符、制表符等），从第一个真正的字符开始读起，直到遇到下一个空白。&lt;/li>
+&lt;li>使用 &lt;code>getline()&lt;/code> 函数读取：将一整行读取为 &lt;code>string&lt;/code> 对象，包括空白。&lt;/li>
+&lt;/ul>
+&lt;p>&lt;code>s.size()&lt;/code> 返回 &lt;code>string::size_type&lt;/code> 类型，是 &lt;strong>无符号&lt;/strong> 类型的值，不能和 &lt;code>int&lt;/code> 混用。&lt;/p>
+&lt;p>&lt;code>s1 + s2&lt;/code> 使用时，必须保证至少其中一个为 &lt;code>string&lt;/code> 类型。例如：&lt;code>string s = &amp;quot;hello&amp;quot; + &amp;quot;world&amp;quot;&lt;/code> 错误，其 &lt;code>+&lt;/code> 两边都为字符串字面值。&lt;/p>
+&lt;p>&lt;strong>字符串字面值&lt;/strong> 和 &lt;code>string&lt;/code> 是不同的类型。&lt;/p>
+&lt;h3 id="处理-string-对象中的字符">处理 &lt;code>string&lt;/code> 对象中的字符&lt;/h3>
+&lt;p>&lt;code>C++&lt;/code> 修改了 &lt;code>c&lt;/code> 的标准库 &lt;code>ctype.h&lt;/code> 为 &lt;code>cctype&lt;/code>，其中定义了一组标准函数：&lt;/p>
+&lt;table>
+&lt;thead>
+&lt;tr>
+&lt;th>函数&lt;/th>
+&lt;th>解释&lt;/th>
+&lt;/tr>
+&lt;/thead>
+&lt;tbody>
+&lt;tr>
+&lt;td>&lt;code>isalnum(c)&lt;/code>&lt;/td>
+&lt;td>当&lt;code>c&lt;/code>是字母或数字时为真&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>&lt;code>isalpha(c)&lt;/code>&lt;/td>
+&lt;td>当&lt;code>c&lt;/code>是字母时为真&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>&lt;code>iscntrl(c)&lt;/code>&lt;/td>
+&lt;td>当&lt;code>c&lt;/code>是控制字符时为真&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>&lt;code>isdigit(c)&lt;/code>&lt;/td>
+&lt;td>当&lt;code>c&lt;/code>是数字时为真&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>&lt;code>isgraph(c)&lt;/code>&lt;/td>
+&lt;td>当&lt;code>c&lt;/code>不是空格但可以打印时为真&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>&lt;code>islower(c)&lt;/code>&lt;/td>
+&lt;td>当&lt;code>c&lt;/code>是小写字母时为真&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>&lt;code>isprint(c)&lt;/code>&lt;/td>
+&lt;td>当&lt;code>c&lt;/code>是可打印字符时为真&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>&lt;code>ispunct(c)&lt;/code>&lt;/td>
+&lt;td>当&lt;code>c&lt;/code>是标点符号时为真&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>&lt;code>isspace(c)&lt;/code>&lt;/td>
+&lt;td>当&lt;code>c&lt;/code>是空白时为真（空格、横向制表符、纵向制表符、回车符、换行符、进纸符）&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>&lt;code>isupper(c)&lt;/code>&lt;/td>
+&lt;td>当&lt;code>c&lt;/code>是大写字母时为真&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>&lt;code>isxdigit(c)&lt;/code>&lt;/td>
+&lt;td>当&lt;code>c&lt;/code>是十六进制数字时为真&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>&lt;code>tolower(c)&lt;/code>&lt;/td>
+&lt;td>当&lt;code>c&lt;/code>是大写字母，输出对应的小写字母；否则原样输出&lt;code>c&lt;/code>&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>&lt;code>toupper(c)&lt;/code>&lt;/td>
+&lt;td>当&lt;code>c&lt;/code>是小写字母，输出对应的大写字母；否则原样输出&lt;code>c&lt;/code>&lt;/td>
+&lt;/tr>
+&lt;/tbody>
+&lt;/table>
+&lt;p>遍历字符串：&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
+&lt;/span>&lt;span class="lnt">2
+&lt;/span>&lt;span class="lnt">3
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-cpp" data-lang="cpp">&lt;span class="line">&lt;span class="cl">&lt;span class="k">for&lt;/span> &lt;span class="p">(&lt;/span>&lt;span class="k">auto&lt;/span> &lt;span class="nl">c&lt;/span> &lt;span class="p">:&lt;/span> &lt;span class="n">str&lt;/span>&lt;span class="p">)&lt;/span> &lt;span class="p">{&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">...&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="p">}&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;p>&lt;code>str[idx]&lt;/code> 中的 &lt;code>idx&lt;/code> 为 &lt;code>string::size_type&lt;/code> 类型，如果使用 &lt;code>int&lt;/code> 会隐式转换为该类型。&lt;/p>
+&lt;h2 id="标准库类型-vector">标准库类型 &lt;code>vector&lt;/code>&lt;/h2>
+&lt;p>标准库类型 &lt;code>vector&lt;/code> 表示对象的集合，其中给所有对象的类型都相同。因为 &lt;code>vector&lt;/code> 容纳着其他对象，所以称其为 &lt;strong>容器（container）&lt;/strong>，使用 &lt;code>vector&lt;/code> 必须包含其头文件：&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
+&lt;/span>&lt;span class="lnt">2
+&lt;/span>&lt;span class="lnt">3
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-cpp" data-lang="cpp">&lt;span class="line">&lt;span class="cl">&lt;span class="cp">#include&lt;/span> &lt;span class="cpf">&amp;lt;vector&amp;gt;&lt;/span>&lt;span class="cp">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="cp">&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="k">using&lt;/span> &lt;span class="n">std&lt;/span>&lt;span class="o">::&lt;/span>&lt;span class="n">vector&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;p>&lt;code>vector&lt;/code> 同时也是 &lt;strong>类模板（class template）&lt;/strong>，模板本身不是类或函数，但可以使用模板创建类，这个过程称为 &lt;strong>实例化（instantiation）&lt;/strong>。&lt;/p>
+&lt;p>当使用模板时，需要指出编译器应把类或函数实例化成何种类型：&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
+&lt;/span>&lt;span class="lnt">2
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-cpp" data-lang="cpp">&lt;span class="line">&lt;span class="cl">&lt;span class="n">vector&lt;/span>&lt;span class="o">&amp;lt;&lt;/span>&lt;span class="kt">int&lt;/span>&lt;span class="o">&amp;gt;&lt;/span> &lt;span class="n">ls&lt;/span>&lt;span class="p">;&lt;/span> &lt;span class="c1">// ls 保存 int 类型的对象
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">&lt;/span>&lt;span class="n">vector&lt;/span>&lt;span class="o">&amp;lt;&lt;/span>&lt;span class="n">vector&lt;/span>&lt;span class="o">&amp;lt;&lt;/span>&lt;span class="n">string&lt;/span>&lt;span class="o">&amp;gt;&amp;gt;&lt;/span> &lt;span class="n">files&lt;/span>&lt;span class="p">;&lt;/span> &lt;span class="c1">// 该向量中的元素是 vector 对象
+&lt;/span>&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;blockquote>
+&lt;p>&lt;code>vector&lt;/code> 是模板，&lt;code>vector&amp;lt;int&amp;gt;&lt;/code> 是类型。&lt;/p>
+&lt;/blockquote>
+&lt;h3 id="定义和初始化-vector-对象">定义和初始化 &lt;code>vector&lt;/code> 对象&lt;/h3>
+&lt;p>初始化&lt;code>vector&lt;/code>对象的方法：&lt;/p>
+&lt;table>
+&lt;thead>
+&lt;tr>
+&lt;th>方法&lt;/th>
+&lt;th>解释&lt;/th>
+&lt;/tr>
+&lt;/thead>
+&lt;tbody>
+&lt;tr>
+&lt;td>&lt;code>vector&amp;lt;T&amp;gt; v1&lt;/code>&lt;/td>
+&lt;td>&lt;code>v1&lt;/code>是一个空&lt;code>vector&lt;/code>，它潜在的元素是&lt;code>T&lt;/code>类型的，执行默认初始化&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>&lt;code>vector&amp;lt;T&amp;gt; v2(v1)&lt;/code>&lt;/td>
+&lt;td>&lt;code>v2&lt;/code>中包含有&lt;code>v1&lt;/code>所有元素的副本&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>&lt;code>vector&amp;lt;T&amp;gt; v2 = v1&lt;/code>&lt;/td>
+&lt;td>等价于&lt;code>v2(v1)&lt;/code>，&lt;code>v2&lt;/code>中包含&lt;code>v1&lt;/code>所有元素的副本&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>&lt;code>vector&amp;lt;T&amp;gt; v3(n, val)&lt;/code>&lt;/td>
+&lt;td>&lt;code>v3&lt;/code>包含了n个重复的元素，每个元素的值都是&lt;code>val&lt;/code>&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>&lt;code>vector&amp;lt;T&amp;gt; v4(n)&lt;/code>&lt;/td>
+&lt;td>&lt;code>v4&lt;/code>包含了n个重复地执行了值初始化的对象&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>&lt;code>vector&amp;lt;T&amp;gt; v5{a, b, c...}&lt;/code>&lt;/td>
+&lt;td>&lt;code>v5&lt;/code>包含了初始值个数的元素，每个元素被赋予相应的初始值&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>&lt;code>vector&amp;lt;T&amp;gt; v5={a, b, c...}&lt;/code>&lt;/td>
+&lt;td>等价于&lt;code>v5{a, b, c...}&lt;/code>&lt;/td>
+&lt;/tr>
+&lt;/tbody>
+&lt;/table>
+&lt;h3 id="vector-对象的操作">&lt;code>vector&lt;/code> 对象的操作：&lt;/h3>
+&lt;p>&lt;code>vector&lt;/code>支持的操作：&lt;/p>
+&lt;table>
+&lt;thead>
+&lt;tr>
+&lt;th>操作&lt;/th>
+&lt;th>解释&lt;/th>
+&lt;/tr>
+&lt;/thead>
+&lt;tbody>
+&lt;tr>
+&lt;td>&lt;code>v.emtpy()&lt;/code>&lt;/td>
+&lt;td>如果&lt;code>v&lt;/code>不含有任何元素，返回真；否则返回假&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>&lt;code>v.size()&lt;/code>&lt;/td>
+&lt;td>返回&lt;code>v&lt;/code>中元素的个数&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>&lt;code>v.push_back(t)&lt;/code>&lt;/td>
+&lt;td>向&lt;code>v&lt;/code>的尾端添加一个值为&lt;code>t&lt;/code>的元素&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>&lt;code>v[n]&lt;/code>&lt;/td>
+&lt;td>返回&lt;code>v&lt;/code>中第&lt;code>n&lt;/code>个位置上元素的&lt;strong>引用&lt;/strong>&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>&lt;code>v1 = v2&lt;/code>&lt;/td>
+&lt;td>用&lt;code>v2&lt;/code>中的元素拷贝替换&lt;code>v1&lt;/code>中的元素&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>&lt;code>v1 = {a,b,c...}&lt;/code>&lt;/td>
+&lt;td>用列表中元素的拷贝替换&lt;code>v1&lt;/code>中的元素&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>&lt;code>v1 == v2&lt;/code>&lt;/td>
+&lt;td>&lt;code>v1&lt;/code>和&lt;code>v2&lt;/code>相等当且仅当它们的元素数量相同且对应位置的元素值都相同&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>&lt;code>v1 != v2&lt;/code>&lt;/td>
+&lt;td>同上&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>&lt;code>&amp;lt;&lt;/code>,&lt;code>&amp;lt;=&lt;/code>,&lt;code>&amp;gt;&lt;/code>, &lt;code>&amp;gt;=&lt;/code>&lt;/td>
+&lt;td>以字典顺序进行比较&lt;/td>
+&lt;/tr>
+&lt;/tbody>
+&lt;/table>
+&lt;h2 id="迭代器介绍">迭代器介绍&lt;/h2>
+&lt;p>除了下标运算符外，&lt;strong>迭代器（iterator）&lt;/strong> 也可以访问对象中的元素，所有标准库的容器都支持迭代器。类似于指针类型，迭代器也提供了对对象的间接访问。&lt;/p>
+&lt;h3 id="使用迭代器">使用迭代器&lt;/h3>
+&lt;p>拥有迭代器的类型都具有 &lt;code>begin&lt;/code> 和 &lt;code>end&lt;/code> 成员，其中 &lt;code>begin&lt;/code> 成员返回指向第一个元素的迭代器：&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
+&lt;/span>&lt;span class="lnt">2
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-cpp" data-lang="cpp">&lt;span class="line">&lt;span class="cl">&lt;span class="n">vector&lt;/span>&lt;span class="o">&amp;lt;&lt;/span>&lt;span class="kt">int&lt;/span>&lt;span class="o">&amp;gt;&lt;/span> &lt;span class="n">ls&lt;/span>&lt;span class="p">{&lt;/span>&lt;span class="mi">1&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="mi">2&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="mi">3&lt;/span>&lt;span class="p">};&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="k">auto&lt;/span> &lt;span class="n">b&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="n">v&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="n">begin&lt;/span>&lt;span class="p">(),&lt;/span> &lt;span class="n">e&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="n">v&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="n">end&lt;/span>&lt;span class="p">();&lt;/span> &lt;span class="c1">// b 和 e 类型相同
+&lt;/span>&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;p>&lt;code>end&lt;/code> 成员返回指向容器“尾元素的下一个位置（one past the end）”的迭代器，即 &lt;code>end&lt;/code> 指向容器的 &lt;strong>尾后（off the end）&lt;/strong> 元素。这样的迭代器通常没有意义，只是作为标记，被称为 &lt;strong>尾后迭代器（off-the-end iterator）&lt;/strong> 或 &lt;strong>尾迭代器（end iterator）&lt;/strong>。&lt;/p>
+&lt;blockquote>
+&lt;p>若容器为空，则 &lt;code>begin&lt;/code> 和 &lt;code>end&lt;/code> 都返回尾后迭代器。&lt;/p>
+&lt;/blockquote>
+&lt;p>标准容器迭代器的运算符:&lt;/p>
+&lt;table>
+&lt;thead>
+&lt;tr>
+&lt;th>运算符&lt;/th>
+&lt;th>解释&lt;/th>
+&lt;/tr>
+&lt;/thead>
+&lt;tbody>
+&lt;tr>
+&lt;td>&lt;code>*iter&lt;/code>&lt;/td>
+&lt;td>返回迭代器&lt;code>iter&lt;/code>所指向的&lt;strong>元素的引用&lt;/strong>&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>&lt;code>iter-&amp;gt;mem&lt;/code>&lt;/td>
+&lt;td>等价于&lt;code>(*iter).mem&lt;/code>&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>&lt;code>++iter&lt;/code>&lt;/td>
+&lt;td>令&lt;code>iter&lt;/code>指示容器中的下一个元素&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>&lt;code>--iter&lt;/code>&lt;/td>
+&lt;td>令&lt;code>iter&lt;/code>指示容器中的上一个元素&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>&lt;code>iter1 == iter2&lt;/code>&lt;/td>
+&lt;td>判断两个迭代器是否相等&lt;/td>
+&lt;/tr>
+&lt;/tbody>
+&lt;/table>
+&lt;blockquote>
+&lt;p>泛型编程：尽量使用 &lt;code>!=&lt;/code> 来对迭代器进行判断&lt;/p>
+&lt;/blockquote>
+&lt;p>迭代器也拥有自己的类型：&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
+&lt;/span>&lt;span class="lnt">2
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-cpp" data-lang="cpp">&lt;span class="line">&lt;span class="cl">&lt;span class="n">vector&lt;/span>&lt;span class="o">&amp;lt;&lt;/span>&lt;span class="kt">int&lt;/span>&lt;span class="o">&amp;gt;::&lt;/span>&lt;span class="n">iterator&lt;/span> &lt;span class="n">it&lt;/span>&lt;span class="p">;&lt;/span> &lt;span class="c1">// it 是 vector&amp;lt;int&amp;gt; 类型的迭代器，可以读写元素
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">&lt;/span>&lt;span class="n">vector&lt;/span>&lt;span class="o">&amp;lt;&lt;/span>&lt;span class="kt">int&lt;/span>&lt;span class="o">&amp;gt;::&lt;/span>&lt;span class="n">const_iterator&lt;/span> &lt;span class="n">it2&lt;/span>&lt;span class="p">;&lt;/span> &lt;span class="c1">// it2 只能读，不能写
+&lt;/span>&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;p>如果容器中的值为常量，则 &lt;code>begin&lt;/code> 和 &lt;code>end&lt;/code> 返回 &lt;code>const_iterator&lt;/code>，否则返回 &lt;code>iterator&lt;/code>。&lt;/p>
+&lt;p>解引用和成员访问：解引用迭代器可以获得迭代器所指的对象，如果该对象是一个类，则可以进一步访问其成员：&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
+&lt;/span>&lt;span class="lnt">2
+&lt;/span>&lt;span class="lnt">3
+&lt;/span>&lt;span class="lnt">4
+&lt;/span>&lt;span class="lnt">5
+&lt;/span>&lt;span class="lnt">6
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-cpp" data-lang="cpp">&lt;span class="line">&lt;span class="cl">&lt;span class="n">vector&lt;/span>&lt;span class="o">&amp;lt;&lt;/span>&lt;span class="n">string&lt;/span>&lt;span class="o">&amp;gt;&lt;/span> &lt;span class="n">ls&lt;/span>&lt;span class="p">{&lt;/span>&lt;span class="s">&amp;#34;str1&amp;#34;&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="s">&amp;#34;str2&amp;#34;&lt;/span>&lt;span class="p">};&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="k">auto&lt;/span> &lt;span class="n">it&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="n">ls&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="n">begin&lt;/span>&lt;span class="p">();&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">string&lt;/span> &lt;span class="n">s&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="o">*&lt;/span>&lt;span class="n">it&lt;/span>&lt;span class="p">;&lt;/span> &lt;span class="c1">// s 为 &amp;#34;str1&amp;#34;
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">&lt;/span>&lt;span class="kt">bool&lt;/span> &lt;span class="n">flag&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="p">(&lt;/span>&lt;span class="o">*&lt;/span>&lt;span class="n">it&lt;/span>&lt;span class="p">).&lt;/span>&lt;span class="n">empty&lt;/span>&lt;span class="p">();&lt;/span> &lt;span class="c1">// 解引用访问 string 成员
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">&lt;/span>&lt;span class="kt">bool&lt;/span> &lt;span class="n">flag&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="n">it&lt;/span>&lt;span class="o">-&amp;gt;&lt;/span>&lt;span class="n">empty&lt;/span>&lt;span class="p">();&lt;/span> &lt;span class="c1">// 作用同上
+&lt;/span>&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;h3 id="迭代器运算">迭代器运算&lt;/h3>
+&lt;p>&lt;code>string&lt;/code> 和 &lt;code>vector&lt;/code> 的迭代器提供了额外的运算符，支持迭代器的关系运算和跨过多个元素，这些运算称为 &lt;strong>迭代器运算（iterator arithmetic）&lt;/strong>：&lt;/p>
+&lt;table>
+&lt;thead>
+&lt;tr>
+&lt;th>运算符&lt;/th>
+&lt;th>解释&lt;/th>
+&lt;/tr>
+&lt;/thead>
+&lt;tbody>
+&lt;tr>
+&lt;td>&lt;code>iter + n&lt;/code>&lt;/td>
+&lt;td>迭代器加上一个整数值仍得到一个迭代器，迭代器指示的新位置和原来相比向前移动了若干个元素。结果迭代器或者指示容器内的一个元素，或者指示容器尾元素的下一位置。&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>&lt;code>iter - n&lt;/code>&lt;/td>
+&lt;td>迭代器减去一个整数仍得到一个迭代器，迭代器指示的新位置比原来向后移动了若干个元素。结果迭代器或者指向容器内的一个元素，或者指示容器尾元素的下一位置。&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>&lt;code>iter1 += n&lt;/code>&lt;/td>
+&lt;td>迭代器加法的复合赋值语句，将&lt;code>iter1&lt;/code>加n的结果赋给&lt;code>iter1&lt;/code>&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>&lt;code>iter1 -= n&lt;/code>&lt;/td>
+&lt;td>迭代器减法的复合赋值语句，将&lt;code>iter2&lt;/code>减n的加过赋给&lt;code>iter1&lt;/code>&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>&lt;code>iter1 - iter2&lt;/code>&lt;/td>
+&lt;td>两个迭代器相减的结果是它们之间的距离，也就是说，将运算符右侧的迭代器向前移动差值个元素后得到左侧的迭代器。参与运算的两个迭代器必须指向的是同一个容器中的元素或者尾元素的下一位置。&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>&lt;code>&amp;gt;&lt;/code>、&lt;code>&amp;gt;=&lt;/code>、&lt;code>&amp;lt;&lt;/code>、&lt;code>&amp;lt;=&lt;/code>&lt;/td>
+&lt;td>迭代器的关系运算符，如果某迭代器&lt;/td>
+&lt;/tr>
+&lt;/tbody>
+&lt;/table>
+&lt;p>当两个迭代器指向同一个容器时，它们可以进行加减操作得到距离，这个距离的类型为 &lt;code>difference_type&lt;/code> 类型，是带符号整数型。&lt;/p>
+&lt;h2 id="数组">数组&lt;/h2>
+&lt;p>数组可以看做 &lt;code>vector&lt;/code> 的低配版，其 &lt;strong>长度固定&lt;/strong>。&lt;/p>
+&lt;h3 id="定义和初始化内置数组">定义和初始化内置数组&lt;/h3>
+&lt;p>数组的声明和定义形如 &lt;code>a[d]&lt;/code>，其中 &lt;code>a&lt;/code> 是数组的名字，&lt;code>d&lt;/code> 是数组的维度（大于 0）：&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
+&lt;/span>&lt;span class="lnt">2
+&lt;/span>&lt;span class="lnt">3
+&lt;/span>&lt;span class="lnt">4
+&lt;/span>&lt;span class="lnt">5
+&lt;/span>&lt;span class="lnt">6
+&lt;/span>&lt;span class="lnt">7
+&lt;/span>&lt;span class="lnt">8
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-cpp" data-lang="cpp">&lt;span class="line">&lt;span class="cl">&lt;span class="kt">int&lt;/span> &lt;span class="n">cnt&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="mi">42&lt;/span>&lt;span class="p">;&lt;/span> &lt;span class="c1">// 非常量
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">&lt;/span>&lt;span class="k">const&lt;/span> &lt;span class="kt">int&lt;/span> &lt;span class="n">cnt2&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="mi">42&lt;/span>&lt;span class="p">;&lt;/span> &lt;span class="c1">// 常量
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="kt">int&lt;/span> &lt;span class="n">arr&lt;/span>&lt;span class="p">[&lt;/span>&lt;span class="mi">10&lt;/span>&lt;span class="p">];&lt;/span> &lt;span class="c1">// 含有 10 个整数的数组
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">&lt;/span>&lt;span class="kt">int&lt;/span> &lt;span class="o">*&lt;/span>&lt;span class="n">arr2&lt;/span>&lt;span class="p">[&lt;/span>&lt;span class="mi">10&lt;/span>&lt;span class="p">];&lt;/span> &lt;span class="c1">// 含有 10 个整型指针的数组
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">&lt;/span>&lt;span class="kt">int&lt;/span> &lt;span class="n">arr3&lt;/span>&lt;span class="p">[&lt;/span>&lt;span class="n">cnt&lt;/span>&lt;span class="p">];&lt;/span> &lt;span class="c1">// 报错，cnt 非常量
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">&lt;/span>&lt;span class="kt">int&lt;/span> &lt;span class="n">arr4&lt;/span>&lt;span class="p">[&lt;/span>&lt;span class="n">cnt2&lt;/span>&lt;span class="p">];&lt;/span> &lt;span class="c1">// 含有 42 和整数的数组
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">&lt;/span>&lt;span class="kt">int&lt;/span> &lt;span class="n">arr5&lt;/span>&lt;span class="p">[]&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="p">{&lt;/span>&lt;span class="mi">1&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="mi">2&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="mi">3&lt;/span>&lt;span class="p">};&lt;/span> &lt;span class="c1">// 自动计算长度的数组
+&lt;/span>&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;p>字符数组具有一定特殊性，使用字符串初始化字符数组时在结尾处必须增加一个空字符：&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
+&lt;/span>&lt;span class="lnt">2
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-cpp" data-lang="cpp">&lt;span class="line">&lt;span class="cl">&lt;span class="kt">char&lt;/span> &lt;span class="n">arr&lt;/span>&lt;span class="p">[]&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="s">&amp;#34;hello&amp;#34;&lt;/span>&lt;span class="p">;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="kt">char&lt;/span> &lt;span class="n">arr2&lt;/span>&lt;span class="p">[&lt;/span>&lt;span class="mi">5&lt;/span>&lt;span class="p">]&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="s">&amp;#34;hello&amp;#34;&lt;/span>&lt;span class="p">;&lt;/span> &lt;span class="c1">// 报错，长度不够
+&lt;/span>&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;p>不能将数组的内容拷贝给其他数组作为其初始值，也不能用数组为其他数组赋值：&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
+&lt;/span>&lt;span class="lnt">2
+&lt;/span>&lt;span class="lnt">3
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-cpp" data-lang="cpp">&lt;span class="line">&lt;span class="cl">&lt;span class="kt">int&lt;/span> &lt;span class="n">a&lt;/span>&lt;span class="p">[]&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="p">{&lt;/span>&lt;span class="mi">1&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="mi">2&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="mi">3&lt;/span>&lt;span class="p">};&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="kt">int&lt;/span> &lt;span class="n">a2&lt;/span>&lt;span class="p">[]&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="n">a&lt;/span>&lt;span class="p">;&lt;/span> &lt;span class="c1">// 报错，不能用数组来初始化数组
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">&lt;/span>&lt;span class="n">a2&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="n">a&lt;/span>&lt;span class="p">;&lt;/span> &lt;span class="c1">// 报错，不能用数组进行赋值
+&lt;/span>&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;h3 id="访问数组元素">访问数组元素&lt;/h3>
+&lt;p>数组的下标为 &lt;code>size_t&lt;/code> 类型，是一种机器相关的无符号类型，它被设计得足够大以便能够表示内存中任意对象的大小。&lt;/p>
+&lt;blockquote>
+&lt;p>下标存在越界导致缓冲区溢出等情况，这种情况需要程序员自行检查。&lt;/p>
+&lt;/blockquote>
+&lt;h3 id="指针和数组">指针和数组&lt;/h3>
+&lt;p>使用数组时，编译器会将其转换成指针。使用取地址符可以获取数组的元素的指针，如果是取数组的指针，则默认返回数组第一个元素的指针：&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
+&lt;/span>&lt;span class="lnt">2
+&lt;/span>&lt;span class="lnt">3
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-cpp" data-lang="cpp">&lt;span class="line">&lt;span class="cl">&lt;span class="kt">int&lt;/span> &lt;span class="n">ls&lt;/span>&lt;span class="p">[]&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="p">{&lt;/span>&lt;span class="mi">1&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="mi">2&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="mi">3&lt;/span>&lt;span class="p">}&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="kt">int&lt;/span> &lt;span class="o">*&lt;/span>&lt;span class="n">p&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="o">&amp;amp;&lt;/span>&lt;span class="n">ls&lt;/span>&lt;span class="p">[&lt;/span>&lt;span class="mi">0&lt;/span>&lt;span class="p">];&lt;/span> &lt;span class="c1">// 数组的元素的指针
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">&lt;/span>&lt;span class="kt">int&lt;/span> &lt;span class="o">*&lt;/span>&lt;span class="n">p2&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="n">ls&lt;/span>&lt;span class="p">;&lt;/span> &lt;span class="c1">// 等价于 *p2 = &amp;amp;ls[0]
+&lt;/span>&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;h3 id="c-风格字符串">&lt;code>C&lt;/code> 风格字符串&lt;/h3>
+&lt;p>字符串字面值是一种通用结构的实例，这种结构是 &lt;code>C++&lt;/code> 由 &lt;code>C&lt;/code> 继承而来的 &lt;strong>&lt;code>C&lt;/code> 风格字符串（C-style character string）&lt;/strong> 。
+按此习惯书写的字符串存放在字符数组中并以 &lt;strong>空字符结束（null terminated）&lt;/strong>。&lt;/p>
+&lt;blockquote>
+&lt;p>在 &lt;code>C++&lt;/code> 程序中尽量不要使用 &lt;code>C&lt;/code> 风格字符串，容易引起安全漏洞且不方便。&lt;/p>
+&lt;/blockquote>
+&lt;p>C标准库String函数，定义在&lt;code>&amp;lt;cstring&amp;gt;&lt;/code> 中：&lt;/p>
+&lt;table>
+&lt;thead>
+&lt;tr>
+&lt;th>函数&lt;/th>
+&lt;th>介绍&lt;/th>
+&lt;/tr>
+&lt;/thead>
+&lt;tbody>
+&lt;tr>
+&lt;td>&lt;code>strlen(p)&lt;/code>&lt;/td>
+&lt;td>返回&lt;code>p&lt;/code>的长度，空字符不计算在内&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>&lt;code>strcmp(p1, p2)&lt;/code>&lt;/td>
+&lt;td>比较&lt;code>p1&lt;/code>和&lt;code>p2&lt;/code>的相等性。如果&lt;code>p1==p2&lt;/code>，返回0；如果&lt;code>p1&amp;gt;p2&lt;/code>，返回一个正值；如果&lt;code>p1&amp;lt;p2&lt;/code>，返回一个负值。&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>&lt;code>strcat(p1, p2)&lt;/code>&lt;/td>
+&lt;td>将&lt;code>p2&lt;/code>附加到&lt;code>p1&lt;/code>之后，返回&lt;code>p1&lt;/code>&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>&lt;code>strcpy(p1, p2)&lt;/code>&lt;/td>
+&lt;td>将&lt;code>p2&lt;/code>拷贝给&lt;code>p1&lt;/code>，返回&lt;code>p1&lt;/code>&lt;/td>
+&lt;/tr>
+&lt;/tbody>
+&lt;/table>
+&lt;h2 id="多维数组">多维数组&lt;/h2>
+&lt;p>严格来说，&lt;code>C++&lt;/code> 语言中没有多维数组，所谓的多维数组实际是数组的数组。&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-cpp" data-lang="cpp">&lt;span class="line">&lt;span class="cl">&lt;span class="kt">int&lt;/span> &lt;span class="n">arr&lt;/span>&lt;span class="p">[&lt;/span>&lt;span class="mi">10&lt;/span>&lt;span class="p">][&lt;/span>&lt;span class="mi">20&lt;/span>&lt;span class="p">]&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="p">{&lt;/span>&lt;span class="mi">0&lt;/span>&lt;span class="p">};&lt;/span> &lt;span class="c1">// 长度为 10 的数组，其中每个元素是长度为 20 的数组，且都初始化为 0
+&lt;/span>&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;h3 id="使用范围-for-语句处理多维数组">使用范围 &lt;code>for&lt;/code> 语句处理多维数组&lt;/h3>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
+&lt;/span>&lt;span class="lnt">2
+&lt;/span>&lt;span class="lnt">3
+&lt;/span>&lt;span class="lnt">4
+&lt;/span>&lt;span class="lnt">5
+&lt;/span>&lt;span class="lnt">6
+&lt;/span>&lt;span class="lnt">7
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-cpp" data-lang="cpp">&lt;span class="line">&lt;span class="cl">&lt;span class="n">size_t&lt;/span> &lt;span class="n">cnt&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="mi">0&lt;/span>&lt;span class="p">;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="k">for&lt;/span> &lt;span class="p">(&lt;/span>&lt;span class="k">auto&lt;/span> &lt;span class="o">&amp;amp;&lt;/span>&lt;span class="nl">row&lt;/span>&lt;span class="p">:&lt;/span> &lt;span class="n">arr&lt;/span>&lt;span class="p">)&lt;/span> &lt;span class="p">{&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">for&lt;/span> &lt;span class="p">(&lt;/span>&lt;span class="k">auto&lt;/span> &lt;span class="o">&amp;amp;&lt;/span>&lt;span class="nl">col&lt;/span>&lt;span class="p">:&lt;/span> &lt;span class="n">row&lt;/span>&lt;span class="p">)&lt;/span> &lt;span class="p">{&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">col&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="n">cnt&lt;/span>&lt;span class="p">;&lt;/span> &lt;span class="n">cnt&lt;/span> &lt;span class="o">++&lt;/span>&lt;span class="p">;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">}&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="p">}&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div></description></item><item><title>C++ Primer Ch02</title><link>https://3000ye.com/p/c-primer-ch02/</link><pubDate>Mon, 06 Nov 2023 22:34:55 +0800</pubDate><guid>https://3000ye.com/p/c-primer-ch02/</guid><description>&lt;img src="https://3000ye.com/p/c-primer-ch02/assets/c++primer.jpg" alt="Featured image of post C++ Primer Ch02" />&lt;h1 id="变量和基本类型">变量和基本类型&lt;/h1>
+&lt;p>变量提供一个具名的、可供程序操作的存储空间。&lt;code>C++&lt;/code>中每个变量都有其数据类型，数据类型决定着变量所占内存空间的大小和布局方式、该空间能存储的值的范围，以及变量能参与的运算。&lt;/p>
+&lt;h2 id="变量的声明和定义">变量的声明和定义&lt;/h2>
+&lt;p>为了允许把程序拆分成多个逻辑部分来编写，&lt;code>C++&lt;/code>语言支持&lt;strong>分离式编译（separate complication）&lt;/strong> 机制，该机制允许将程序分割为若干个文件，每个文件可被独立编译。&lt;/p>
+&lt;p>为了支持分离式编译，&lt;code>C++&lt;/code>语言将声明和定义区分开来。&lt;strong>声明（declaration）&lt;/strong> 使得名字为程序所致，一个文件如果想使用别处定义的的名字则必须包含对那个名字的声明。而 &lt;strong>定义（definition）&lt;/strong> 负责创建与名字关联的实体。&lt;/p>
+&lt;p>变量声明规定了变量的类型和名字，定义在此基础上，还申请存储空间，甚至可能会为变量赋一个初始值。&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
+&lt;/span>&lt;span class="lnt">2
+&lt;/span>&lt;span class="lnt">3
+&lt;/span>&lt;span class="lnt">4
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-cpp" data-lang="cpp">&lt;span class="line">&lt;span class="cl">&lt;span class="k">extern&lt;/span> &lt;span class="kt">int&lt;/span> &lt;span class="n">i&lt;/span>&lt;span class="p">;&lt;/span> &lt;span class="c1">// 声明
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">&lt;/span>&lt;span class="kt">int&lt;/span> &lt;span class="n">i&lt;/span>&lt;span class="p">;&lt;/span> &lt;span class="c1">// 定义
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">&lt;/span>&lt;span class="kt">int&lt;/span> &lt;span class="n">i&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="mi">3&lt;/span>&lt;span class="p">;&lt;/span> &lt;span class="c1">// 定义并赋值
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">&lt;/span>&lt;span class="k">extern&lt;/span> &lt;span class="kt">int&lt;/span> &lt;span class="n">i&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="mi">3&lt;/span>&lt;span class="p">;&lt;/span> &lt;span class="c1">// 定义而非声明，extern失效
+&lt;/span>&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;p>&lt;strong>注意：&lt;/strong> 变量只能被定义一次，但可以被多次声明。因此在多个文件中使用同一个变量名时，需要多次声明，但只能有且仅在一个文件中定义。&lt;/p>
+&lt;h3 id="标识符">标识符&lt;/h3>
+&lt;p>&lt;code>C++&lt;/code>的 &lt;strong>标识符（identifier）&lt;/strong> 由字母、数字和下划线组成，其中必须以字母或下划线开头，没有长度限制，但对大小写敏感。&lt;/p>
+&lt;h3 id="作用域">作用域&lt;/h3>
+&lt;p>&lt;strong>作用域（scope）&lt;/strong> 是程序的一部分，在其中名字有特定的含义，&lt;code>C++&lt;/code>语言中大多数作用域都以花括号分隔。&lt;/p>
+&lt;p>作用域能彼此包含，被包含（嵌套）的作用域称为 &lt;strong>内层作用域（inner scope）&lt;/strong>，包含着别的作用域的作用域称为 &lt;strong>外层作用域（outer scope）&lt;/strong>。作用域中一旦声明了某个名字，它所嵌套着的所有作用域中都能访问该名字，同时允许在内层作用域中重新定义外层作用域已有的名字。&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt"> 1
+&lt;/span>&lt;span class="lnt"> 2
+&lt;/span>&lt;span class="lnt"> 3
+&lt;/span>&lt;span class="lnt"> 4
+&lt;/span>&lt;span class="lnt"> 5
+&lt;/span>&lt;span class="lnt"> 6
+&lt;/span>&lt;span class="lnt"> 7
+&lt;/span>&lt;span class="lnt"> 8
+&lt;/span>&lt;span class="lnt"> 9
+&lt;/span>&lt;span class="lnt">10
+&lt;/span>&lt;span class="lnt">11
+&lt;/span>&lt;span class="lnt">12
+&lt;/span>&lt;span class="lnt">13
+&lt;/span>&lt;span class="lnt">14
+&lt;/span>&lt;span class="lnt">15
+&lt;/span>&lt;span class="lnt">16
+&lt;/span>&lt;span class="lnt">17
+&lt;/span>&lt;span class="lnt">18
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-cpp" data-lang="cpp">&lt;span class="line">&lt;span class="cl">&lt;span class="cp">#include&lt;/span> &lt;span class="cpf">&amp;#34;iostream&amp;#34;&lt;/span>&lt;span class="cp">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="cp">&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="kt">int&lt;/span> &lt;span class="n">outer&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="mi">42&lt;/span>&lt;span class="p">;&lt;/span> &lt;span class="c1">// 全局作用域
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="kt">int&lt;/span> &lt;span class="nf">main&lt;/span>&lt;span class="p">()&lt;/span> &lt;span class="p">{&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="kt">int&lt;/span> &lt;span class="n">inner&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="mi">12&lt;/span>&lt;span class="p">;&lt;/span> &lt;span class="c1">// 内层作用域
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">&lt;/span> &lt;span class="c1">// 使用全局变量输出
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">&lt;/span> &lt;span class="n">std&lt;/span>&lt;span class="o">::&lt;/span>&lt;span class="n">cout&lt;/span> &lt;span class="o">&amp;lt;&amp;lt;&lt;/span> &lt;span class="n">outer&lt;/span> &lt;span class="o">&amp;lt;&amp;lt;&lt;/span> &lt;span class="s">&amp;#34; &amp;#34;&lt;/span> &lt;span class="o">&amp;lt;&amp;lt;&lt;/span> &lt;span class="n">inner&lt;/span> &lt;span class="o">&amp;lt;&amp;lt;&lt;/span> &lt;span class="n">std&lt;/span>&lt;span class="o">::&lt;/span>&lt;span class="n">endl&lt;/span>&lt;span class="p">;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="kt">int&lt;/span> &lt;span class="n">outer&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="mi">0&lt;/span>&lt;span class="p">;&lt;/span> &lt;span class="c1">// 局部重新定义，覆盖全局变量
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">&lt;/span> &lt;span class="c1">// 使用局部变量输出
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">&lt;/span> &lt;span class="n">std&lt;/span>&lt;span class="o">::&lt;/span>&lt;span class="n">cout&lt;/span> &lt;span class="o">&amp;lt;&amp;lt;&lt;/span> &lt;span class="n">outer&lt;/span> &lt;span class="o">&amp;lt;&amp;lt;&lt;/span> &lt;span class="s">&amp;#34; &amp;#34;&lt;/span> &lt;span class="o">&amp;lt;&amp;lt;&lt;/span> &lt;span class="n">inner&lt;/span> &lt;span class="o">&amp;lt;&amp;lt;&lt;/span> &lt;span class="n">std&lt;/span>&lt;span class="o">::&lt;/span>&lt;span class="n">endl&lt;/span>&lt;span class="p">;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="c1">// 显式访问全局变量
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">&lt;/span> &lt;span class="n">std&lt;/span>&lt;span class="o">::&lt;/span>&lt;span class="n">cout&lt;/span> &lt;span class="o">&amp;lt;&amp;lt;&lt;/span> &lt;span class="o">::&lt;/span>&lt;span class="n">outer&lt;/span> &lt;span class="o">&amp;lt;&amp;lt;&lt;/span> &lt;span class="s">&amp;#34; &amp;#34;&lt;/span> &lt;span class="o">&amp;lt;&amp;lt;&lt;/span> &lt;span class="n">inner&lt;/span> &lt;span class="o">&amp;lt;&amp;lt;&lt;/span> &lt;span class="n">std&lt;/span>&lt;span class="o">::&lt;/span>&lt;span class="n">endl&lt;/span>&lt;span class="p">;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">return&lt;/span> &lt;span class="mi">0&lt;/span>&lt;span class="p">;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="p">}&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;h2 id="复合类型">复合类型&lt;/h2>
+&lt;p>&lt;strong>复合类型（compound type）&lt;/strong> 是指基于其他类型定义的类型，主要介绍引用和指针。&lt;/p>
+&lt;h3 id="引用">引用&lt;/h3>
+&lt;p>&lt;strong>引用（reference）&lt;/strong> 为对象起了另外一个名字，定义引用时，程序把引用和它的初始值 &lt;strong>绑定（bind）&lt;/strong> 在一起，而不是将初始者拷贝给引用。&lt;/p>
+&lt;blockquote>
+&lt;p>引用并非对象，相反的，它只是为一个已经存在的对象所起的另一个名字。&lt;/p>
+&lt;/blockquote>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt"> 1
+&lt;/span>&lt;span class="lnt"> 2
+&lt;/span>&lt;span class="lnt"> 3
+&lt;/span>&lt;span class="lnt"> 4
+&lt;/span>&lt;span class="lnt"> 5
+&lt;/span>&lt;span class="lnt"> 6
+&lt;/span>&lt;span class="lnt"> 7
+&lt;/span>&lt;span class="lnt"> 8
+&lt;/span>&lt;span class="lnt"> 9
+&lt;/span>&lt;span class="lnt">10
+&lt;/span>&lt;span class="lnt">11
+&lt;/span>&lt;span class="lnt">12
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-cpp" data-lang="cpp">&lt;span class="line">&lt;span class="cl">&lt;span class="cp">#include&lt;/span> &lt;span class="cpf">&amp;#34;iostream&amp;#34;&lt;/span>&lt;span class="cp">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="cp">&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="kt">int&lt;/span> &lt;span class="nf">main&lt;/span>&lt;span class="p">()&lt;/span> &lt;span class="p">{&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="kt">int&lt;/span> &lt;span class="n">x&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="mi">3&lt;/span>&lt;span class="p">;&lt;/span> &lt;span class="c1">// 定义
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">&lt;/span> &lt;span class="kt">int&lt;/span> &lt;span class="o">&amp;amp;&lt;/span>&lt;span class="n">y&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="n">x&lt;/span>&lt;span class="p">;&lt;/span> &lt;span class="c1">// 引用
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">&lt;/span> &lt;span class="kt">int&lt;/span> &lt;span class="n">z&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="n">x&lt;/span>&lt;span class="p">;&lt;/span> &lt;span class="c1">// 定义
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">y&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="mi">3&lt;/span>&lt;span class="p">;&lt;/span> &lt;span class="c1">// 修改 y 的值，实际是修改 x 的值
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">&lt;/span> &lt;span class="n">std&lt;/span>&lt;span class="o">::&lt;/span>&lt;span class="n">cout&lt;/span> &lt;span class="o">&amp;lt;&amp;lt;&lt;/span> &lt;span class="n">x&lt;/span> &lt;span class="o">&amp;lt;&amp;lt;&lt;/span> &lt;span class="s">&amp;#34; &amp;#34;&lt;/span> &lt;span class="o">&amp;lt;&amp;lt;&lt;/span> &lt;span class="n">y&lt;/span> &lt;span class="o">&amp;lt;&amp;lt;&lt;/span> &lt;span class="n">std&lt;/span>&lt;span class="o">::&lt;/span>&lt;span class="n">endl&lt;/span>&lt;span class="p">;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">return&lt;/span> &lt;span class="mi">0&lt;/span>&lt;span class="p">;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="p">}&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;h3 id="指针">指针&lt;/h3>
+&lt;p>&lt;strong>指针（pointer）&lt;/strong> 是“指向（point to）”另外一种类型的复合类型。与引用类似，指针也实现了对其他对象的间接访问，但指针还有很多不同点：&lt;/p>
+&lt;ul>
+&lt;li>指针本身就是一个对象，允许对指针赋值和拷贝，而且在指针的生命周期内它可以先后指向几个不同的对象。&lt;/li>
+&lt;li>指针无须在定义时赋初值，和其他内置类型一样，没有赋初值时将拥有一个不确定值。&lt;/li>
+&lt;/ul>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
+&lt;/span>&lt;span class="lnt">2
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-cpp" data-lang="cpp">&lt;span class="line">&lt;span class="cl">&lt;span class="kt">int&lt;/span> &lt;span class="o">*&lt;/span>&lt;span class="n">ip1&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="o">*&lt;/span>&lt;span class="n">ip2&lt;/span>&lt;span class="p">;&lt;/span> &lt;span class="c1">// ip1 和 ip2 都是指向 int 类型对象的指针
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">&lt;/span>&lt;span class="kt">double&lt;/span> &lt;span class="n">dp&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="o">*&lt;/span>&lt;span class="n">dp2&lt;/span>&lt;span class="p">;&lt;/span> &lt;span class="c1">// dp2 是指向 double 类型对象的指针，dp 是 double 类型对象
+&lt;/span>&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;p>指针存放某个对象的地址，想获取该地址，需要使用 &lt;strong>取地址符（&lt;code>&amp;amp;&lt;/code>）&lt;/strong>：&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
+&lt;/span>&lt;span class="lnt">2
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-cpp" data-lang="cpp">&lt;span class="line">&lt;span class="cl">&lt;span class="kt">int&lt;/span> &lt;span class="n">val&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="mi">42&lt;/span>&lt;span class="p">;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="kt">int&lt;/span> &lt;span class="o">*&lt;/span>&lt;span class="n">p&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="o">&amp;amp;&lt;/span>&lt;span class="n">val&lt;/span>&lt;span class="p">;&lt;/span> &lt;span class="c1">// p 存放变量 val 的地址，或者说 p 是指向变量 val 的指针
+&lt;/span>&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;blockquote>
+&lt;p>因为引用不是对象，没有实际地址，因此不能定义指向引用的指针。&lt;/p>
+&lt;/blockquote>
+&lt;p>指针的值（即地址）应属于下列 4 种状态之一：&lt;/p>
+&lt;ul>
+&lt;li>指向一个对象。&lt;/li>
+&lt;li>指向紧邻对象所占空间的下一个位置。&lt;/li>
+&lt;li>空指针，意味着指针没有指向任何对象。&lt;/li>
+&lt;li>无效指针，也就是上述情况之外的其他值。&lt;/li>
+&lt;/ul>
+&lt;p>如果指针指向了一个对象，则允许使用 &lt;strong>解引用符（&lt;code>*&lt;/code>）&lt;/strong> 来访问该对象：&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
+&lt;/span>&lt;span class="lnt">2
+&lt;/span>&lt;span class="lnt">3
+&lt;/span>&lt;span class="lnt">4
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-cpp" data-lang="cpp">&lt;span class="line">&lt;span class="cl">&lt;span class="kt">int&lt;/span> &lt;span class="n">val&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="mi">42&lt;/span>&lt;span class="p">;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="kt">int&lt;/span> &lt;span class="o">*&lt;/span>&lt;span class="n">p&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="o">&amp;amp;&lt;/span>&lt;span class="n">val&lt;/span>&lt;span class="p">;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">std&lt;/span>&lt;span class="o">::&lt;/span>&lt;span class="n">cout&lt;/span> &lt;span class="o">&amp;lt;&amp;lt;&lt;/span> &lt;span class="o">*&lt;/span>&lt;span class="n">p&lt;/span> &lt;span class="o">&amp;lt;&amp;lt;&lt;/span> &lt;span class="n">std&lt;/span>&lt;span class="o">::&lt;/span>&lt;span class="n">endl&lt;/span>&lt;span class="p">;&lt;/span> &lt;span class="c1">// 由符号 * 得到指针 p 所指的对象，输出 42
+&lt;/span>&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;blockquote>
+&lt;p>解引用操作仅适用于有效指针，无效指针无法解引用。&lt;/p>
+&lt;/blockquote>
+&lt;p>&lt;strong>空指针（null pointer）&lt;/strong> 不指向任何对象，在试图使用一个指针之前代码可以先检查其是否为空。&lt;/p>
+&lt;p>生成空指针：&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
+&lt;/span>&lt;span class="lnt">2
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-cpp" data-lang="cpp">&lt;span class="line">&lt;span class="cl">&lt;span class="kt">int&lt;/span> &lt;span class="o">*&lt;/span>&lt;span class="n">p1&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="k">nullptr&lt;/span>&lt;span class="p">;&lt;/span> &lt;span class="c1">// 等价于 int *p1 = 0
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">&lt;/span>&lt;span class="kt">int&lt;/span> &lt;span class="o">*&lt;/span>&lt;span class="n">p2&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="mi">0&lt;/span>&lt;span class="p">;&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;p>指针和引用都能提供对其他对象的间接访问，然而在具体实现细节上二者有很大不同，其中引用本身并非是一个对象。定义引用之后，就无法令其再绑定到另外的对象，之后每次使用这个引用都是访问它最初绑定的那个对象。&lt;/p>
+&lt;p>指针没有这种限制，给指针赋值就是令它存放一个新的地址，从而指向一个新的对象。&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
+&lt;/span>&lt;span class="lnt">2
+&lt;/span>&lt;span class="lnt">3
+&lt;/span>&lt;span class="lnt">4
+&lt;/span>&lt;span class="lnt">5
+&lt;/span>&lt;span class="lnt">6
+&lt;/span>&lt;span class="lnt">7
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-cpp" data-lang="cpp">&lt;span class="line">&lt;span class="cl">&lt;span class="kt">int&lt;/span> &lt;span class="n">i&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="mi">42&lt;/span>&lt;span class="p">;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="kt">int&lt;/span> &lt;span class="o">*&lt;/span>&lt;span class="n">pi&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="mi">0&lt;/span>&lt;span class="p">;&lt;/span> &lt;span class="c1">// pi 为空指针
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">&lt;/span>&lt;span class="kt">int&lt;/span> &lt;span class="o">*&lt;/span>&lt;span class="n">pi2&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="o">&amp;amp;&lt;/span>&lt;span class="n">i&lt;/span>&lt;span class="p">;&lt;/span> &lt;span class="c1">// pi2 存放 i 的地址
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">&lt;/span>&lt;span class="kt">int&lt;/span> &lt;span class="o">*&lt;/span>&lt;span class="n">pi3&lt;/span>&lt;span class="p">;&lt;/span> &lt;span class="c1">// pi3 的值无法确定
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">pi3&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="n">pi2&lt;/span>&lt;span class="p">;&lt;/span> &lt;span class="c1">// pi3 和 pi2 指向同一个对象 i
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">&lt;/span>&lt;span class="n">pi2&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="mi">0&lt;/span>&lt;span class="p">;&lt;/span> &lt;span class="c1">// pi2 变为空指针
+&lt;/span>&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;h2 id="const-限定符">const 限定符&lt;/h2>
+&lt;p>有时我们想定义这样一种变量，它的值不能被改变，这在程序运行过程中对于某些特定值非常有用。为了满足这一要求，可以使用关键字&lt;code>const&lt;/code>对变量的类型加以限定：&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-cpp" data-lang="cpp">&lt;span class="line">&lt;span class="cl">&lt;span class="k">const&lt;/span> &lt;span class="kt">int&lt;/span> &lt;span class="n">bufferSize&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="mi">512&lt;/span>&lt;span class="p">;&lt;/span> &lt;span class="c1">// 限定缓冲区大小为 512
+&lt;/span>&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;p>默认情况下，&lt;code>const&lt;/code>对象被设定为仅在单个文件内有效。当多个文件中出现了同名的&lt;code>const&lt;/code>变量时，其等同于在多个文件中分别定义了独立的变量。但当我们需要其在多个文件中保持一致时，需要在定义和声明前面都加上&lt;code>extern&lt;/code>：&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
+&lt;/span>&lt;span class="lnt">2
+&lt;/span>&lt;span class="lnt">3
+&lt;/span>&lt;span class="lnt">4
+&lt;/span>&lt;span class="lnt">5
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-cpp" data-lang="cpp">&lt;span class="line">&lt;span class="cl">&lt;span class="c1">// 定义文件 xxx.cpp
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">&lt;/span>&lt;span class="k">extern&lt;/span> &lt;span class="k">const&lt;/span> &lt;span class="kt">int&lt;/span> &lt;span class="n">bufferSize&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="mi">512&lt;/span>&lt;span class="p">;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">// 声明文件 xxx.hpp
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">&lt;/span>&lt;span class="k">extern&lt;/span> &lt;span class="k">const&lt;/span> &lt;span class="kt">int&lt;/span> &lt;span class="n">bufferSize&lt;/span>&lt;span class="p">;&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;h3 id="指针和-const">指针和 const&lt;/h3>
+&lt;p>与引用一样，也可以令指针指向常量与非常量。&lt;strong>指向常量的指针（pointer to const）&lt;/strong> 不能用于改变其所指对象的值。要想存放常量对象的地址，必须使用指向常量的指针：&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
+&lt;/span>&lt;span class="lnt">2
+&lt;/span>&lt;span class="lnt">3
+&lt;/span>&lt;span class="lnt">4
+&lt;/span>&lt;span class="lnt">5
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-cpp" data-lang="cpp">&lt;span class="line">&lt;span class="cl">&lt;span class="k">const&lt;/span> &lt;span class="kt">int&lt;/span> &lt;span class="n">val&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="mi">42&lt;/span>&lt;span class="p">;&lt;/span> &lt;span class="c1">// val 为常量对像，其值不能改变
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="kt">int&lt;/span> &lt;span class="o">*&lt;/span>&lt;span class="n">pi&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="o">&amp;amp;&lt;/span>&lt;span class="n">val&lt;/span>&lt;span class="p">;&lt;/span> &lt;span class="c1">// 报错，pi 为普通指针，不能存放常量对象地址
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">&lt;/span>&lt;span class="k">const&lt;/span> &lt;span class="kt">int&lt;/span> &lt;span class="o">*&lt;/span>&lt;span class="n">pi2&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="o">&amp;amp;&lt;/span>&lt;span class="n">val&lt;/span>&lt;span class="p">;&lt;/span> &lt;span class="c1">// 使用指向常量的指针存放常量对象地址
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">&lt;/span>&lt;span class="o">*&lt;/span>&lt;span class="n">pi2&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="mi">20&lt;/span>&lt;span class="p">;&lt;/span> &lt;span class="c1">// 报错，不能给指向常量的指针赋值
+&lt;/span>&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;h2 id="处理类型">处理类型&lt;/h2>
+&lt;p>随着程序越来越复杂，其中使用的变量类型也越复杂，如何处理这些类型成为一个问题。&lt;/p>
+&lt;h3 id="类型别名">类型别名&lt;/h3>
+&lt;p>&lt;strong>类型别名（type alias）&lt;/strong> 是一个名字，它是某种类型的同义词。&lt;/p>
+&lt;p>使用关键字&lt;code>typedef&lt;/code>定义类型别名：&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-cpp" data-lang="cpp">&lt;span class="line">&lt;span class="cl">&lt;span class="k">typedef&lt;/span> &lt;span class="kt">long&lt;/span> &lt;span class="kt">long&lt;/span> &lt;span class="n">ll&lt;/span>&lt;span class="p">;&lt;/span> &lt;span class="c1">// ll 是 long long 的同义词
+&lt;/span>&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;p>使用 &lt;strong>别名声明（alias declaration）&lt;/strong> 定义类型别名：&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-cpp" data-lang="cpp">&lt;span class="line">&lt;span class="cl">&lt;span class="k">using&lt;/span> &lt;span class="n">ll&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="kt">long&lt;/span> &lt;span class="kt">long&lt;/span>&lt;span class="p">;&lt;/span> &lt;span class="c1">// ll 是 long long 的同义词
+&lt;/span>&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;h3 id="auto-类型说明符">auto 类型说明符&lt;/h3>
+&lt;p>编程时常常需要将表达式的结果赋给变量，这就要求需要事先知道结果的类型。但是要做到这一点有时并不容易，因此&lt;code>C++11&lt;/code>引入了&lt;code>auto&lt;/code>类型说明符，它能自动分析表达式结果的类型。&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-cpp" data-lang="cpp">&lt;span class="line">&lt;span class="cl">&lt;span class="k">auto&lt;/span> &lt;span class="n">item&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="n">val1&lt;/span> &lt;span class="o">+&lt;/span> &lt;span class="n">val2&lt;/span>&lt;span class="p">;&lt;/span> &lt;span class="c1">// item 初始化为 val1 和 val2 相加的结果
+&lt;/span>&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;p>使用&lt;code>auto&lt;/code>定义或声明多个变量时，所有变量的类型必须一致：&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
+&lt;/span>&lt;span class="lnt">2
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-cpp" data-lang="cpp">&lt;span class="line">&lt;span class="cl">&lt;span class="k">auto&lt;/span> &lt;span class="n">x&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="mi">3&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="n">y&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="mi">5&lt;/span>&lt;span class="p">;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="k">auto&lt;/span> &lt;span class="n">x&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="mi">3&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="n">y&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="mf">4.2&lt;/span>&lt;span class="p">;&lt;/span> &lt;span class="c1">// 报错，同一行的变量类型必须一致
+&lt;/span>&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;h3 id="decltype-类型指示符">decltype 类型指示符&lt;/h3>
+&lt;p>有时会遇到这种情况：希望从表达式中推断出要定义的变量的类型，但是不想用该表达式的值初始化变量——即只使用表达式的数据类型，不使用表达式的结果。&lt;/p>
+&lt;p>因此&lt;code>C++11&lt;/code>引入了&lt;code>decltype&lt;/code>类型指示符，它的作用是返回操作数的数据类型：&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
+&lt;/span>&lt;span class="lnt">2
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-cpp" data-lang="cpp">&lt;span class="line">&lt;span class="cl">&lt;span class="kt">int&lt;/span> &lt;span class="n">x&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="mi">5&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="n">y&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="mi">7&lt;/span>&lt;span class="p">;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="k">decltype&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">x&lt;/span> &lt;span class="o">+&lt;/span> &lt;span class="n">y&lt;/span>&lt;span class="p">)&lt;/span> &lt;span class="n">z&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="mi">6&lt;/span>&lt;span class="p">;&lt;/span> &lt;span class="c1">// z 为 int 类型
+&lt;/span>&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;h2 id="自定义数据结构">自定义数据结构&lt;/h2>
+&lt;p>内置的数据类型并不能满足所有的需求，因此&lt;code>c++&lt;/code>提供了自定义数据类型的方式：&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt"> 1
+&lt;/span>&lt;span class="lnt"> 2
+&lt;/span>&lt;span class="lnt"> 3
+&lt;/span>&lt;span class="lnt"> 4
+&lt;/span>&lt;span class="lnt"> 5
+&lt;/span>&lt;span class="lnt"> 6
+&lt;/span>&lt;span class="lnt"> 7
+&lt;/span>&lt;span class="lnt"> 8
+&lt;/span>&lt;span class="lnt"> 9
+&lt;/span>&lt;span class="lnt">10
+&lt;/span>&lt;span class="lnt">11
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-cpp" data-lang="cpp">&lt;span class="line">&lt;span class="cl">&lt;span class="k">struct&lt;/span> &lt;span class="nc">student&lt;/span> &lt;span class="p">{&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">std&lt;/span>&lt;span class="o">::&lt;/span>&lt;span class="n">string&lt;/span> &lt;span class="n">name&lt;/span>&lt;span class="p">;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">std&lt;/span>&lt;span class="o">::&lt;/span>&lt;span class="n">string&lt;/span> &lt;span class="n">sex&lt;/span>&lt;span class="p">;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="kt">int&lt;/span> &lt;span class="n">gender&lt;/span>&lt;span class="p">;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="p">};&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">// 定义
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">&lt;/span>&lt;span class="n">student&lt;/span> &lt;span class="n">jack&lt;/span>&lt;span class="p">{&lt;/span>&lt;span class="s">&amp;#34;jack&amp;#34;&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="s">&amp;#34;m&amp;#34;&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="mi">18&lt;/span>&lt;span class="p">};&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">// 先声明后赋值
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">&lt;/span>&lt;span class="n">student&lt;/span> &lt;span class="n">castor&lt;/span>&lt;span class="p">;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">castor&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="n">name&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="s">&amp;#34;castor&amp;#34;&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="n">castor&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="n">sex&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="s">&amp;#34;m&amp;#34;&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="n">castor&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="n">gender&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="mi">18&lt;/span>&lt;span class="p">;&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;h3 id="自定义数据结构使用别名">自定义数据结构使用别名&lt;/h3>
+&lt;p>和内置数据类型一样，自定义数据结构也能使用别名：&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
+&lt;/span>&lt;span class="lnt">2
+&lt;/span>&lt;span class="lnt">3
+&lt;/span>&lt;span class="lnt">4
+&lt;/span>&lt;span class="lnt">5
+&lt;/span>&lt;span class="lnt">6
+&lt;/span>&lt;span class="lnt">7
+&lt;/span>&lt;span class="lnt">8
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-cpp" data-lang="cpp">&lt;span class="line">&lt;span class="cl">&lt;span class="k">using&lt;/span> &lt;span class="n">stu&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="n">studeng&lt;/span>&lt;span class="p">;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">// 或直接在定义时使用别名
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">&lt;/span>&lt;span class="k">using&lt;/span> &lt;span class="n">stu&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="k">struct&lt;/span> &lt;span class="nc">student&lt;/span> &lt;span class="p">{&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">std&lt;/span>&lt;span class="o">::&lt;/span>&lt;span class="n">string&lt;/span> &lt;span class="n">name&lt;/span>&lt;span class="p">;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">std&lt;/span>&lt;span class="o">::&lt;/span>&lt;span class="n">string&lt;/span> &lt;span class="n">sex&lt;/span>&lt;span class="p">;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="kt">int&lt;/span> &lt;span class="n">gender&lt;/span>&lt;span class="p">;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="p">};&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;h3 id="编写自己的头文件">编写自己的头文件&lt;/h3>
+&lt;p>当我们在编写头文件时，会引入其他头文件，而在生产文件中，又会再次引入这些头文件。这样就导致一个问题，某些头文件被重复引入了。因此，在编写头文件时需要做一定的保护措施：&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt"> 1
+&lt;/span>&lt;span class="lnt"> 2
+&lt;/span>&lt;span class="lnt"> 3
+&lt;/span>&lt;span class="lnt"> 4
+&lt;/span>&lt;span class="lnt"> 5
+&lt;/span>&lt;span class="lnt"> 6
+&lt;/span>&lt;span class="lnt"> 7
+&lt;/span>&lt;span class="lnt"> 8
+&lt;/span>&lt;span class="lnt"> 9
+&lt;/span>&lt;span class="lnt">10
+&lt;/span>&lt;span class="lnt">11
+&lt;/span>&lt;span class="lnt">12
+&lt;/span>&lt;span class="lnt">13
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-cpp" data-lang="cpp">&lt;span class="line">&lt;span class="cl">&lt;span class="c1">// studeng.h
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">&lt;/span>&lt;span class="cp">#ifndef STUDENT_H
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="cp">#define STUDENT_H
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="cp">&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="cp">#include&lt;/span> &lt;span class="cpf">&amp;#34;string&amp;#34;&lt;/span>&lt;span class="cp">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="cp">&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="k">struct&lt;/span> &lt;span class="nc">student&lt;/span> &lt;span class="p">{&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">std&lt;/span>&lt;span class="o">::&lt;/span>&lt;span class="n">string&lt;/span> &lt;span class="n">name&lt;/span>&lt;span class="p">;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">std&lt;/span>&lt;span class="o">::&lt;/span>&lt;span class="n">string&lt;/span> &lt;span class="n">sex&lt;/span>&lt;span class="p">;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="kt">int&lt;/span> &lt;span class="n">gender&lt;/span>&lt;span class="p">;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="p">};&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="cp">#endif
+&lt;/span>&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div></description></item></channel></rss>

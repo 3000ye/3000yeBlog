@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Data Structure on 3000ye's Blog</title><link>https://3000ye.com/tags/data-structure/</link><description>Recent content in Data Structure on 3000ye's Blog</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><lastBuildDate>Wed, 21 Feb 2024 19:14:32 +0800</lastBuildDate><atom:link href="https://3000ye.com/tags/data-structure/index.xml" rel="self" type="application/rss+xml"/><item><title>Linked List</title><link>https://3000ye.com/p/linked-list/</link><pubDate>Wed, 21 Feb 2024 19:14:32 +0800</pubDate><guid>https://3000ye.com/p/linked-list/</guid><description>&lt;img src="https://3000ye.com/p/linked-list/assets/dataStructures.jpg" alt="Featured image of post Linked List" />&lt;h1 id="数据结构链表">数据结构：链表&lt;/h1>
+&lt;h2 id="线性表">线性表&lt;/h2>
+&lt;p>线性表是具有&lt;strong>相同&lt;/strong>数据类型的 $n(n \ge 0)$ 个&lt;strong>数据元素&lt;/strong>的&lt;strong>有限序列&lt;/strong>，其中 $n$ 为&lt;strong>表长&lt;/strong>，当 $n = 0$ 时线性表是一个&lt;strong>空表&lt;/strong>。若用 $L$ 命名线性表，则其一般表示为：&lt;/p>
+&lt;p>$$
+L = (a_1, a_2, \cdots, a_i, a_{i + 1}, \cdots, a_n)
+$$&lt;/p>
+&lt;p>几个概念：&lt;/p>
+&lt;ul>
+&lt;li>$a_i$ 是线性表中的“第 $i$ 个”元素线性表中的&lt;strong>位序&lt;/strong>，位序从 $1$ 开始，数组下标从 $0$ 开始。&lt;/li>
+&lt;li>$a_1$ 是&lt;strong>表头元素&lt;/strong>，$a_n$ 是&lt;strong>表尾元素&lt;/strong>。&lt;/li>
+&lt;/ul>
+&lt;p>除第一个元素外，每个元素有且仅有一个&lt;strong>直接前驱&lt;/strong>；除最后一个元素外，每个元素有且仅有一个&lt;strong>直接后继&lt;/strong>。&lt;/p>
+&lt;p>线性表有两种存储方式，一种是顺序存储结构，另一种是链式存储结构。我们常用的数组就是一种典型的顺序存储结构。&lt;/p>
+&lt;h2 id="链表">链表&lt;/h2>
+&lt;p>链式存储结构就是两个相邻的元素在内存中可能不是相邻的，每一个元素都有一个指针域，指针域一般是存储着到下一个元素的指针。&lt;/p>
+&lt;p>这种存储方式的优点是定点插入和定点删除的时间复杂度为 $O(1)$，缺点是访问的时间复杂度最坏为 $O(n)$。&lt;/p>
+&lt;p>链表就是链式存储的线性表。根据指针域的不同，链表分为单向链表、双向链表、循环链表等等。&lt;/p>
+&lt;h3 id="单向链表">单向链表&lt;/h3>
+&lt;p>单向链表中包含数据域和指针域，其中数据域用于存放数据，指针域用来连接当前结点和下一节点。&lt;/p>
+&lt;div style='display: flex; justify-content: center;'>
+&lt;img src='https://oi-wiki.org/ds/images/list.svg' alt='img' style='zoom:100%;' />
+&lt;/div></description></item></channel></rss>

@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Beamer on 3000ye's Blog</title><link>https://3000ye.com/tags/beamer/</link><description>Recent content in Beamer on 3000ye's Blog</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><lastBuildDate>Fri, 16 Feb 2024 23:33:47 +0800</lastBuildDate><atom:link href="https://3000ye.com/tags/beamer/index.xml" rel="self" type="application/rss+xml"/><item><title>dhuBeamer</title><link>https://3000ye.com/p/dhubeamer/</link><pubDate>Fri, 16 Feb 2024 23:33:47 +0800</pubDate><guid>https://3000ye.com/p/dhubeamer/</guid><description>&lt;img src="https://3000ye.com/p/dhubeamer/assets/latex.jpg" alt="Featured image of post dhuBeamer" />&lt;h1 id="东华大学学术-beamer-模板">东华大学学术 Beamer 模板&lt;/h1>
+&lt;p>本模板为东华大学专用的学术报告 Slides 的 LaTeX Beamer 模板使用说明，主要特点为：&lt;/p>
+&lt;ul>
+&lt;li>设计元素全部来源于东华大学 &lt;a class="link" href="https://www.dhu.edu.cn/bsxt/listm.htm" target="_blank" rel="noopener"
+>标识系统&lt;/a>，浓浓的东华风。&lt;/li>
+&lt;li>Slides 整体风格借鉴了东华大学标准 PPT 模板与学术 PPT 模板（2020版，&lt;a class="link" href="https://www.dhu.edu.cn/_upload/article/files/d2/8c/2137ec0c44238fd6fbd3ee28ff07/9f9b566a-67f1-4717-991f-477ee5b43acb.zip" target="_blank" rel="noopener"
+>模板连接&lt;/a>）。&lt;/li>
+&lt;li>简洁清晰的底部导航区让 Slides 更适合学术汇报使用。&lt;/li>
+&lt;li>前后端分离式设计，&lt;code>.tex&lt;/code> 文件中只需聚焦内容，&lt;code>.sty&lt;/code> 配置文件隔离存放。&lt;/li>
+&lt;/ul>
+&lt;h2 id="使用-dhubeamer-模板">使用 dhuBeamer 模板&lt;/h2>
+&lt;h3 id="认识-beamer-中的元素">认识 Beamer 中的元素&lt;/h3>
+&lt;p>Beamer 根据元素在 Slides 中的不同作用，主要做了以下划分：&lt;/p>
+&lt;div style='display: flex; justify-content: center;'>
+&lt;img src='assets/Beamer元素.png' alt='img' style='zoom:50%;' />
+&lt;/div>
+&lt;h2 id="修改-dhubeamer-模板">修改 dhuBeamer 模板&lt;/h2></description></item></channel></rss>
