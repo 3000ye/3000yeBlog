@@ -46,3 +46,5 @@ $$
 <div style='display: flex; justify-content: center;'>
 <img src='https://oi-wiki.org/ds/images/list.svg' alt='img' style='zoom:100%;' />
 </div>
+
+单向链表
