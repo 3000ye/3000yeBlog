@@ -34,3 +34,12 @@ url = "https://space.bilibili.com/44756427?spm_id_from=333.1007.0.0"
 
 [social.params]
 icon = "brand-bilibili"
+
+[[social]]
+identifier = "LeetCode"
+name = "LeetCode"
+weight = 4
+url = "http://code.3000ye.com"
+
+[social.params]
+icon = "leetcode"
