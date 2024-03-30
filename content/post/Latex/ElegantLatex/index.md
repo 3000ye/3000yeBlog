@@ -15,7 +15,7 @@ tags:
 
 $\LaTeX$ 是一个文档准备系统 (Document Preparing System)，它非常适用于生成高印刷质量的科技类和数学类文档。它也能够生成所有其他种类的文档，小到简单的信件，大到完整的书籍。 $\LaTeX$ 使用 $\TeX$ 作为它的排版引擎，学习 $\LaTeX$ 是一个漫长而痛苦的过程，我们应该充分利用已知的资料，来尽量完成我们的需求。
 
-## 从安装 TeX 引擎开始
+## 从安装 $\TeX$ 引擎开始
 
 $\TeX$ 引擎类似于 `gcc/g++` 或 `Python`，用于编译 $\LaTeX$ 文档。
 
@@ -116,7 +116,7 @@ Copyright 2023 D.E. Knuth.
 
 关于这些编辑器如何配置，网上的教程有很多，读者可自行查阅。
 
-## 从一本教程入门 LaTeX 语法
+## 一本教程入门 $\LaTeX$ 语法
 
 对于所有初学者来说，[Ishort-zh-cn](https://mirror-hk.koddos.net/CTAN/info/lshort/chinese/lshort-zh-cn.pdf)都是最好的入门教程。在开始你的创作之前，请务必先行完整阅读一遍，并动手尝试书中的案例。
 
