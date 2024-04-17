@@ -19,8 +19,7 @@ int main() {
     short c = 4;
     cout << solve<long>(a, c) << endl;
 
-    char s[64], t[64];
-    cout << solve<const char*>(s, "ABC") << endl;
+    cout << solve<const char*>("EFG", "ABC") << endl;
 
     return 0;
 }
