@@ -64,3 +64,107 @@ let minValue = UInt8.min  // minValue 为 0，是 UInt8 类型
 let maxValue = UInt8.max  // maxValue 为 255，是 UInt8 类型
 ```
 
+#### Int 与 UInt
+
+Swift 提供了一个特殊的整数类型 `Int`，长度与当前平台的原生字长相同：
+
+- 在 32 位平台上，`Int` 和 `Int32` 长度相同。
+- 在 64 位平台上，`Int` 和 `Int64` 长度相同。
+
+同样的，`UInt` 的长度也与当前平台的原生字长相同。
+
+### 浮点数
+
+Swift 提供两种有符号浮点数类型：
+
+- `Double` 表示 64 位浮点数。
+- `Float` 表示 32 位浮点数。
+
+### 数值型字面量
+
+整数字面量可以被写作：
+
+- 一个 **十进制** 数：没有前缀
+- 一个 **二进制** 数：前缀为 `0b`
+- 一个 **八进制** 数：前缀是 `0o`
+- 一个 **十六进制** 数：前缀是 `0x`
+
+若想要用指数 `exp` 表示，则可在浮点数字面量后面添加大写或小写的 `e` 来指定。
+
+```swift
+let decInt = 10
+let binInt = 0b1011
+
+let expDouble = 1.25e2
+```
+
+### 类型别名
+
+可以使用以下方法对指定类型定义一个别名：
+
+```swift
+typealias newType = Int64
+```
+
+### 布尔值
+
+在 Swift 中布尔值强制使用 `true` 和 `false` 来表示，`0` 和 `1` 不能作为布尔值进行判断。
+
+### 元组
+
+在 Swift 中的元组可以包含任意多个值，且这些值可以是任意类型：
+
+```swift
+// 构造元组
+let tuple = (10, "hello");
+// 拆分元组
+let (x, y) = tuple;
+let (x, _) = tuple;
+// 下标访问
+let z = tuple.0;
+```
+
+和其他语言不同的是，Swift 的元组支持为元素命名，以实现便携的访问：
+
+```swift
+let nameTuple = (code: 11, des: "hello");
+
+print(nameTuple.code)
+```
+
+### 可选类型
+
+**可选类型**（options）用于处理值可能缺失的情况，其表示两种可能：
+
+- 有值，可以通过强制解析来访问这个值
+- 没有值，等于 `nil`
+
+例如，在类型转换时，不一定能成功转换：
+
+```swift
+let x = "123", y = "hello";
+print(Int(x), Int(y));
+```
+
+其中 `Int(x)` 有值，可以强制解析；而 `Int(y)` 没有值，等于 `nil`。
+
+#### `nil`
+
+对于没有值的变量，可以直接对其赋值 `nil` 来表示它没有值：
+
+```swift
+var x:String? = "hello";
+x = nil;
+```
+
+#### 强制解析
+
+对于可选类型的变量，如果确定其有值，则在其后面加一个 `!` 强制解析来访问其值：
+
+```swift
+var x = "123";
+var y = Int(x);
+
+print(y!);
+```
+
