@@ -7,8 +7,6 @@ math: true
 toc: true
 categories:
     - Swift
-tags:
-    - Swift
 ---
 
 # Swift 教程
