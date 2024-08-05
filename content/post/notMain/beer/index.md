@@ -59,3 +59,27 @@ tags:
 <div style='display: flex; justify-content: center;'>
 <img src='assets/奥乐齐.jpeg' alt='img' style='zoom:20%;' />
 </div>
+
+## BERGKONIG-烈性啤酒
+### 啤酒信息
+
+- 品名：BERGKONIG-烈性啤酒（奥地利）
+- 原料：水、大麦芽、啤酒花、二氧化碳酒花浸膏
+- 酒精度：7.2% vol
+- 原麦汁浓度：16.5$\circ$ P
+- 条码：4061464598973
+- 价格：7.1 元（奥乐齐购买）
+
+### 品鉴信息
+
+- 外观：酒体呈琥珀色，泡沫丰富但消的较快（可能是日期不够新鲜）
+- 香气：麦芽香，酒香
+- 味道：打开就喝会略微发苦，回温后甜度涌现，酒香和甜香四溢
+- 口感：酒体干净，入喉顺畅，酒液不会附着在口腔中，入喉后舌头生津
+- 总体评价：8.5 分。在低价位中少见的高麦度啤酒，酒体干净口感清冽，适当回温会激发更多甜香，可以当做小罗斯福来做口粮酒。
+
+### 图片展示
+
+<div style='display: flex; justify-content: center;'>
+<img src='assets/BERGKONIG.jpeg' alt='img' style='zoom:20%;' />
+</div>
