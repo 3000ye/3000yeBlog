@@ -83,3 +83,52 @@ tags:
 <div style='display: flex; justify-content: center;'>
 <img src='assets/BERGKONIG.jpeg' alt='img' style='zoom:20%;' />
 </div>
+
+## 一番榨-樱花限定版
+### 啤酒信息
+
+- 品名：一番榨啤酒-樱花限定版
+- 原料：水、麦芽、啤酒花
+- 酒精度：4.5% vol
+- 原麦汁浓度：11.0$\circ$ P
+- 条码：6921014065332
+- 价格：10 元（罗森购买）
+
+### 品鉴结果
+
+- 外观：酒体金黄色，泡沫丰富
+- 香气：麦芽香
+- 味道：麦芽风味浓郁
+- 口感：非常好入喉，感觉酒液在嘴里一泄而过，口感清冽
+- 总体评价：7 分。虽然香气和风味比之其他啤酒稍差，但是其入喉顺畅的特点太过突出。
+
+### 图片展示
+
+<div style='display: flex; justify-content: center;'>
+<img src='assets/一番榨樱花版.jpeg' alt='img' style='zoom:20%;' />
+</div>
+
+## 燕京啤酒-原浆白啤
+### 啤酒信息
+
+- 品名：燕京啤酒-原浆白啤
+- 原料：水、麦芽、啤酒花、酵母
+- 酒精度：4.1% vol
+- 原麦汁浓度：12$\circ$ P
+- 条码：6903102105267
+- 价格：9 元（罗森购买）
+
+### 品鉴信息
+
+- 外观：酒体金黄，泡沫丰富
+- 香气：麦芽香
+- 味道：麦芽风味浓郁
+- 口感：入喉稍有阻塞感，收口偏涩
+- 总体评价：6.8 分。总体表现一般，只能说过得去。
+
+
+### 图片展示
+
+<div style='display: flex; justify-content: center;'>
+<img src='assets/燕京原浆白啤.jpeg' alt='img' style='zoom:20%;' />
+</div>
