@@ -104,6 +104,7 @@ Description=Your Timer Description
 [Timer]
 # OnCalendar设置定时规则，这里是每天10点
 OnCalendar=*-*-* 10:00:00
+Unit=xxxxx.service
 
 [Install]
 WantedBy=timers.target
@@ -133,14 +134,14 @@ sudo cp your_service_name.service /etc/systemd/system/
 sudo systemctl daemon-reload
 
 # 手动启用任务，测试任务是否正常运行
+sudo systemctl enable your_timer_name.timer
 sudo systemctl start your_timer_name.service
-# 输出任务运行日志
-sudo journalctl -u your_timer_name.service
+sudo systemctl list-timers
 ```
 
-任务运行成功后，使用以下命令启用定时任务：
+任务运行成功后，使用以下命令查看日志：
 
 ```shell
-sudo systemctl enable your_timer_name.timer
-sudo systemctl list-timers
+# 输出任务运行日志
+sudo journalctl -u your_timer_name.service
 ```
