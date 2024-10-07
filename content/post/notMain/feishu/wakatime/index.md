@@ -94,7 +94,7 @@ sudo cp wakatime.service /etc/systemd/system/
 # 重载定时任务，启用并开始定时任务
 sudo systemctl daemon-reload
 sudo systemctl enable wakatime.timer
-sudo systemctl start wakatime.service
+sudo systemctl start wakatime.timer
 
 # 查看定时任务列表
 sudo systemctl list-timers
