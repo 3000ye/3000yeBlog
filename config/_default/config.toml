@@ -1,7 +1,7 @@
 # Change baseurl before deploy
 baseurl = "https://3000ye.com"
 languageCode = "en-us"
-paginate = 7
+pagination.pagerSize = 7
 title = "3000ye's Blog"
 
 # Theme i18n support
